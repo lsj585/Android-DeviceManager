@@ -89,6 +89,16 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     }
 
     @Override
+    public boolean startApp(String packageName,String launcherName) {
+        return getDeviceSystem().startApp(packageName,launcherName);
+    }
+
+    @Override
+    public boolean stopApp(String packageName) {
+        return getDeviceSystem().stopApp(packageName);
+    }
+
+    @Override
     public boolean deviceLock() {
         if (getDeviceLock().isLock()) {
             return getDeviceLock().unlock();

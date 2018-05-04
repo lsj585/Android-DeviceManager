@@ -52,36 +52,97 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
     @Override
     public void onClick(int dialogPos,int viewPosition) {
-        this.modle.update(viewPosition);
+        switch (dialogPos){
+            case 0:
+                //卸载
+                break;
+            case 1:
+                //阻止卸载
+                break;
+            case 2:
+                //清除应用数据
+                break;
+            case 3:
+                //加入白名单
+                break;
+            case 4:
+                //加入黑名单
+                break;
+            case 5:
+                //启动应用
+                startApp(viewPosition);
+                break;
+            case 6:
+                //关闭应用
+                stopApp(viewPosition);
+                break;
 
-//        //从本地读取数据操作
-//        Observable.create(new Observable.OnSubscribe<Boolean>() {
-//            @Override
-//            public void call(Subscriber<? super Boolean> subscriber) {
-//                subscriber.onNext(modle.updateStatus(position));
-//                subscriber.onCompleted();
-//            }
-//        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-//
-//            @Override
-//            public void onCompleted() {
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable throwable) {
-//
-//            }
-//
-//            @Override
-//            public void onNext(Boolean success) {
-//                if(success) {
-//                    modle.update(position,true);
-//                    view.updateView(position);
-//                }
-//            }
-//        });
+        }
+
     }
+
+    private void stopApp(final int viewPosition) {
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.stopApp(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.update(viewPosition,true);
+                    view.updateView(viewPosition);
+                }
+            }
+        });
+    }
+
+    /**
+     * 启动app
+     * @param viewPosition
+     */
+    private void startApp(final int viewPosition){
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.startApp(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.update(viewPosition,success);
+                    view.updateView(viewPosition);
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onDestroy() {

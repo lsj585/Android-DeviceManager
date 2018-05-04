@@ -85,9 +85,21 @@ public abstract class IKnoxDmApiManager{
     public abstract boolean isLock();
 
 
-
-
     public void release(){
         instance=null;
     }
+
+    /**
+     * 启动应用
+     * @param launcherName
+     * @return
+     */
+    public abstract boolean startApp(String packageName,String launcherName);
+
+    /**
+     * 终止应用
+     * @param
+     * @return
+     */
+    public abstract boolean stopApp(String packageName);
 }

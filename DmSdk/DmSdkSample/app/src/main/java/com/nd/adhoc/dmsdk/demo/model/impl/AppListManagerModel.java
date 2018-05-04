@@ -12,7 +12,9 @@ import android.util.Log;
 import com.nd.adhoc.dmsdk.api.knox.manager.DeviceApiManager;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
 import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
+import com.nd.adhoc.dmsdk.demo.bean.HardWareSwitchBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
+import com.nd.adhoc.dmsdk.demo.model.IAppManagerModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * 获取文件列表信息
  */
-public class AppListManagerModel extends BaseModel<ApplicationInfoBean> {
+public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implements IAppManagerModel {
 
     private List<ApplicationInfoBean> applicationInfoBeans;
 
@@ -46,7 +48,10 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> {
 
     @Override
     public void update(ApplicationInfoBean applicationInfoBean, int position) {
-
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean=applicationInfoBeans.get(position);
+            bean.setRunning(applicationInfoBean.isRunning());
+        }
     }
 
     @Override
@@ -61,12 +66,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> {
 
     @Override
     public void update(int position) {
-        ApplicationInfoBean bean = applicationInfoBeans.get(position);
-        if (bean != null && bean.getLauncherName() != null) {
-            Log.i(this.getClass().getName(), String.format("is name:%s",bean.getLauncherName()));
-        } else {
-            Log.i(this.getClass().getName(), String.format("is name:%s","error"));
-        }
+
     }
 
     @Override
@@ -137,5 +137,39 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> {
         Log.i(this.getClass().getName(),String.format("showList 2 :%d", applicationInfoBeans.size()));
 
         return applicationInfoBeans;
+    }
+
+
+    @Override
+    public boolean startApp(int position) {
+        ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if(bean != null && bean.getPackageName() != null && bean.getLauncherName() !=null){
+            return manager.startApp(bean.getPackageName(),bean.getLauncherName());
+        }else{
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean stopApp(int position) {
+        ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if(bean != null && bean.getPackageName() != null){
+            return manager.stopApp(bean.getPackageName());
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public void update(int position, boolean isSuccess) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean=applicationInfoBeans.get(position);
+            //执行成功或失败
+            if(isSuccess) {
+                bean.setRunning(bean.isRunning() == false?true:false);
+                update(bean,position);
+            }
+        }
     }
 }

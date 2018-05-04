@@ -107,13 +107,9 @@ public class AppManagerFragment extends Fragment implements ITabFragment, AppMan
     }
 
     @Override
-    public void updateView(int viewPosition, boolean isIntsall) {
+    public void updateView(int viewPosition) {
         if (getUserVisibleHint()) {
             managerAdapter.notifyItemChanged(viewPosition);
-            if (isIntsall) {
-                managerAdapter.getList().remove(viewPosition);
-                managerAdapter.notifyDataSetChanged();
-            }
         }
 
     }

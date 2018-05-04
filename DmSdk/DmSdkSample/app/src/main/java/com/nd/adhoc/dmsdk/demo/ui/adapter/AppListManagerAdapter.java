@@ -42,10 +42,10 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
             holder.tvAppInfoSize.setText(mList.get(position).getPackageName());
             holder.itemView.setTag(position);
             holder.itemView.setOnClickListener(itemClickListener);
-            if(mList.get(position).getStatus()==0){
-                holder.tvAppStatus.setText(mContext.getResources().getString(R.string.no_install));
+            if(mList.get(position).isRunning()){
+                holder.tvAppStatus.setText(mContext.getResources().getString(R.string.runing));
             }else{
-                holder.tvAppStatus.setText(mContext.getResources().getString(R.string.installing));
+                holder.tvAppStatus.setText(mContext.getResources().getString(R.string.stop));
             }
         }
     }

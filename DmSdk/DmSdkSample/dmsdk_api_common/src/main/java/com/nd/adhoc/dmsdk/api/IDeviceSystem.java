@@ -58,4 +58,7 @@ public interface IDeviceSystem  {
 	 */
 	public String [] getAppInstalllist();
 
+	public boolean startApp(String packageName,String clsName);
+
+	public boolean stopApp(String packageName);
 }

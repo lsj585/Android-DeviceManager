@@ -27,4 +27,6 @@
     <string name="no_install">未安装</string>
     <string name="installing">安装中</string>
     <string name="file_manager">未安装的应用</string>
+    <string name="runing">运行中</string>
+    <string name="stop">已停止</string>
 </resources>

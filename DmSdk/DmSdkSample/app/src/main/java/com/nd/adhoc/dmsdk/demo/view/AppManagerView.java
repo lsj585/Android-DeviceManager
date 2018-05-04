@@ -12,5 +12,5 @@ public interface AppManagerView extends BaseView {
 
     void refresh();
 
-    void updateView(int viewPosition, boolean isIntsall);
+    void updateView(int viewPosition);
 }

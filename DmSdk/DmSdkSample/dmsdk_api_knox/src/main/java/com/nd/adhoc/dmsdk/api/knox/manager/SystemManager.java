@@ -87,4 +87,13 @@ class SystemManager extends BaseManager implements IDeviceSystem {
     public String[] getAppInstalllist() {
         return applicationPolicy.getInstalledApplicationsIDList();
     }
+    @Override
+    public boolean startApp(String packageName,String clsName) {
+        return applicationPolicy.startApp(packageName,clsName);
+    }
+
+    @Override
+    public boolean stopApp(String packageName) {
+        return applicationPolicy.stopApp(packageName);
+    }
 }

@@ -5,21 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.nd.adhoc.dmsdk.demo.loader.ActiveLoader;
-import com.nd.adhoc.dmsdk.demo.common.DeviceFunction;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.presenter.impl.ActiveLicensePresenter;
-import com.nd.adhoc.dmsdk.demo.view.ActiveView;
 import com.nd.adhoc.dmsdk.demo.view.BaseView;
 import com.nd.adhoc.dmsdk.revicer.ReciverConstants;
 
@@ -61,8 +54,6 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
      * 激活设备
      */
     private Button btnActiveDevice;
-
-    private ActiveLoader mActivLoader;
 
     final String DEFAULT_DEVICE_LAUNCH="com.nd.adhoc.default_device_Launcher";
     final String DEFAULT_DEVICE_CATEGORY="com.nd.adhoc.default_device_CATEGORY";
