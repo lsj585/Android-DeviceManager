@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="file_device_operation">
+        <item>@string/operation_install</item>
+        <item>@string/force_install</item>
+    </string-array>
+
+    <string-array name="app_device_operation">
+        <item>@string/operation_uninstall </item>
+        <item>@string/force_uninstall</item>
+        <item>@string/operation_cleardata</item>
+        <item>@string/operation_whiltelist</item>
+        <item>@string/operation_blackist</item>
+        <item>@string/operation_open</item>
+        <item>@string/close_open</item>
+    </string-array>
+
+
+    <string-array name="whitelist_device_operation">
+        <item>@string/operation_clearwhitelist</item>
+    </string-array>
+
+    <string-array name="balcklist_device_operation">
+        <item>@string/operation_clearblakclist</item>
+    </string-array>
+
+    <string name="operation_install">安装</string>
+    <string name="operation_uninstall">卸载</string>
+    <string name="operation_cleardata">清除应用数据</string>
+    <string name="force_install">阻止安装</string>
+    <string name="force_uninstall">阻止卸载</string>
+    <string name="operation_whiltelist">加入白名单</string>
+    <string name="operation_blackist">加入黑名单</string>
+    <string name="operation_clearwhitelist">移除白名单</string>
+    <string name="operation_clearblakclist">移除黑名单</string>
+    <string name="operation_open">启动应用</string>
+    <string name="close_open">关闭应用</string>
+</resources>

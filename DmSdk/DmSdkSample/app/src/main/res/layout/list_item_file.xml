@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:background="@drawable/recycler_item_selector"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <!--应用名称 -->
+    <TextView
+        android:id="@+id/tv_appname_file"
+        android:layout_marginLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/relative_appname_margin"
+        android:text="@string/active_device"
+        android:textColor="@android:color/black" />
+
+    <!--应用名称 -->
+    <TextView
+        android:id="@+id/tv_appsize_file"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/tv_appname_file"
+        android:layout_marginTop="@dimen/relative_appname_deliver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/appsize"
+        android:textColor="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/tv_appstatus_file"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_centerVertical="true"
+        android:text="@string/active_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">DmSdkSample</string>
+    <string name="active_device">激活设备</string>
+    <string name="active_device_error">激活失败</string>
+    <string name="active_device_success">激活成功,跳转至设备管理页面</string>
+    <string name="app_manager">应用管理</string>
+    <string name="device_control_manager">硬件管理</string>
+    <string name="system_manager">系统管理</string>
+    <string name="navigation_drawer_open">打开</string>
+    <string name="navigation_drawer_close">关闭</string>
+    <string name="about">关于</string>
+    <string name="wifi">WIFI</string>
+    <string name="t3g">3G网络</string>
+    <string name="bluetooth">蓝牙</string>
+    <string name="camera">摄像头</string>
+    <string name="microphone">麦克风</string>
+    <string name="usb">USB</string>
+    <string name="sd_card">SD卡</string>
+    <string name="active_device_open">开</string>
+    <string name="active_device_close">关</string>
+    <string name="device">Knox Demo</string>
+    <string name="Security_policy_blocked">安全政策已阻止</string>
+    <string name="lock">设备锁</string>
+    <string name="appsize">15KB</string>
+    <string name="title">请选择以下操作</string>
+    <string name="choose">取消</string>
+    <string name="no_install">未安装</string>
+    <string name="installing">安装中</string>
+    <string name="file_manager">未安装的应用</string>
+</resources>
