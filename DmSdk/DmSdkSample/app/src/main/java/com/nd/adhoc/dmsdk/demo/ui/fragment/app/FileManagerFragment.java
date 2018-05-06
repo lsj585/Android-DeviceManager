@@ -39,6 +39,7 @@ public class FileManagerFragment extends Fragment implements ITabFragment,FileMa
     private FileManagerPresenter presenter;
     private FileManagerModel model;
     private LinearLayoutManager mManager;
+    private MaterialDialog dialog;
 
     public static FileManagerFragment newInstance() {
         FileManagerFragment fragment = new FileManagerFragment();
@@ -137,21 +138,23 @@ public class FileManagerFragment extends Fragment implements ITabFragment,FileMa
 
     @Override
     public void onItemClick(View view, final int position) {
+        if(dialog==null){
+            dialog= new MaterialDialog.Builder(getActivity())
+                    .title(R.string.title)
+                    .items(R.array.file_device_operation)
+                    .itemsCallback(new MaterialDialog.ListCallback() {
 
-        Toast.makeText(getActivity().getApplicationContext(), "click" + position, Toast.LENGTH_SHORT)
-                .show();
-
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.title)
-                .items(R.array.file_device_operation)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int pos, CharSequence text) {
-                        presenter.onClick(pos,position);
-                    }
-                })
-                .positiveText(R.string.choose)
-                .show();
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View itemView, int pos, CharSequence text) {
+                            presenter.onClick(pos,position);
+                        }
+                    })
+                    .positiveText(R.string.choose).build();
+        }
+        if(dialog.isShowing()){
+            dialog.dismiss();
+        }else{
+            dialog.show();
+        }
     }
 }

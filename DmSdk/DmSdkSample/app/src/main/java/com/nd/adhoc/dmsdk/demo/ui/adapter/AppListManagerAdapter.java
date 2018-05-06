@@ -24,6 +24,7 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
 
     private OnItemClickListener onItemClickListener;
 
+
     public AppListManagerAdapter(Context context){
         this.mContext= context;
         mList=new ArrayList<ApplicationInfoBean>();
@@ -84,6 +85,30 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
         void onItemClick(View view, int position);
     }
 
+    public interface OnMonitorDataListener{
+
+        /**
+         * 显示cpu
+         * @param viewPosition
+         */
+        void cpu(int viewPosition);
+        /**
+         * 显示内存
+         * @param viewPosition
+         */
+        void ram(int viewPosition);
+
+        /**
+         * 显示内存
+         * @param viewPosition
+         */
+        void applicationDataSize(int viewPosition);
+
+
+        void applicationCacheSize(int viewPosition);
+    }
+
+
     public OnItemClickListener getOnItemClickListener() {
         return onItemClickListener;
     }
@@ -108,5 +133,6 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
     public List<ApplicationInfoBean> getList(){
         return mList;
     }
+
 
 }

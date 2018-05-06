@@ -18,10 +18,28 @@ public interface IAppManagerModel {
     boolean stopApp(int position);
 
     /**
+     * 清除数据
+     * @param position
+     * @return
+     */
+    boolean wipeData(int position);
+
+    /**
      * 更新状态是否成功
      * @param position
      * @param isSuccess 是否执行成功
      * @return
      */
     void update(int position,boolean isSuccess);
+
+    /**
+     * 数据清理后的回调
+     * @param position
+     */
+    void updateWipeStatus(int position);
+    /**
+     * 卸载APP
+     * @param position
+     */
+    boolean uninstallApp(int position);
 }

@@ -44,6 +44,7 @@ public class AppManagerFragment extends Fragment implements ITabFragment, AppMan
     private AppListManagerPresenter presenter;
     private AppListManagerModel model;
     private LinearLayoutManager mManager;
+    private MaterialDialog dialog;
 
     public static AppManagerFragment newInstance() {
         AppManagerFragment fragment = new AppManagerFragment();
@@ -90,45 +91,44 @@ public class AppManagerFragment extends Fragment implements ITabFragment, AppMan
 
     @Override
     public void showList(List<ApplicationInfoBean> list) {
-//        if (getUserVisibleHint()) {
-            if (managerAdapter != null) {
-                managerAdapter.setData(list);
-                managerAdapter.notifyDataSetChanged();
-                Log.i(this.getClass().getName(), String.format("showList:%d", managerAdapter.getItemCount()));
-            }
-//        }
-    }
-
-    @Override
-    public void refresh() {
-        if (getUserVisibleHint()) {
-
+        if (managerAdapter != null) {
+            managerAdapter.setData(list);
+            managerAdapter.notifyDataSetChanged();
+            Log.i(this.getClass().getName(), String.format("showList:%d", managerAdapter.getItemCount()));
         }
     }
 
     @Override
     public void updateView(int viewPosition) {
-        if (getUserVisibleHint()) {
-            managerAdapter.notifyItemChanged(viewPosition);
-        }
+        managerAdapter.notifyItemChanged(viewPosition);
+    }
 
+    @Override
+    public void removeUpdate(int viewPosition) {
+        managerAdapter.getList().remove(viewPosition);
+        managerAdapter.notifyDataSetChanged();
     }
 
 
     @Override
     public void onItemClick(View view, final int position) {
+        if (dialog == null) {
+            dialog = new MaterialDialog.Builder(getActivity())
+                    .title(R.string.title)
+                    .items(R.array.app_device_operation)
+                    .itemsCallback(new MaterialDialog.ListCallback() {
 
-        new MaterialDialog.Builder(getActivity())
-                .title(R.string.title)
-                .items(R.array.app_device_operation)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int pos, CharSequence text) {
-                        presenter.onClick(pos, position);
-                    }
-                })
-                .positiveText(R.string.choose)
-                .show();
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View itemView, int pos, CharSequence text) {
+                            presenter.onClick(pos, position);
+                        }
+                    })
+                    .positiveText(R.string.choose).build();
+        }
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        } else {
+            dialog.show();
+        }
     }
 }

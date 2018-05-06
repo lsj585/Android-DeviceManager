@@ -10,7 +10,7 @@ public interface AppManagerView extends BaseView {
 
     void showList(List<ApplicationInfoBean> list);
 
-    void refresh();
-
     void updateView(int viewPosition);
+
+    void removeUpdate(int viewPosition);
 }

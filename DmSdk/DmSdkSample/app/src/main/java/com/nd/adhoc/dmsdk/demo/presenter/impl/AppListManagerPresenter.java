@@ -55,12 +55,14 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
         switch (dialogPos){
             case 0:
                 //卸载
+                uninstall(viewPosition);
                 break;
             case 1:
                 //阻止卸载
                 break;
             case 2:
                 //清除应用数据
+                wipeData(viewPosition);
                 break;
             case 3:
                 //加入白名单
@@ -79,6 +81,40 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
         }
 
+    }
+
+    /**
+     * 卸载应用
+     * @param viewPosition
+     */
+    private void uninstall(final int viewPosition) {
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.uninstallApp(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.delete(viewPosition);
+                    view.removeUpdate(viewPosition);
+                }
+            }
+        });
     }
 
     private void stopApp(final int viewPosition) {
@@ -104,6 +140,40 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
             public void onNext(Boolean success) {
                 if(success) {
                     modle.update(viewPosition,true);
+                    view.updateView(viewPosition);
+                }
+            }
+        });
+    }
+
+    /**
+     * 清除数据
+     * @param viewPosition
+     */
+    private void wipeData(final int viewPosition) {
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.wipeData(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.updateWipeStatus(viewPosition);
                     view.updateView(viewPosition);
                 }
             }

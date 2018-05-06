@@ -49,14 +49,23 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     @Override
     public void update(ApplicationInfoBean applicationInfoBean, int position) {
         if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean=applicationInfoBeans.get(position);
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
             bean.setRunning(applicationInfoBean.isRunning());
         }
     }
 
     @Override
     public void delete(ApplicationInfoBean fileInfoBean) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            applicationInfoBeans.remove(fileInfoBean);
+        }
+    }
 
+    @Override
+    public void delete(int position) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            applicationInfoBeans.remove(position);
+        }
     }
 
     @Override
@@ -72,7 +81,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     @Override
     public void release() {
         manager.release();
-        applicationInfoBeans=null;
+        applicationInfoBeans = null;
     }
 
     /**
@@ -81,71 +90,112 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
      * @return
      */
     private List<ApplicationInfoBean> createList() {
-        Log.i(this.getClass().getName(),String.format("showList:%d", applicationInfoBeans.size()));
-
+        Log.i(this.getClass().getName(), String.format("showList:%d", applicationInfoBeans.size()));
         PackageManager pm = this.context.getPackageManager();
         String[] packageNameList = manager.getAppInstalllist();
-        if (packageNameList != null && packageNameList.length > 0) {
-            for (int i = 0; i < packageNameList.length; i++) {
-                PackageInfo packageInfo = null;
-                try {
-                    packageInfo = pm.getPackageInfo(packageNameList[i], 0);
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
+        List<PackageInfo> packageList = new ArrayList<PackageInfo>();
+        try {
+            if (packageNameList != null && packageNameList.length > 0) {
+                productPackageList(packageNameList,packageList,pm);
+            }
+            if (packageList.size() > 0) {
+                productNoSystemPakcgaes(packageList,pm);
+            }
+            packageList.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.i(this.getClass().getName(), String.format("showList 2 :%d", applicationInfoBeans.size()));
+
+        return applicationInfoBeans;
+    }
+
+    /**
+     * 生成一组非系统应用的APP
+     * @param packageList
+     * @param pm
+     */
+    private void productNoSystemPakcgaes(List<PackageInfo> packageList,PackageManager pm) {
+
+        for (int packIndex = 0; packIndex < packageList.size(); packIndex++) {
+            PackageInfo packageInfo = packageList.get(packIndex);
+            ApplicationInfoBean info = new ApplicationInfoBean();
+            info.setName(packageInfo.applicationInfo.loadLabel(pm).toString());
+            applicationInfoBeans.add(info);
+            Log.i(this.getClass().getName(), String.format("packageNameList[i]:%s", packageInfo.packageName));
+            info.setPackageName(packageInfo.packageName);
+            if (manager.isApplicationRunning(packageInfo.packageName)) {
+                info.setRunning(true);
+            }
+            productAppInfoLauncherName(pm,packageInfo,info);
+            info.setRamUsage(manager.getApplicationRamUsage(packageInfo.packageName));
+            info.setApplicationCacheSizeUsage(manager.getApplicationCacheSize(packageInfo.packageName));
+            info.setCpuUsage(manager.getApplicationCpuUsage(packageInfo.packageName));
+            info.setApplicationDataSizeUsage(manager.getApplicationDataSize(packageInfo.packageName));
+        }
+    }
+    /**
+     * 生成Package所对应的属性值
+     * @param pm
+     * @param packageInfo 某个应用的包；
+     * @param info  目标应用的参数类
+     */
+    private void productAppInfoLauncherName(PackageManager pm,PackageInfo packageInfo,ApplicationInfoBean info) {
+
+        // 创建一个类别为CATEGORY_LAUNCHER的该包名的Intent
+        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+        resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> resolveinfoList = pm.queryIntentActivities(resolveIntent, 0);
+        String laucnhActivity = null;
+        if (resolveinfoList != null && resolveinfoList.size() > 0) {
+
+            OUTER:
+            for (int index = 0; index < resolveinfoList.size(); index++) {
+                ResolveInfo resolveInfo = resolveinfoList.get(index);
+                ActivityInfo activityInfo = resolveInfo.activityInfo;
+                Log.i(this.getClass().getName(), String.format("activityInfo[i]:%s", activityInfo.packageName));
+                Log.i(this.getClass().getName(), String.format("packageInfo[i]:%s", packageInfo.packageName));
+                Log.i(this.getClass().getName(), String.format("resolveInfo[i]:%s", resolveInfo.resolvePackageName));
+                if (resolveInfo.activityInfo.applicationInfo.packageName.equalsIgnoreCase(packageInfo.packageName)) {
+                    laucnhActivity = activityInfo.name;
+                    break OUTER;
                 }
-                if (packageInfo != null) {
-                    ApplicationInfoBean info = new ApplicationInfoBean();
-                    info.setName(packageInfo.applicationInfo.loadLabel(pm).toString());
-                    Log.i(this.getClass().getName(),String.format("packageNameList[i]:%s",packageInfo.packageName));
-                    info.setPackageName(packageInfo.packageName);
+            }
 
-                    if(manager.isApplicationRunning(packageInfo.packageName)){
-                        info.setRunning(true);
-                    }
-                    //判断是否是系统应用 如果是系统应用则不处理
-                    if((packageInfo.applicationInfo.flags & android.content.pm.ApplicationInfo.FLAG_SYSTEM)!=0){
+        }
+        if (laucnhActivity != null) {
+            info.setLauncherName(laucnhActivity);
+        }
+    }
 
-                    }else {
-                        applicationInfoBeans.add(info);
-                    }
-                    // 创建一个类别为CATEGORY_LAUNCHER的该包名的Intent
-                    Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
-                    resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    List<ResolveInfo> resolveinfoList = pm.queryIntentActivities(resolveIntent, 0);
-                    String laucnhActivity=null;
-                    if (resolveinfoList != null && resolveinfoList.size() > 0) {
+    private void productPackageList(String []packageNameList ,List<PackageInfo> packageInfos,PackageManager pm) {
 
-                        OUTER: for(int index=0;index<resolveinfoList.size();index++){
-                            ResolveInfo resolveInfo = resolveinfoList.get(index);
-                            ActivityInfo activityInfo = resolveInfo.activityInfo;
-                            Log.i(this.getClass().getName(),String.format("activityInfo[i]:%s",activityInfo.packageName));
-                            Log.i(this.getClass().getName(),String.format("packageInfo[i]:%s",packageInfo.packageName));
-                            Log.i(this.getClass().getName(),String.format("resolveInfo[i]:%s",resolveInfo.resolvePackageName));
-                            if(resolveInfo.activityInfo.applicationInfo.packageName.equalsIgnoreCase(packageInfo.packageName)){
-                                laucnhActivity=activityInfo.name;
-                                break OUTER;
-                            }
-                        }
+        for (int i = 0; i < packageNameList.length; i++) {
+            PackageInfo packageInfo = null;
+            try {
+                packageInfo = pm.getPackageInfo(packageNameList[i], 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (packageInfo != null) {
+                //判断是否是系统应用 如果是系统应用则不处理
+                if ((packageInfo.applicationInfo.flags & android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0) {
 
-                    }
-                    if(laucnhActivity !=null){
-                        info.setLauncherName(laucnhActivity);
-                    }
+                } else {
+                    packageInfos.add(packageInfo);
                 }
             }
         }
-        Log.i(this.getClass().getName(),String.format("showList 2 :%d", applicationInfoBeans.size()));
 
-        return applicationInfoBeans;
     }
 
 
     @Override
     public boolean startApp(int position) {
         ApplicationInfoBean bean = applicationInfoBeans.get(position);
-        if(bean != null && bean.getPackageName() != null && bean.getLauncherName() !=null){
-            return manager.startApp(bean.getPackageName(),bean.getLauncherName());
-        }else{
+        if (bean != null && bean.getPackageName() != null && bean.getLauncherName() != null) {
+            return manager.startApp(bean.getPackageName(), bean.getLauncherName());
+        } else {
             return false;
         }
 
@@ -154,9 +204,19 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     @Override
     public boolean stopApp(int position) {
         ApplicationInfoBean bean = applicationInfoBeans.get(position);
-        if(bean != null && bean.getPackageName() != null){
+        if (bean != null && bean.getPackageName() != null) {
             return manager.stopApp(bean.getPackageName());
-        }else{
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean wipeData(int position) {
+        ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (bean != null && bean.getPackageName() != null) {
+            return manager.wipeData(bean.getPackageName());
+        } else {
             return false;
         }
     }
@@ -164,12 +224,38 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     @Override
     public void update(int position, boolean isSuccess) {
         if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean=applicationInfoBeans.get(position);
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
             //执行成功或失败
-            if(isSuccess) {
-                bean.setRunning(bean.isRunning() == false?true:false);
-                update(bean,position);
+            if (isSuccess) {
+                bean.setRunning(bean.isRunning() == false ? true : false);
+                update(bean, position);
             }
+        }
+    }
+
+    @Override
+    public void updateWipeStatus(int position) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            //执行成功或失败
+            bean.setRamUsage(0);
+            bean.setApplicationDataSizeUsage(0);
+            bean.setApplicationCacheSizeUsage(0);
+            update(bean, position);
+        }
+    }
+
+    @Override
+    public boolean uninstallApp(int position) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            try {
+                return manager.uninstallApp(bean.getPackageName());
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 }

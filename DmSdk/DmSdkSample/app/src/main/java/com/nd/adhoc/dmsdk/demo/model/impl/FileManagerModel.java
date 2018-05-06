@@ -52,6 +52,11 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
     }
 
     @Override
+    public void delete(int position) {
+
+    }
+
+    @Override
     public FileInfoBean findById(long id) {
         return null;
     }

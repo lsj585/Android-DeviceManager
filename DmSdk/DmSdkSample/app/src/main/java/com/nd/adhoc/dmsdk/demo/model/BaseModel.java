@@ -24,6 +24,8 @@ public abstract class BaseModel <T extends BaseBean> {
 
    public abstract void delete(T t);
 
+    public abstract void delete(int position);
+
    public abstract T findById(long id);
 
    public abstract void update(int position);

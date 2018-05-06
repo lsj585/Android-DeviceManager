@@ -49,6 +49,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
     }
 
     @Override
+    public void delete(int position) {
+
+    }
+
+    @Override
     public HardWareSwitchBean findById(long id) {
         return null;
     }
