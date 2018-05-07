@@ -109,6 +109,12 @@ public class AppManagerFragment extends Fragment implements ITabFragment, AppMan
         managerAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void updateMsg(String msg) {
+
+        Toast.makeText(getActivity().getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public void onItemClick(View view, final int position) {

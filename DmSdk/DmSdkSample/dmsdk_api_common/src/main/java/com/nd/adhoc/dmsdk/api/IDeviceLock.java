@@ -2,10 +2,11 @@ package com.nd.adhoc.dmsdk.api;
 
 public interface IDeviceLock {
 
-	public boolean lock();
+	boolean lock();
 
-	public boolean unlock();
+	boolean unlock();
 
-	public boolean isLock();
+	boolean isLock();
 
+    void release();
 }

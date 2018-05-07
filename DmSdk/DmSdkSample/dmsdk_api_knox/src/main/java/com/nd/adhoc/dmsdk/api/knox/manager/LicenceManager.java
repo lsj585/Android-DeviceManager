@@ -26,11 +26,13 @@ class LicenceManager extends BaseManager implements ILicenceManager {
 
     private IntentFilter mIntentFilter;
 
-
+    private DevicePolicyManager devicePolicyManager;
     @Override
     public void activieLicnece() {
 
-        DevicePolicyManager devicePolicyManager = (DevicePolicyManager)getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+        if(devicePolicyManager==null) {
+            devicePolicyManager = (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+        }
         ComponentName mDeviceAdmin = new ComponentName(getContext(), com.nd.adhoc.dmsdk.revicer.AdminReciver.class);
 
 //        if (!devicePolicyManager.isAdminActive(mDeviceAdmin)) {
@@ -46,6 +48,10 @@ class LicenceManager extends BaseManager implements ILicenceManager {
         activateELM();
     }
 
+    @Override
+    public void release() {
+
+    }
 
 
     // call ELM license activation
@@ -72,51 +78,4 @@ class LicenceManager extends BaseManager implements ILicenceManager {
             e.printStackTrace();
         }
     }
-
-    public class AdminReciver extends DeviceAdminReceiver {
-
-        public AdminReciver(){
-
-        }
-        @Override
-        public DevicePolicyManager getManager(Context context) {
-            return super.getManager(context);
-        }
-
-        @Override
-        public ComponentName getWho(Context context) {
-            return super.getWho(context);
-        }
-
-        @Override
-        public void onDisabled(Context context, Intent intent) {
-            super.onDisabled(context, intent);
-        }
-
-        @Override
-        public CharSequence onDisableRequested(Context context, Intent intent) {
-            return super.onDisableRequested(context, intent);
-        }
-
-        @Override
-        public void onEnabled(Context context, Intent intent) {
-            super.onEnabled(context, intent);
-        }
-
-        @Override
-        public void onPasswordChanged(Context context, Intent intent, UserHandle user) {
-            super.onPasswordChanged(context, intent, user);
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            super.onReceive(context, intent);
-        }
-
-        @Override
-        public IBinder peekService(Context myContext, Intent service) {
-            return super.peekService(myContext, service);
-        }
-    }
-
 }

@@ -12,4 +12,6 @@ public interface DeviceControlView extends BaseView {
     void updateView(int position);
 
     void jumpHome();
+
+    void updateMsg(String msg);
 }

@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 class LockManager extends BaseManager implements IDeviceLock {
-
-//    private DeviceInventory deviceInventoryPolicy ;
-
     private List availableHwKeys;
 
     private RestrictionPolicy restrictionPolicy;
@@ -24,7 +21,6 @@ class LockManager extends BaseManager implements IDeviceLock {
 
         super.setContext(context);
         Log.i(this.getClass().getName(), "deviceManager:=" + deviceManager);
-//        deviceInventoryPolicy=deviceManager.getDeviceInventory();
         restrictionPolicy=deviceManager.getRestrictionPolicy();
         kioskMode=KioskMode.getInstance(context);
         getKeyList();
@@ -49,6 +45,13 @@ class LockManager extends BaseManager implements IDeviceLock {
      */
     public boolean isLock() {
         return restrictionPolicy.isActivationLockAllowed(true);
+    }
+
+    @Override
+    public void release() {
+        restrictionPolicy=null;
+        kioskMode=null;
+        availableHwKeys=null;
     }
 
     /**

@@ -13,4 +13,6 @@ public interface AppManagerView extends BaseView {
     void updateView(int viewPosition);
 
     void removeUpdate(int viewPosition);
+
+    void updateMsg(String msg);
 }

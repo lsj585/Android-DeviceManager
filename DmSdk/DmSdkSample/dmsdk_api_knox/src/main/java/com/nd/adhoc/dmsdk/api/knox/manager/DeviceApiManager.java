@@ -4,12 +4,14 @@ import android.content.Context;
 
 import com.nd.adhoc.dmsdk.api.knox.IKnoxDmApiManager;
 
+import java.util.List;
+
 /**
  * 主入口 SDK层调用该类
  */
 public class DeviceApiManager extends IKnoxDmApiManager {
 
-    private KeyManager deviceKeyManager;
+//    private KeyManager deviceKeyManager;
 
     private SystemManager deviceSystemManager;
 
@@ -32,13 +34,13 @@ public class DeviceApiManager extends IKnoxDmApiManager {
         }
         return deviceLockManager;
     }
-
-    private KeyManager getDeviceKey() {
-        if (deviceKeyManager == null) {
-            deviceKeyManager = new KeyManager();
-        }
-        return deviceKeyManager;
-    }
+//
+//    private KeyManager getDeviceKey() {
+//        if (deviceKeyManager == null) {
+//            deviceKeyManager = new KeyManager();
+//        }
+//        return deviceKeyManager;
+//    }
 
     private SystemManager getDeviceSystem() {
         if (deviceSystemManager == null) {
@@ -69,21 +71,27 @@ public class DeviceApiManager extends IKnoxDmApiManager {
      */
     public void release() {
         if (licenceManager != null) {
+            licenceManager.release();
             licenceManager = null;
         }
         if (controlManager != null) {
+            controlManager.release();
             controlManager = null;
         }
         if (deviceSystemManager != null) {
+            deviceSystemManager.release();
             deviceSystemManager = null;
         }
 
-        if (deviceKeyManager != null) {
-            deviceKeyManager = null;
-        }
+//        if (deviceKeyManager != null) {
+//            deviceKeyManager.release();
+//            deviceKeyManager = null;
+//        }
 
         if (deviceLockManager != null) {
+            deviceLockManager.release();
             deviceLockManager = null;
+
         }
 
     }
@@ -96,6 +104,48 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     @Override
     public boolean stopApp(String packageName) {
         return getDeviceSystem().stopApp(packageName);
+    }
+
+    @Override
+    public boolean wipeData(String packageName) {
+        return getDeviceSystem().wipeData(packageName);
+    }
+
+    @Override
+    public boolean addToUnRunningAppList(List list) {
+        return getDeviceSystem().unallowRunning(list);
+    }
+
+    @Override
+    public boolean allowDaemon(List list,boolean isStop) {
+        if(isStop) {
+            return getDeviceSystem().forceDaemon(list);
+        }else{
+            return getDeviceSystem().allowDaemon(list);
+        }
+    }
+
+    @Override
+    public boolean clearDataFromApp(List list, int type,boolean isClearData) {
+        if(isClearData){
+            return getDeviceSystem().enableClear(list, type);
+        }else {
+            return getDeviceSystem().forceClear(list, type);
+        }
+    }
+
+    @Override
+    public boolean unInstallApp(String packageName,boolean isUninstall) {
+        if(!isUninstall) {
+            return getDeviceSystem().forceUnIntsallApp(packageName);
+        }else{
+            return getDeviceSystem().enableInstallApp(packageName);
+        }
+    }
+
+    @Override
+    public boolean restorFactory() {
+        return getDeviceControl().deviceWipeData();
     }
 
     @Override
@@ -126,7 +176,7 @@ public class DeviceApiManager extends IKnoxDmApiManager {
         if (getDeviceControl().isOpenUsb()) {
             return getDeviceControl().closeUsb();
         } else {
-            return getDeviceControl().closeUsb();
+            return getDeviceControl().openUsb();
         }
     }
 
@@ -148,14 +198,6 @@ public class DeviceApiManager extends IKnoxDmApiManager {
         }
     }
 
-    @Override
-    public boolean deviceLTE() {
-        if (getDeviceControl().isOpenLTE()) {
-            return getDeviceControl().closeLTE();
-        } else {
-            return  getDeviceControl().openLTE();
-        }
-    }
 
     @Override
     public boolean deviceMobileNetwork() {
@@ -220,54 +262,73 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     }
 
 
-    public void uninstallApp() {
-        getDeviceSystem().uninstallApp();
+    public boolean uninstallApp(String packageName) {
+        return getDeviceSystem().uninstallApp(packageName);
     }
 
 
-    public void remoteService() {
-        getDeviceSystem().remoteService();
-    }
-
-
-    public void remoteVolumnKey() {
-        getDeviceKey().remoteVolumnKey();
-    }
-
-
-    public void remoteHomeKey() {
-        getDeviceKey().remoteHomeKey();
-    }
-
-
-    public void remoteBackKey() {
-        getDeviceKey().remoteBackKey();
-    }
-
-
-    public void remoteBrightness() {
-        getDeviceKey().remoteBrightness();
-    }
+//    public void remoteService() {
+//        getDeviceSystem().remoteService();
+//    }
+//
+//
+//    public void remoteVolumnKey() {
+//        getDeviceKey().remoteVolumnKey();
+//    }
+//
+//
+//    public void remoteHomeKey() {
+//        getDeviceKey().remoteHomeKey();
+//    }
+//
+//
+//    public void remoteBackKey() {
+//        getDeviceKey().remoteBackKey();
+//    }
+//
+//
+//    public void remoteBrightness() {
+//        getDeviceKey().remoteBrightness();
+//    }
 
 
 
     public long getApplicationCpuUsage(String packageName) {
-        return getDeviceSystem().getApplicationCpuUsage(packageName);
+        try {
+            return getDeviceSystem().getApplicationCpuUsage(packageName);
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 
     public long getApplicationRamUsage(String packageName) {
-        return getDeviceSystem().getApplicationRamUsage(packageName);
+        try {
+            return getDeviceSystem().getApplicationRamUsage(packageName);
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 
     public long getApplicationDataSize(String packageName) {
-        return getDeviceSystem().getApplicationDataSize(packageName);
+        try {
+            return getDeviceSystem().getApplicationDataSize(packageName);
+        }catch (Exception e){
+            e.printStackTrace();
+            return  0;
+        }
     }
 
 
     public long getApplicationCacheSize(String packageName) {
-        return getDeviceSystem().getApplicationCacheSize(packageName);
+        try {
+            return getDeviceSystem().getApplicationCacheSize(packageName);
+        }catch (Exception e){
+            return 0;
+        }
     }
 
 
@@ -300,10 +361,6 @@ public class DeviceApiManager extends IKnoxDmApiManager {
         return getDeviceControl().isOpenMicrophone();
     }
 
-    public boolean isOpenLTE() {
-        return getDeviceControl().isOpenLTE();
-    }
-
     public boolean isOpenWifi() {
         return getDeviceControl().isOpenWifi();
     }
@@ -311,4 +368,5 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     public  boolean isLock(){
         return getDeviceLock().isLock();
     }
+
 }

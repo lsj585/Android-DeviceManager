@@ -22,6 +22,8 @@
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_HW_CONTROL" />
     <uses-permission android:name="android.permission.sec.MDM_WIFI"/>
     <uses-permission android:name="android.permission.sec.MDM_APP_MGMT"/>
+    <!--擦除数据使用 -->
+    <uses-permission android:name="android.permission.sec.MDM_SECURITY"/>
 
     <application
         android:allowBackup="true"

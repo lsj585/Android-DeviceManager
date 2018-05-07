@@ -58,12 +58,18 @@ public class DeviceControlPresenter extends BasePresenter<DeviceControlView,Devi
     @Override
     public void onClick(final int position) {
 
-        if(position==1){
+        if(position==8){
             modle.update(position,true);
             view.updateView(position);
             view.jumpHome();
             return;
         }
+
+        if(position==14 || position==15 ||position==16 || position==17){
+            view.updateMsg("该功能不支持，knox没有提供相关的API");
+            return;
+        }
+
         //从本地读取数据操作
         Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override

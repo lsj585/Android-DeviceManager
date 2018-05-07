@@ -42,6 +42,22 @@ public class ApplicationInfoBean extends BaseBean {
      * 应用缓存
      */
     private long applicationCacheSizeUsage;
+    /**
+     * 允许卸载
+     */
+    private boolean allowUninstall;
+    /**
+     * 允许清除数据
+     */
+    private boolean allowClearData;
+    /**
+     * 允许运行
+     */
+    private boolean allowRunning;
+    /**
+     * 允许停止APP
+     */
+    private boolean allowStopApp;
 
 
     public String getPackageName() {
@@ -115,5 +131,37 @@ public class ApplicationInfoBean extends BaseBean {
 
     public void setApplicationCacheSizeUsage(long applicationCacheSizeUsage) {
         this.applicationCacheSizeUsage = applicationCacheSizeUsage;
+    }
+
+    public boolean isAllowUninstall() {
+        return allowUninstall;
+    }
+
+    public void setAllowUninstall(boolean allowUninstall) {
+        this.allowUninstall = allowUninstall;
+    }
+
+    public boolean isAllowClearData() {
+        return allowClearData;
+    }
+
+    public void setAllowClearData(boolean allowClearData) {
+        this.allowClearData = allowClearData;
+    }
+
+    public boolean isAllowRunning() {
+        return allowRunning;
+    }
+
+    public void setAllowRunning(boolean allowRunning) {
+        this.allowRunning = allowRunning;
+    }
+
+    public boolean isAllowStopApp() {
+        return allowStopApp;
+    }
+
+    public void setAllowStopApp(boolean allowStopApp) {
+        this.allowStopApp = allowStopApp;
     }
 }

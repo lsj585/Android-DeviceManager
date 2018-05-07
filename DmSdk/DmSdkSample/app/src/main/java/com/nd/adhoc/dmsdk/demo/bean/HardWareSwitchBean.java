@@ -13,8 +13,10 @@ public class HardWareSwitchBean extends BaseBean{
      * 开关状态 1 打开 0 关闭
      */
     private int status;
-
-    private long id;
+    /**
+     * 是否开启安全阻止
+     */
+    private boolean isDesiplaySave;
 
     public String getName() {
         return name;
@@ -32,11 +34,11 @@ public class HardWareSwitchBean extends BaseBean{
         this.status = status;
     }
 
-    public long getId() {
-        return id;
+    public boolean isDesiplaySave() {
+        return isDesiplaySave;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setDesiplaySave(boolean desiplaySave) {
+        isDesiplaySave = desiplaySave;
     }
 }

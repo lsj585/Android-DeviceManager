@@ -43,7 +43,7 @@ public class HardwareAdapter extends RecyclerView.Adapter<HardwareAdapter.HardWa
             holder.tvHardWareStatus.setText(mList.get(position).getStatus()==0?"关":"开");
             holder.itemView.setTag(position);
             holder.itemView.setOnClickListener(itemClickListener);
-            if(mList.get(position).getStatus()==0){
+            if(mList.get(position).isDesiplaySave() && mList.get(position).getStatus()==0){
                 holder.ivHardWareStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_signal_gray));
                 holder.tvDevicePolicy.setVisibility(View.VISIBLE);
             }else{

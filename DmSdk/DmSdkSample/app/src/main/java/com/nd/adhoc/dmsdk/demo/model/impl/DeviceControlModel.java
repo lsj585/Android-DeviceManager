@@ -97,6 +97,18 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
                 return execVolumnUp();
             case 13:
                 return execVolumnDown();
+            case 14:
+//                //唤醒
+//                return false;
+//            case 15:
+//                //休眠
+//                return false;
+//            case 16:
+//                //关机
+//                return false;
+//            case 17:
+//                //重启
+//                return false;
             default:
                 return false;
         }
@@ -189,7 +201,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean wifiBean = new HardWareSwitchBean();
         wifiBean.setName(context.getResources().getString(R.string.wifi));
         wifiBean.setStatus(mDeviceManager.isOpenWifi() == true ? 1 : 0);
-        wifiBean.setId(1);
+        wifiBean.setDesiplaySave(true);
         list.add(wifiBean);
 
         /**
@@ -198,7 +210,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean t3gBean = new HardWareSwitchBean();
         t3gBean.setName(context.getResources().getString(R.string.t3g));
         t3gBean.setStatus(mDeviceManager.isOpenNetwork() == true ? 1 : 0);
-        t3gBean.setId(2);
+        t3gBean.setDesiplaySave(true);
         list.add(t3gBean);
 
         /**
@@ -207,7 +219,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean bluetoothBean = new HardWareSwitchBean();
         bluetoothBean.setName(context.getResources().getString(R.string.bluetooth));
         bluetoothBean.setStatus(mDeviceManager.isOpenBluetooth() == true ? 1 : 0);
-        bluetoothBean.setId(3);
+        bluetoothBean.setDesiplaySave(true);
         list.add(bluetoothBean);
 
 
@@ -217,7 +229,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean cameraBean = new HardWareSwitchBean();
         cameraBean.setName(context.getResources().getString(R.string.camera));
         cameraBean.setStatus(mDeviceManager.isOpenCamrea() == true ? 1 : 0);
-        cameraBean.setId(4);
+        cameraBean.setDesiplaySave(true);
         list.add(cameraBean);
 
 
@@ -227,14 +239,14 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean microphoneBean = new HardWareSwitchBean();
         microphoneBean.setName(context.getResources().getString(R.string.microphone));
         microphoneBean.setStatus(mDeviceManager.isOpenMicrophone() == true ? 1 : 0);
-        microphoneBean.setId(5);
+        microphoneBean.setDesiplaySave(true);
         list.add(microphoneBean);
         /**
          * usb
          */
         HardWareSwitchBean usbBean = new HardWareSwitchBean();
         usbBean.setName(context.getResources().getString(R.string.usb));
-        usbBean.setId(6);
+        usbBean.setDesiplaySave(true);
         usbBean.setStatus(mDeviceManager.isOpenUsb() == true ? 1 : 0);
         list.add(usbBean);
 
@@ -245,7 +257,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean sdCardBean = new HardWareSwitchBean();
         sdCardBean.setName(context.getResources().getString(R.string.sd_card));
         sdCardBean.setStatus(mDeviceManager.isOpenUsb() == true ? 1 : 0);
-        sdCardBean.setId(7);
+        sdCardBean.setDesiplaySave(true);
         list.add(sdCardBean);
         Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
 
@@ -256,7 +268,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean locKBean = new HardWareSwitchBean();
         locKBean.setName(context.getResources().getString(R.string.lock));
         locKBean.setStatus(mDeviceManager.isLock() == true ? 1 : 0);
-        locKBean.setId(8);
+        locKBean.setDesiplaySave(true);
         list.add(locKBean);
         Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
 
@@ -266,7 +278,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean homeKeyBean = new HardWareSwitchBean();
         homeKeyBean.setName(context.getResources().getString(R.string.home));
         homeKeyBean.setStatus(0);
-        homeKeyBean.setId(9);
+        homeKeyBean.setDesiplaySave(false);
         list.add(homeKeyBean);
 
 
@@ -276,7 +288,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean backKeyBean = new HardWareSwitchBean();
         backKeyBean.setName(context.getResources().getString(R.string.back));
         backKeyBean.setStatus(0);
-        backKeyBean.setId(10);
+        backKeyBean.setDesiplaySave(false);
         list.add(backKeyBean);
 
 
@@ -286,7 +298,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean menuKeyBean = new HardWareSwitchBean();
         menuKeyBean.setName(context.getResources().getString(R.string.menu_key));
         menuKeyBean.setStatus(0);
-        menuKeyBean.setId(11);
+        menuKeyBean.setDesiplaySave(false);
         list.add(menuKeyBean);
         Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
 
@@ -297,7 +309,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean powerKeyBean= new HardWareSwitchBean();
         powerKeyBean.setName(context.getResources().getString(R.string.power_key));
         powerKeyBean.setStatus(0);
-        powerKeyBean.setId(12);
+        powerKeyBean.setDesiplaySave(false);
         list.add(powerKeyBean);
         Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
 
@@ -308,7 +320,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean upKeyBean = new HardWareSwitchBean();
         upKeyBean.setName(context.getResources().getString(R.string.volumn_up));
         upKeyBean.setStatus(0);
-        upKeyBean.setId(13);
+        upKeyBean.setDesiplaySave(false);
         list.add(upKeyBean);
 
 
@@ -318,8 +330,47 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean downKeyBean = new HardWareSwitchBean();
         downKeyBean.setName(context.getResources().getString(R.string.volumn_down));
         downKeyBean.setStatus(0);
-        downKeyBean.setId(14);
+        downKeyBean.setDesiplaySave(false);
         list.add(downKeyBean);
+
+        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
+
+        /**
+         * wake 设备唤醒
+         */
+        HardWareSwitchBean wakeKeyBeans = new HardWareSwitchBean();
+        wakeKeyBeans.setName(context.getResources().getString(R.string.weak));
+        wakeKeyBeans.setStatus(0);
+        wakeKeyBeans.setDesiplaySave(false);
+        list.add(wakeKeyBeans);
+
+        /**
+         * wake 设备休眠
+         */
+        HardWareSwitchBean dormancyBean = new HardWareSwitchBean();
+        dormancyBean.setName(context.getResources().getString(R.string.dormancy));
+        dormancyBean.setStatus(0);
+        dormancyBean.setDesiplaySave(false);
+        list.add(dormancyBean);
+
+        /**
+         * wake 关机
+         */
+        HardWareSwitchBean powerOffbean = new HardWareSwitchBean();
+        powerOffbean.setName(context.getResources().getString(R.string.power_off));
+        powerOffbean.setStatus(0);
+        powerOffbean.setDesiplaySave(false);
+        list.add(powerOffbean);
+
+
+        /**
+         * wake 重启
+         */
+        HardWareSwitchBean rebootBean = new HardWareSwitchBean();
+        rebootBean.setName(context.getResources().getString(R.string.reboot));
+        rebootBean.setStatus(0);
+        rebootBean.setDesiplaySave(false);
+        list.add(rebootBean);
 
         Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
         return list;

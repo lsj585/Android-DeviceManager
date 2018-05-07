@@ -15,4 +15,5 @@ public interface IDeviceControlModel{
      * @return
      */
     void update(int position,boolean isSuccess);
+
 }

@@ -59,13 +59,15 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 break;
             case 1:
                 //阻止卸载
+                forceUnIntall(viewPosition);
                 break;
             case 2:
                 //清除应用数据
                 wipeData(viewPosition);
                 break;
             case 3:
-                //加入白名单
+                //阻止应用清除数据
+                forceClearData(viewPosition);
                 break;
             case 4:
                 //加入黑名单
@@ -78,9 +80,248 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 //关闭应用
                 stopApp(viewPosition);
                 break;
+            case 7:
+                //低功耗运行--进程保活
+                daemno(viewPosition);
+                break;
+            case 8:
+                //不允许运行
+                unruningApp(viewPosition);
+                break;
+            case 9:
+                allowRunningApp(viewPosition);
+                break;
+            case 10:
+                allowClearData(viewPosition);
+                break;
+            case 11:
+                allowUninstallApp(viewPosition);
+                break;
 
         }
 
+    }
+
+    private void allowUninstallApp(final int viewPosition) {
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.allowUninstall(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.updateToUninstall(viewPosition,true);
+                    view.updateMsg("该应用允许被用户卸载");
+                }
+            }
+        });
+    }
+
+    private void allowClearData(final int viewPosition) {
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.allowClearData(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.updateToClearData(viewPosition,true);
+                    view.updateMsg("该应用允许被用户清除数据");
+                }
+            }
+        });
+    }
+
+    private void allowRunningApp(final int viewPosition) {
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.allowRunApp(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.updateToRunning(viewPosition,true);
+                    view.updateMsg("该应用允许被用户运行");
+                }
+            }
+        });
+
+    }
+
+    private void forceUnIntall(final int viewPosition) {
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.forceUnInstall(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.updateToUninstall(viewPosition,false);
+                    view.updateMsg("该应用不允许被用户卸载");
+                }
+            }
+        });
+    }
+
+    private void forceClearData(final int viewPosition) {
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.forceClearData(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.updateToClearData(viewPosition,false);
+                    view.updateMsg("该应用不允许被用户清理数据");
+                }else{
+
+                }
+            }
+        });
+    }
+
+    /**
+     * 不允许该应用被启动
+     * @param viewPosition
+     */
+    private void unruningApp(final int viewPosition) {
+
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.unallowRunning(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.updateToRunning(viewPosition,false);
+                    view.updateMsg("该应用不允许被用户运行");
+                }else{
+
+                }
+            }
+        });
+
+    }
+    //进程保活
+    private void daemno(final int viewPosition) {
+        Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                subscriber.onNext(modle.allowDaemon(viewPosition));
+                subscriber.onCompleted();
+            }
+        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onNext(Boolean success) {
+                if(success) {
+                    modle.updateToStopApp(viewPosition,false);
+                    view.updateMsg("该应用不允许被用户停止");
+                }else{
+
+                }
+            }
+        });
+        
     }
 
     /**
@@ -112,6 +353,8 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 if(success) {
                     modle.delete(viewPosition);
                     view.removeUpdate(viewPosition);
+                }else{
+                    view.updateMsg("该应用不允许被用户卸载");
                 }
             }
         });
@@ -141,6 +384,8 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 if(success) {
                     modle.update(viewPosition,true);
                     view.updateView(viewPosition);
+                }else{
+                    view.updateMsg("该应用不允许被用户停止");
                 }
             }
         });
@@ -175,6 +420,8 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 if(success) {
                     modle.updateWipeStatus(viewPosition);
                     view.updateView(viewPosition);
+                }else{
+                    view.updateMsg("该应用不允许被用户清理数据");
                 }
             }
         });
@@ -208,6 +455,8 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 if(success) {
                     modle.update(viewPosition,success);
                     view.updateView(viewPosition);
+                }else{
+                    view.updateMsg("该应用不允许被用户运行");
                 }
             }
         });

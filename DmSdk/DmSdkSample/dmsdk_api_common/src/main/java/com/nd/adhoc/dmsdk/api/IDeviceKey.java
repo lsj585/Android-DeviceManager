@@ -2,12 +2,46 @@ package com.nd.adhoc.dmsdk.api;
 
 public interface IDeviceKey {
 
-	public void remoteVolumnKey();
+	boolean remoteVolumnUpKey();
 
-	public void remoteHomeKey();
+	boolean remoteVolumnDownKey();
 
-	public void remoteBackKey();
+	boolean remoteVolumnKey(int number);
 
-	public void remoteBrightness();
+	boolean remoteHomeKey();
 
+	boolean remoteBackKey();
+
+	boolean remoteBrightness(int number);
+
+	/**
+	 * 电源键
+	 * @return
+	 */
+	boolean remotePowerKey();
+
+	/**
+	 * 唤醒
+	 */
+	boolean remoteWake();
+
+	/**
+	 * 休眠
+	 * @return
+	 */
+	boolean remoteDormancyKey();
+
+	/**
+	 * 重启
+	 * @return
+	 */
+	boolean remoteRebootKey();
+
+	/**
+	 * 关机
+	 * @return
+	 */
+	boolean remotePowerOffKey();
+
+    void release();
 }

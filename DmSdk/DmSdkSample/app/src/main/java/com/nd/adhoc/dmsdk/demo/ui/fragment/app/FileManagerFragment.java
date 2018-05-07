@@ -106,9 +106,7 @@ public class FileManagerFragment extends Fragment implements ITabFragment,FileMa
 
     @Override
     public void refresh() {
-        if(getUserVisibleHint()) {
 
-        }
     }
 
     @Override

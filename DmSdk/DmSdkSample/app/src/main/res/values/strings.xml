@@ -24,7 +24,7 @@
     <string name="appsize">15KB</string>
     <string name="title">请选择以下操作</string>
     <string name="choose">取消</string>
-    <string name="no_install">未安装</string>
+    <string name="no_install">待安装</string>
     <string name="installing">安装中</string>
     <string name="file_manager">未安装的应用</string>
     <string name="runing">运行中</string>
@@ -34,6 +34,13 @@
     <string name="back">返回键</string>
     <string name="menu_key">菜单键</string>
     <string name="volumn_up">音量键+</string>
-    <string name="volumn_down">按键-</string>
-    <string name="power_key">关机</string>
+    <string name="volumn_down">音量键-</string>
+    <string name="power_key">电源键</string>
+    <string name="clear_data">清</string>
+    <string name="uninstall_status">卸</string>
+    <string name="running_app">运</string>
+    <string name="power_off">关机</string>
+    <string name="dormancy">休眠</string>
+    <string name="weak">唤醒</string>
+    <string name="reboot">重启</string>
 </resources>

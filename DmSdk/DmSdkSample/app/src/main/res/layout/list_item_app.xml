@@ -49,5 +49,38 @@
         android:text="@string/active_device"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    
+
+    <!--&lt;!&ndash;状态 清除缓存&ndash;&gt; 为避免歧义，暂时不在UI上做操作-->
+    <!--<TextView-->
+        <!--android:id="@+id/tv_status_cleardata_app"-->
+        <!--android:layout_toLeftOf="@+id/tv_status_uninstall_app"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/relative_status_margin"-->
+        <!--android:text="@string/clear_data"-->
+        <!--android:textColor="@android:color/holo_green_dark" />-->
+
+    <!--&lt;!&ndash;状态 卸载应用&ndash;&gt;-->
+    <!--<TextView-->
+        <!--android:id="@+id/tv_status_uninstall_app"-->
+        <!--android:layout_toLeftOf="@+id/tv_status_runing_app"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/relative_status_margin"-->
+        <!--android:text="@string/uninstall_status"-->
+        <!--android:textColor="@android:color/holo_orange_dark" />-->
+
+    <!--&lt;!&ndash;状态 运行应用&ndash;&gt;-->
+    <!--<TextView-->
+        <!--android:id="@+id/tv_status_runing_app"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginTop="@dimen/relative_status_margin"-->
+        <!--android:text="@string/running_app"-->
+        <!--android:textColor="@android:color/holo_blue_bright" />-->
+
 </RelativeLayout>

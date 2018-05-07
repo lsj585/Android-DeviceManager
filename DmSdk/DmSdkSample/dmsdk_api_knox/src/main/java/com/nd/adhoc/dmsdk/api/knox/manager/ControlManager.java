@@ -1,6 +1,7 @@
 package com.nd.adhoc.dmsdk.api.knox.manager;
 
 import android.app.enterprise.RestrictionPolicy;
+import android.app.enterprise.SecurityPolicy;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.net.wifi.WifiManager;
@@ -8,15 +9,20 @@ import android.util.Log;
 
 import com.nd.adhoc.dmsdk.api.IDeviceControl;
 
+import static android.app.enterprise.SecurityPolicy.WIPE_INTERNAL_EXTERNAL_MEMORY;
+
 class ControlManager extends BaseManager implements IDeviceControl {
 
     private RestrictionPolicy mRestrictioPolicy;
+
+    private SecurityPolicy deviceSecurityPolicy;
 
     public void setContext(Context context) {
 
         super.setContext(context);
         Log.i(this.getClass().getName(), "deviceManager:=" + deviceManager);
         mRestrictioPolicy = deviceManager.getRestrictionPolicy();
+        deviceSecurityPolicy=deviceManager.getSecurityPolicy();
     }
 
     @Override
@@ -31,12 +37,12 @@ class ControlManager extends BaseManager implements IDeviceControl {
 
     @Override
     public boolean openUsb() {
-        return true;
+        return mRestrictioPolicy.allowUsbHostStorage(true);
     }
 
     @Override
     public boolean closeUsb() {
-        return true;
+        return mRestrictioPolicy.allowUsbHostStorage(false);
     }
 
     @Override
@@ -53,22 +59,12 @@ class ControlManager extends BaseManager implements IDeviceControl {
 
     @Override
     public boolean openNetwork() {
-        return false;
+        return mRestrictioPolicy.allowUserMobileDataLimit(true);
     }
 
     @Override
     public boolean closeNetwork() {
-        return false;
-    }
-
-    @Override
-    public boolean openLTE() {
-        return false;
-    }
-
-    @Override
-    public boolean closeLTE() {
-        return false;
+        return mRestrictioPolicy.allowUserMobileDataLimit(false);
     }
 
     @Override
@@ -127,12 +123,6 @@ class ControlManager extends BaseManager implements IDeviceControl {
     public boolean isOpenMicrophone() {
         return mRestrictioPolicy.isMicrophoneEnabled(true);
     }
-
-    @Override
-    public boolean isOpenLTE() {
-        return mRestrictioPolicy.isUserMobileDataLimitAllowed();
-    }
-
     @Override
     public boolean isOpenWifi() {
         return mRestrictioPolicy.isWiFiEnabled(false);
@@ -142,6 +132,23 @@ class ControlManager extends BaseManager implements IDeviceControl {
     public boolean isOpenSdCard() {
         return mRestrictioPolicy.isSdCardEnabled();
     }
+
+    @Override
+    public boolean deviceWipeData() {
+        //全部数据擦除
+        return deviceSecurityPolicy.wipeDevice(WIPE_INTERNAL_EXTERNAL_MEMORY);
+//        //擦除外置存储的数据
+//        deviceSecurityPolicy.wipeDevice(WIPE_EXTERNAL_MEMORY);
+//        //擦除手机上的数据
+//        deviceSecurityPolicy.wipeDevice(WIPE_INTERNAL_MEMORY);
+    }
+
+    @Override
+    public void release() {
+        mRestrictioPolicy=null;
+        deviceSecurityPolicy=null;
+    }
+
 
     private void enableWifi() {
 
@@ -156,7 +163,6 @@ class ControlManager extends BaseManager implements IDeviceControl {
         if (bluetoothAdapter != null)
         {
             bluetoothAdapter.enable();
-
         }
     }
 }

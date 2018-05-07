@@ -5,6 +5,8 @@ import android.content.Context;
 import com.nd.adhoc.dmsdk.api.IDmApiManager;
 import com.nd.adhoc.dmsdk.api.knox.manager.DeviceApiManager;
 
+import java.util.List;
+
 public abstract class IKnoxDmApiManager{
 
 
@@ -52,12 +54,6 @@ public abstract class IKnoxDmApiManager{
     public abstract boolean deviceWifi();
 
     /**
-     * 4G TLE
-     *
-     */
-    public abstract boolean deviceLTE();
-
-    /**
      * 2，5 G 移动网络
      *
      */
@@ -102,4 +98,46 @@ public abstract class IKnoxDmApiManager{
      * @return
      */
     public abstract boolean stopApp(String packageName);
+
+    /**
+     * 清除数据
+     * @param packageName
+     * @return
+     */
+    public abstract boolean wipeData(String packageName);
+
+    /**
+     * 不允许运行
+     * @param list
+     * @return
+     */
+    public abstract boolean addToUnRunningAppList(List list);
+
+    /**
+     * 防止应用被用户主动杀死
+     * @param
+     * @return
+     */
+    public abstract boolean allowDaemon(List list,boolean isStop);
+
+    /**
+     * 允许/禁止清除应用数据
+     * @param list
+     * @param type 0 应用数据 1 缓存数据
+     * @return
+     */
+    public abstract boolean clearDataFromApp(List list, int type,boolean isClearData);
+
+    /**
+     * 允许/卸载应用策略
+     * @param packageName
+     * @return isUninstall 是否卸载 true 允许卸载 false 不允许卸载
+     */
+    public abstract boolean unInstallApp(String packageName,boolean isUninstall);
+
+    /**
+     * 恢复出产设置 该方法风险较大，建议慎用
+     * @return
+     */
+    public abstract boolean restorFactory();
 }

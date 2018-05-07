@@ -9,4 +9,5 @@
     <dimen name="cardview__devicepolicy_size">9dp</dimen>
     <dimen name="relative_appname_margin">10dp</dimen>
     <dimen name="relative_appname_deliver">8dp</dimen>
+    <dimen name="relative_status_margin">5dp</dimen>
 </resources>

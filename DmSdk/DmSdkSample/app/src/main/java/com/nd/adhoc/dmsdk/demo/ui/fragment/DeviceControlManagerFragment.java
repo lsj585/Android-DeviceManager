@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nd.adhoc.dmsdk.demo.R;
@@ -106,6 +107,11 @@ public class DeviceControlManagerFragment extends Fragment implements ITabFragme
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);
         getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void updateMsg(String msg) {
+        Toast.makeText(getActivity().getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override

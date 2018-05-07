@@ -132,6 +132,10 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             info.setApplicationCacheSizeUsage(manager.getApplicationCacheSize(packageInfo.packageName));
             info.setCpuUsage(manager.getApplicationCpuUsage(packageInfo.packageName));
             info.setApplicationDataSizeUsage(manager.getApplicationDataSize(packageInfo.packageName));
+            info.setAllowClearData(true);
+            info.setAllowUninstall(true);
+            info.setAllowRunning(true);
+            info.setAllowStopApp(true);
         }
     }
     /**
@@ -194,7 +198,12 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     public boolean startApp(int position) {
         ApplicationInfoBean bean = applicationInfoBeans.get(position);
         if (bean != null && bean.getPackageName() != null && bean.getLauncherName() != null) {
-            return manager.startApp(bean.getPackageName(), bean.getLauncherName());
+            //判断是否可以运行
+            if(bean.isRunning()) {
+                return manager.startApp(bean.getPackageName(), bean.getLauncherName());
+            }else{
+                return false;
+            }
         } else {
             return false;
         }
@@ -205,7 +214,11 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     public boolean stopApp(int position) {
         ApplicationInfoBean bean = applicationInfoBeans.get(position);
         if (bean != null && bean.getPackageName() != null) {
-            return manager.stopApp(bean.getPackageName());
+            if(bean.isAllowStopApp()) {
+                return manager.stopApp(bean.getPackageName());
+            }else{
+                return false;
+            }
         } else {
             return false;
         }
@@ -215,7 +228,11 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     public boolean wipeData(int position) {
         ApplicationInfoBean bean = applicationInfoBeans.get(position);
         if (bean != null && bean.getPackageName() != null) {
-            return manager.wipeData(bean.getPackageName());
+            if(bean.isAllowClearData()) {
+                return manager.wipeData(bean.getPackageName());
+            }else{
+                return false;
+            }
         } else {
             return false;
         }
@@ -249,9 +266,184 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     public boolean uninstallApp(int position) {
         if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
             ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            //判断是否允许卸载
+            if(bean.isAllowUninstall()) {
+                try {
+                    return manager.uninstallApp(bean.getPackageName());
+                } catch (Exception e) {
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean unallowRunning(int position) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            List list=null;
             try {
-                return manager.uninstallApp(bean.getPackageName());
+                list=new ArrayList();
+                list.add(bean.getPackageName());
+                return manager.addToUnRunningAppList(list);
             } catch (Exception e) {
+                e.printStackTrace();
+                if(list != null) {
+                    list=null;
+                }
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean allowDaemon(int position) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            List list=null;
+            try {
+                list=new ArrayList();
+                list.add(bean.getPackageName());
+                return manager.allowDaemon(list,false);
+            } catch (Exception e) {
+                e.printStackTrace();
+                //失败时，如果list有值，则手动至为Null;
+                if(list != null) {
+                    list=null;
+                }
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean forceClearData(int viewPosition) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
+            List list=null;
+            try {
+                list=new ArrayList();
+                list.add(bean.getPackageName());
+                return manager.clearDataFromApp(list,0,false);
+            } catch (Exception e) {
+                e.printStackTrace();
+                if(list != null) {
+                    list=null;
+                }
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void updateToClearData(int position, boolean isClearData) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            //执行成功或失败
+            bean.setAllowClearData(isClearData);
+            update(bean, position);
+        }
+    }
+
+    @Override
+    public void updateToRunning(int position, boolean isRunning) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            //执行成功或失败
+            bean.setAllowRunning(isRunning);
+            update(bean, position);
+        }
+    }
+
+    @Override
+    public void updateToUninstall(int position, boolean isUninstall) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            //执行成功或失败
+            bean.setAllowUninstall(isUninstall);
+            update(bean, position);
+        }
+    }
+
+    @Override
+    public void updateToStopApp(int position, boolean isStop) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+            //执行成功或失败
+            bean.setAllowStopApp(isStop);
+            update(bean, position);
+        }
+    }
+
+    @Override
+    public boolean forceUnInstall(int viewPosition) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
+            try {
+                return manager.unInstallApp(bean.getPackageName(),false);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean allowRunApp(int viewPosition) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
+            try {
+                return manager.unInstallApp(bean.getPackageName(),true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean allowClearData(int viewPosition) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
+            List list=null;
+            try {
+                list=new ArrayList();
+                list.add(bean.getPackageName());
+                return manager.clearDataFromApp(list,0,true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                if(list != null){
+                    list=null;
+                }
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean allowUninstall(int viewPosition) {
+        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
+            try {
+                return manager.unInstallApp(bean.getPackageName(),true);
+            } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
         } else {

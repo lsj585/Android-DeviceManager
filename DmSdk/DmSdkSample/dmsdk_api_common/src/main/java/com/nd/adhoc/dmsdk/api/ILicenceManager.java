@@ -5,4 +5,6 @@ public interface ILicenceManager {
      * 激活Licence
      */
     void activieLicnece();
+
+    void release();
 }

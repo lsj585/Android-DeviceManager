@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.nd.adhoc.dmsdk.api.IDeviceSystem;
 
+import java.util.List;
+
 class SystemManager extends BaseManager implements IDeviceSystem {
     private ApplicationPolicy applicationPolicy;
     @Override
@@ -49,8 +51,8 @@ class SystemManager extends BaseManager implements IDeviceSystem {
     }
 
     @Override
-    public void uninstallApp() {
-
+    public boolean uninstallApp(String apkName) {
+        return applicationPolicy.uninstallApplication(apkName,false);
     }
 
     @Override
@@ -95,5 +97,67 @@ class SystemManager extends BaseManager implements IDeviceSystem {
     @Override
     public boolean stopApp(String packageName) {
         return applicationPolicy.stopApp(packageName);
+    }
+
+    @Override
+    public boolean wipeData(String packageName) {
+        return applicationPolicy.wipeApplicationData(packageName);
+    }
+
+    @Override
+    public boolean unallowRunning(List list) {
+        List packages=applicationPolicy.addPackagesToPreventStartBlackList(list);
+        if(packages!= null && packages.size()>0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean allowDaemon(List list) {
+        //功能无法实现--需要API等级在20.
+        //applicationPolicy.addPackageToBatteryOptimizationWhiteList(list);
+        //使用防杀策略，加入用户force-stop 黑名单
+        return applicationPolicy.addPackagesToForceStopBlackList(list);
+    }
+
+    @Override
+    public boolean forceClear(List list, int type) {
+        if(type==DEVICE_SYSTEM_CLEARDATA_APP){
+            return applicationPolicy.addPackagesToClearDataBlackList(list);
+        }else{
+            return applicationPolicy.addPackagesToClearCacheBlackList(list);
+        }
+    }
+
+    @Override
+    public boolean enableClear(List list, int type) {
+        if(type==DEVICE_SYSTEM_CLEARDATA_APP){
+            return applicationPolicy.addPackagesToClearDataWhiteList(list);
+        }else{
+            return applicationPolicy.addPackagesToClearCacheWhiteList(list);
+        }
+    }
+
+    @Override
+    public boolean forceUnIntsallApp(String packageName) {
+         applicationPolicy.setApplicationUninstallationDisabled(packageName);
+         return true;
+    }
+
+    @Override
+    public boolean enableInstallApp(String packageName) {
+        applicationPolicy.setApplicationUninstallationEnabled(packageName);
+        return false;
+    }
+
+    @Override
+    public boolean forceDaemon(List list) {
+        return applicationPolicy.addPackagesToForceStopWhiteList(list);
+    }
+
+    @Override
+    public void release() {
+        applicationPolicy=null;
     }
 }
