@@ -10,4 +10,6 @@ public interface DeviceControlView extends BaseView {
     void showList(List<HardWareSwitchBean> list);
 
     void updateView(int position);
+
+    void jumpHome();
 }

@@ -1,5 +1,6 @@
 package com.nd.adhoc.dmsdk.demo.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -97,6 +98,14 @@ public class DeviceControlManagerFragment extends Fragment implements ITabFragme
             hardwareAdapter.notifyItemChanged(position);
             Log.i(this.getClass().getName(),String.format("showList:%d",hardwareAdapter.getItemCount()));
         }
+    }
+
+    @Override
+    public void jumpHome() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        getActivity().startActivity(intent);
     }
 
     @Override

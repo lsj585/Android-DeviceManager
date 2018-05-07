@@ -29,4 +29,11 @@
     <string name="file_manager">未安装的应用</string>
     <string name="runing">运行中</string>
     <string name="stop">已停止</string>
+    <string name="app_usage">cpu使用率：%1$s 内存使用率:%2$s 应用数据：%3$s  应用缓存：%4$s</string>
+    <string name="home">返回桌面</string>
+    <string name="back">返回键</string>
+    <string name="menu_key">菜单键</string>
+    <string name="volumn_up">音量键+</string>
+    <string name="volumn_down">按键-</string>
+    <string name="power_key">关机</string>
 </resources>

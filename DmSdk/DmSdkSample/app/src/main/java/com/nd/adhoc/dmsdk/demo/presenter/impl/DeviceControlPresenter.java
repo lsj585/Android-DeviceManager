@@ -58,6 +58,12 @@ public class DeviceControlPresenter extends BasePresenter<DeviceControlView,Devi
     @Override
     public void onClick(final int position) {
 
+        if(position==1){
+            modle.update(position,true);
+            view.updateView(position);
+            view.jumpHome();
+            return;
+        }
         //从本地读取数据操作
         Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override

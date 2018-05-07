@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
     <!--应用名称 -->
     <TextView
-        android:id="@+id/tv_appname_file"
+        android:id="@+id/tv_appname_app"
         android:layout_marginLeft="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,19 +15,33 @@
         android:text="@string/active_device"
         android:textColor="@android:color/black" />
 
-    <!--应用名称 -->
+    <!--包名 -->
     <TextView
-        android:id="@+id/tv_appsize_file"
+        android:id="@+id/tv_package_app"
         android:layout_marginLeft="15dp"
-        android:layout_below="@+id/tv_appname_file"
+        android:layout_below="@+id/tv_appname_app"
+        android:layout_marginTop="@dimen/relative_appname_deliver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:text="@string/appsize"
+        android:textColor="@android:color/darker_gray" />
+
+    <!--内存占用状态 -->
+    <TextView
+        android:id="@+id/tv_usage_app"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/tv_package_app"
         android:layout_marginTop="@dimen/relative_appname_deliver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/appsize"
+        android:textSize="10dp"
         android:textColor="@android:color/darker_gray" />
-    <!-- app 状态-->
+
+    <!-- 运行状态-->
     <TextView
-        android:id="@+id/tv_appstatus_file"
+        android:id="@+id/tv_running_app"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"
         android:textColor="@android:color/holo_red_dark"
@@ -35,5 +49,5 @@
         android:text="@string/active_device"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
+    
 </RelativeLayout>

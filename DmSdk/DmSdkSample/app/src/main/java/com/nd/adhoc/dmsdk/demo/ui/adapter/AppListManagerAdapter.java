@@ -32,7 +32,7 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
     @NonNull
     @Override
     public AppListManagerAdapter.FileInfoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FileInfoHolder(LayoutInflater.from(this.mContext).inflate(R.layout.list_item_file,parent,false));
+        return new FileInfoHolder(LayoutInflater.from(this.mContext).inflate(R.layout.list_item_app,parent,false));
     }
 
     @Override
@@ -40,14 +40,21 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
         Log.i(this.getClass().getName(),String.format("Get list=%d",mList.size()));
         if(mList.size()>0 && mList.get(position) != null) {
             holder.tvAppInfoName.setText(mList.get(position).getName());
-            holder.tvAppInfoSize.setText(mList.get(position).getPackageName());
+            holder.tvPackageName.setText(mList.get(position).getPackageName());
             holder.itemView.setTag(position);
             holder.itemView.setOnClickListener(itemClickListener);
             if(mList.get(position).isRunning()){
-                holder.tvAppStatus.setText(mContext.getResources().getString(R.string.runing));
+                holder.tvRunning.setText(mContext.getResources().getString(R.string.runing));
             }else{
-                holder.tvAppStatus.setText(mContext.getResources().getString(R.string.stop));
+                holder.tvRunning.setText(mContext.getResources().getString(R.string.stop));
             }
+
+            holder.tvUsage.setText(String.format(mContext.getResources().getString(R.string.app_usage),
+                    formatSize(mList.get(position).getCpuUsage()),
+                    formatSize(mList.get(position).getRamUsage()),
+                    formatSize(mList.get(position).getApplicationDataSizeUsage()),
+                    formatSize(mList.get(position).getApplicationCacheSizeUsage())));
+
         }
     }
 
@@ -60,14 +67,16 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
     class FileInfoHolder extends RecyclerView.ViewHolder{
 
         private TextView tvAppInfoName;
-        private TextView tvAppInfoSize;
-        private TextView tvAppStatus;
+        private TextView tvPackageName;
+        private TextView tvRunning;
+        private TextView tvUsage;
 
         public FileInfoHolder(View itemView) {
             super(itemView);
-            tvAppInfoName=(TextView) itemView.findViewById(R.id.tv_appname_file);
-            tvAppInfoSize=(TextView)itemView.findViewById(R.id.tv_appsize_file);
-            tvAppStatus=itemView.findViewById(R.id.tv_appstatus_file);
+            tvAppInfoName=(TextView) itemView.findViewById(R.id.tv_appname_app);
+            tvPackageName=(TextView)itemView.findViewById(R.id.tv_package_app);
+            tvRunning=itemView.findViewById(R.id.tv_running_app);
+            tvUsage=itemView.findViewById(R.id.tv_usage_app);
         }
     }
 

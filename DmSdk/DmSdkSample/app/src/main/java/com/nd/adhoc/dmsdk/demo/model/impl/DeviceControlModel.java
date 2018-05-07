@@ -1,7 +1,9 @@
 package com.nd.adhoc.dmsdk.demo.model.impl;
 
+import android.app.Instrumentation;
 import android.content.Context;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.nd.adhoc.dmsdk.api.knox.manager.DeviceApiManager;
 import com.nd.adhoc.dmsdk.demo.R;
@@ -33,10 +35,10 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
     }
 
     @Override
-    public void update(HardWareSwitchBean hardWareSwitchBean,int position) {
+    public void update(HardWareSwitchBean hardWareSwitchBean, int position) {
 
         if (list != null && list.size() > 0) {
-            HardWareSwitchBean bean=list.get(position);
+            HardWareSwitchBean bean = list.get(position);
             bean.setStatus(hardWareSwitchBean.getStatus());
         }
     }
@@ -83,6 +85,18 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
                 return mDeviceManager.deviceSdCard();
             case 7:
                 return mDeviceManager.deviceLock();
+            case 8:
+                return execHomeKey();
+            case 9:
+                return execBackKey();
+            case 10:
+                return execMenuKey();
+            case 11:
+                return execShutdown();
+            case 12:
+                return execVolumnUp();
+            case 13:
+                return execVolumnDown();
             default:
                 return false;
         }
@@ -92,15 +106,76 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
     public void update(int position, boolean isSuccess) {
 
         if (list != null && list.size() > 0) {
-            HardWareSwitchBean bean=list.get(position);
+            HardWareSwitchBean bean = list.get(position);
             //执行成功或失败
-            if(isSuccess) {
-                bean.setStatus(bean.getStatus() == 0?1:0);
-                update(bean,position);
+            if (isSuccess) {
+                bean.setStatus(bean.getStatus() == 0 ? 1 : 0);
+                update(bean, position);
             }
         }
     }
 
+    /**
+     * HOME键
+     *
+     * @return
+     */
+    public boolean execHomeKey() {
+        return execKey(KeyEvent.KEYCODE_HOME);
+    }
+
+    /**
+     * 返回键
+     *
+     * @return
+     */
+    public boolean execBackKey() {
+        return execKey(KeyEvent.KEYCODE_BACK);
+    }
+
+    /**
+     * 菜单键
+     *
+     * @return
+     */
+    public boolean execMenuKey() {
+        return execKey(KeyEvent.KEYCODE_MENU);
+    }
+
+    /**
+     * 电源键
+     *
+     * @return
+     */
+    public boolean execShutdown() {
+        //KEYCODE_POWER 长按可做关机 短按可做唤醒
+        return execKey(KeyEvent.KEYCODE_POWER);
+    }
+
+    /**
+     * 音量+
+     *
+     * @return
+     */
+    public boolean execVolumnUp() {
+        return execKey(KeyEvent.KEYCODE_VOLUME_UP);
+    }
+
+    /**
+     * 音量-
+     *
+     * @return
+     */
+    public boolean execVolumnDown() {
+        return execKey(KeyEvent.KEYCODE_VOLUME_DOWN);
+    }
+
+
+    private boolean execKey(int key) {
+        Instrumentation inst = new Instrumentation();
+        inst.sendKeyDownUpSync(key);
+        return true;
+    }
 
     private List createDeviceControlList() {
 
@@ -184,13 +259,76 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         locKBean.setId(8);
         list.add(locKBean);
         Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
+
+        /**
+         * HOME键执行
+         */
+        HardWareSwitchBean homeKeyBean = new HardWareSwitchBean();
+        homeKeyBean.setName(context.getResources().getString(R.string.home));
+        homeKeyBean.setStatus(0);
+        homeKeyBean.setId(9);
+        list.add(homeKeyBean);
+
+
+        /**
+         * back键执行
+         */
+        HardWareSwitchBean backKeyBean = new HardWareSwitchBean();
+        backKeyBean.setName(context.getResources().getString(R.string.back));
+        backKeyBean.setStatus(0);
+        backKeyBean.setId(10);
+        list.add(backKeyBean);
+
+
+        /**
+         * 菜单键执行
+         */
+        HardWareSwitchBean menuKeyBean = new HardWareSwitchBean();
+        menuKeyBean.setName(context.getResources().getString(R.string.menu_key));
+        menuKeyBean.setStatus(0);
+        menuKeyBean.setId(11);
+        list.add(menuKeyBean);
+        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
+
+
+        /**
+         * 电源键
+         */
+        HardWareSwitchBean powerKeyBean= new HardWareSwitchBean();
+        powerKeyBean.setName(context.getResources().getString(R.string.power_key));
+        powerKeyBean.setStatus(0);
+        powerKeyBean.setId(12);
+        list.add(powerKeyBean);
+        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
+
+
+        /**
+         * 音量键+
+         */
+        HardWareSwitchBean upKeyBean = new HardWareSwitchBean();
+        upKeyBean.setName(context.getResources().getString(R.string.volumn_up));
+        upKeyBean.setStatus(0);
+        upKeyBean.setId(13);
+        list.add(upKeyBean);
+
+
+        /**
+         * 音量键-
+         */
+        HardWareSwitchBean downKeyBean = new HardWareSwitchBean();
+        downKeyBean.setName(context.getResources().getString(R.string.volumn_down));
+        downKeyBean.setStatus(0);
+        downKeyBean.setId(14);
+        list.add(downKeyBean);
+
+        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
         return list;
     }
 
     @Override
     public void release() {
         mDeviceManager.release();
-        list=null;
+        list = null;
     }
 
 }
