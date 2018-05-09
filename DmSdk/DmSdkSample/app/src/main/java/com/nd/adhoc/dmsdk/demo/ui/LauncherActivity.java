@@ -114,5 +114,4 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         receiver=null;
         super.onDestroy();
     }
-
 }

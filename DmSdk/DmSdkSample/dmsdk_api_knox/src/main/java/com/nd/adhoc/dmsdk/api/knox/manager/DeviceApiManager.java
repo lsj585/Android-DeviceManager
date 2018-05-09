@@ -24,7 +24,7 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     private Context context;
 
     public DeviceApiManager(Context context){
-        this.context=context.getApplicationContext();
+        this.context=context;
     }
 
     private LockManager getDeviceLock() {
@@ -45,7 +45,7 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     private SystemManager getDeviceSystem() {
         if (deviceSystemManager == null) {
             deviceSystemManager = new SystemManager();
-            deviceSystemManager.setContext(context);
+            deviceSystemManager.setContext(context.getApplicationContext());
         }
         return deviceSystemManager;
     }
@@ -53,7 +53,7 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     private ControlManager getDeviceControl() {
         if (controlManager == null) {
             controlManager = new ControlManager();
-            controlManager.setContext(context);
+            controlManager.setContext(context.getApplicationContext());
         }
         return controlManager;
     }
@@ -82,12 +82,6 @@ public class DeviceApiManager extends IKnoxDmApiManager {
             deviceSystemManager.release();
             deviceSystemManager = null;
         }
-
-//        if (deviceKeyManager != null) {
-//            deviceKeyManager.release();
-//            deviceKeyManager = null;
-//        }
-
         if (deviceLockManager != null) {
             deviceLockManager.release();
             deviceLockManager = null;
@@ -217,7 +211,7 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     public boolean deviceBluetooth() {
 
         if(getDeviceControl().isOpenBluetooth()){
-            return  getDeviceControl().closeBluetooth();
+            return getDeviceControl().closeBluetooth();
         }else{
             return getDeviceControl().openBluetooth();
         }

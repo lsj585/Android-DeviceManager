@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.UserHandle;
+import android.support.v4.content.LocalBroadcastManager;
 
 public class AdminReciver extends DeviceAdminReceiver {
 
@@ -33,7 +34,7 @@ public class AdminReciver extends DeviceAdminReceiver {
 
     @Override
     public void onEnabled(Context context, Intent intent) {
-
+        LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ReciverConstants.DEVICE_MANAGER_ACTIVE_ACTION));
     }
 
     @Override
