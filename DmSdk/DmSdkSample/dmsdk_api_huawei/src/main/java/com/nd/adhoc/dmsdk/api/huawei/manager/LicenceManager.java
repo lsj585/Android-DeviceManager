@@ -32,12 +32,10 @@ class LicenceManager extends BaseManager implements ILicenceManager {
         if(devicePolicyManager==null) {
             devicePolicyManager = (DevicePolicyManager)context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         }
-        ComponentName mDeviceAdmin = new ComponentName(context, com.nd.adhoc.dmsdk.revicer.AdminReciver.class);
-
-        if (!devicePolicyManager.isAdminActive(mDeviceAdmin)) {
+        if (!devicePolicyManager.isAdminActive(getComponentName())) {
             //激活
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, getComponentName());
             intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Adding app as an admin to test Knox");
             context.startActivity(intent);
         }else{

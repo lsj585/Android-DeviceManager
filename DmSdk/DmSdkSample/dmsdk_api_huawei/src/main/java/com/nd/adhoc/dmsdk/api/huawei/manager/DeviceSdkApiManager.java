@@ -1,5 +1,6 @@
 package com.nd.adhoc.dmsdk.api.huawei.manager;
 
+import android.content.ComponentName;
 import android.content.Context;
 
 import com.nd.adhoc.dmsdk.api.huawei.IDmSdkApiManager;
@@ -23,14 +24,18 @@ public class DeviceSdkApiManager extends IDmSdkApiManager {
 
     private Context context;
 
+    private ComponentName componentName;
+
     public DeviceSdkApiManager(Context context){
         this.context=context;
+        componentName= new ComponentName(context, com.nd.adhoc.dmsdk.revicer.AdminReciver.class);
     }
 
     private LockManager getDeviceLock() {
         if (deviceLockManager == null) {
             deviceLockManager = new LockManager();
             deviceLockManager.setContext(this.context);
+            deviceLockManager.setComponentName(componentName);
         }
         return deviceLockManager;
     }
@@ -46,6 +51,7 @@ public class DeviceSdkApiManager extends IDmSdkApiManager {
         if (deviceSystemManager == null) {
             deviceSystemManager = new SystemManager();
             deviceSystemManager.setContext(context.getApplicationContext());
+            deviceSystemManager.setComponentName(componentName);
         }
         return deviceSystemManager;
     }
@@ -54,6 +60,7 @@ public class DeviceSdkApiManager extends IDmSdkApiManager {
         if (controlManager == null) {
             controlManager = new ControlManager();
             controlManager.setContext(context.getApplicationContext());
+            controlManager.setComponentName(componentName);
         }
         return controlManager;
     }
@@ -62,6 +69,7 @@ public class DeviceSdkApiManager extends IDmSdkApiManager {
         if (licenceManager == null) {
             licenceManager = new LicenceManager();
             licenceManager.setContext(context);
+            licenceManager.setComponentName(componentName);
         }
         return licenceManager;
     }
