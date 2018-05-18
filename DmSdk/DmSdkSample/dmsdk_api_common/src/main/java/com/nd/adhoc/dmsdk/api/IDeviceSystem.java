@@ -19,6 +19,8 @@ public interface IDeviceSystem {
 
     void getRemoteAppList();
 
+    void reboot();
+
     boolean installApp(String apkFile);
 
     /**

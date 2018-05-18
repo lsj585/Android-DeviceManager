@@ -1,20 +1,25 @@
 package com.nd.adhoc.dmsdk.api.huawei.manager;
 import android.content.Context;
 
+import com.huawei.android.app.admin.DeviceControlManager;
 import com.nd.adhoc.dmsdk.api.IDeviceSystem;
 
 import java.util.List;
 
 class SystemManager extends BaseManager implements IDeviceSystem {
 
+
+    private DeviceControlManager deviceControlManager;
+
     @Override
     public void setContext(Context context) {
         super.setContext(context);
+        deviceControlManager=new DeviceControlManager();
     }
 
     @Override
     public void powerOff() {
-
+        deviceControlManager.shutdownDevice(getComponentName());
     }
 
     @Override
@@ -40,6 +45,11 @@ class SystemManager extends BaseManager implements IDeviceSystem {
     @Override
     public void getRemoteAppList() {
 
+    }
+
+    @Override
+    public void reboot() {
+        deviceControlManager.rebootDevice(getComponentName());
     }
 
     @Override
@@ -138,6 +148,6 @@ class SystemManager extends BaseManager implements IDeviceSystem {
 
     @Override
     public void release() {
-
+        deviceControlManager=null;
     }
 }
