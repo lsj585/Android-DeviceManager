@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.nd.adhoc.dmsdk.api.knox.manager.DeviceApiManager;
+import com.nd.adhoc.dmsdk.api.knox.manager.DeviceSdkApiManager;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.HardWareSwitchBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
@@ -22,11 +22,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
 
     private List<HardWareSwitchBean> list;
 
-    private DeviceApiManager mDeviceManager;
+    private DeviceSdkApiManager mDeviceManager;
 
     public DeviceControlModel(Context context) {
         super(context);
-        mDeviceManager = new DeviceApiManager(context);
+        mDeviceManager = new DeviceSdkApiManager(context);
     }
 
     @Override

@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.nd.adhoc.dmsdk.api.knox.manager.DeviceApiManager;
+import com.nd.adhoc.dmsdk.api.knox.manager.DeviceSdkApiManager;
 import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
 
@@ -21,12 +21,12 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
 
     private List<FileInfoBean> fileinfoList;
 
-    private DeviceApiManager manager;
+    private DeviceSdkApiManager manager;
 
 
     public FileManagerModel(Context context) {
         super(context);
-        manager=new DeviceApiManager(context);
+        manager=new DeviceSdkApiManager(context);
     }
 
     @Override

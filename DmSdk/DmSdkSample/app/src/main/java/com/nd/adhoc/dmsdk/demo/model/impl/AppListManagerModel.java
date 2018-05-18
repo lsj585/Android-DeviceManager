@@ -3,16 +3,13 @@ package com.nd.adhoc.dmsdk.demo.model.impl;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.util.Log;
 
-import com.nd.adhoc.dmsdk.api.knox.manager.DeviceApiManager;
+import com.nd.adhoc.dmsdk.api.knox.manager.DeviceSdkApiManager;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
-import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
-import com.nd.adhoc.dmsdk.demo.bean.HardWareSwitchBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
 import com.nd.adhoc.dmsdk.demo.model.IAppManagerModel;
 
@@ -26,12 +23,12 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     private List<ApplicationInfoBean> applicationInfoBeans;
 
-    private DeviceApiManager manager;
+    private DeviceSdkApiManager manager;
 
 
     public AppListManagerModel(Context context) {
         super(context);
-        manager = new DeviceApiManager(context);
+        manager = new DeviceSdkApiManager(context);
     }
 
     @Override

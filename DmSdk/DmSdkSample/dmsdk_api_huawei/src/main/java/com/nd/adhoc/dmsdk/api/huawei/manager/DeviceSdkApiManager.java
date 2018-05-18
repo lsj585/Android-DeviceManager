@@ -1,15 +1,15 @@
-package com.nd.adhoc.dmsdk.api.knox.manager;
+package com.nd.adhoc.dmsdk.api.huawei.manager;
 
 import android.content.Context;
 
-import com.nd.adhoc.dmsdk.api.knox.IKnoxDmApiManager;
+import com.nd.adhoc.dmsdk.api.huawei.IDmSdkApiManager;
 
 import java.util.List;
 
 /**
  * 主入口 SDK层调用该类
  */
-public class DeviceApiManager extends IKnoxDmApiManager {
+public class DeviceSdkApiManager extends IDmSdkApiManager {
 
 //    private KeyManager deviceKeyManager;
 
@@ -23,7 +23,7 @@ public class DeviceApiManager extends IKnoxDmApiManager {
 
     private Context context;
 
-    public DeviceApiManager(Context context){
+    public DeviceSdkApiManager(Context context){
         this.context=context;
     }
 
@@ -152,8 +152,43 @@ public class DeviceApiManager extends IKnoxDmApiManager {
     }
 
     @Override
+    public void deviceLock(boolean isLock) {
+
+    }
+
+    @Override
     public void deivcePowerOff() {
         getDeviceSystem().powerOff();
+    }
+
+    @Override
+    public void deviceCamera(boolean isOpen) {
+
+    }
+
+    @Override
+    public void deviceUsb(boolean isOpen) {
+
+    }
+
+    @Override
+    public void deviceMicrophone(boolean isOpen) {
+
+    }
+
+    @Override
+    public void deviceWifi(boolean isOpen) {
+
+    }
+
+    @Override
+    public void deviceLTE(boolean isOpen) {
+
+    }
+
+    @Override
+    public void deviceMobileNetwork(boolean isOpen) {
+
     }
 
     @Override

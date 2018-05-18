@@ -1,22 +1,22 @@
-package com.nd.adhoc.dmsdk.api.knox;
+package com.nd.adhoc.dmsdk.api.huawei;
 
 import android.content.Context;
 
 import com.nd.adhoc.dmsdk.api.IDmApiManager;
-import com.nd.adhoc.dmsdk.api.knox.manager.DeviceApiManager;
+import com.nd.adhoc.dmsdk.api.huawei.manager.DeviceSdkApiManager;
 
 import java.util.List;
 
-public abstract class IKnoxDmApiManager{
+public abstract class IDmSdkApiManager implements IDmApiManager {
 
 
-    private static IKnoxDmApiManager instance = null;
+    private static IDmSdkApiManager instance = null;
 
 
-    public synchronized static <T extends IKnoxDmApiManager> T getInstance(Context context) {
-        synchronized (IKnoxDmApiManager.class) {
+    public synchronized static <T extends IDmSdkApiManager> T getInstance(Context context) {
+        synchronized (IDmSdkApiManager.class) {
             if (instance == null) {//二次检查
-                instance = new DeviceApiManager(context);
+                instance = new DeviceSdkApiManager(context);
             }
         }
         return (T)instance;

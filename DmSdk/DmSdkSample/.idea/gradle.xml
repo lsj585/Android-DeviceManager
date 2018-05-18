@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/dmsdk_api" />
             <option value="$PROJECT_DIR$/dmsdk_api_common" />
             <option value="$PROJECT_DIR$/dmsdk_api_edu" />
+            <option value="$PROJECT_DIR$/dmsdk_api_huawei" />
             <option value="$PROJECT_DIR$/dmsdk_api_knox" />
           </set>
         </option>
