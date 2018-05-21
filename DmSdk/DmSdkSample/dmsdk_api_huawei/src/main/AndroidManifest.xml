@@ -13,5 +13,5 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="com.huawei.anyoffice.permisson.SIGNATURE" />
+    <uses-permission android:name="com.huawei.permission.sec.MDM" />
 </manifest>
