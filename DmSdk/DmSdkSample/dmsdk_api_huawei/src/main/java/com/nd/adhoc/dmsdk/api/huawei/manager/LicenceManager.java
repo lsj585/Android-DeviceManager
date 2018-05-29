@@ -3,10 +3,10 @@ package com.nd.adhoc.dmsdk.api.huawei.manager;
 import android.annotation.SuppressLint;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.UserManager;
 import android.support.v4.content.LocalBroadcastManager;
 import com.nd.adhoc.dmsdk.api.ILicenceManager;
 import com.nd.adhoc.dmsdk.revicer.ReciverConstants;
@@ -14,6 +14,8 @@ import com.nd.adhoc.dmsdk.revicer.ReciverConstants;
 class LicenceManager extends BaseManager implements ILicenceManager {
 
     private final String TAG="activateKLM";
+
+    private UserManager mUserManager;
 
     private DevicePolicyManager devicePolicyManager;
 
