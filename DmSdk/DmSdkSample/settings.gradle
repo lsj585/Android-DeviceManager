@@ -1,1 +1,1 @@
-include ':app', ':dmsdk', ':dmsdk_api', ':dmsdk_api_knox', ':dmsdk_api_edu', ':dmsdk_api_common', ':dmsdk_api_huawei'
+include ':app', ':dmsdk', ':dmsdk_api', ':dmsdk_api_knox', ':dmsdk_api_edu', ':dmsdk_api_common', ':dmsdk_api_huawei',':dmsdk_api_aosp'

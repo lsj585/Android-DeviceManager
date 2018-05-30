@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/dmsdk" />
             <option value="$PROJECT_DIR$/dmsdk_api" />
+            <option value="$PROJECT_DIR$/dmsdk_api_aosp" />
             <option value="$PROJECT_DIR$/dmsdk_api_common" />
             <option value="$PROJECT_DIR$/dmsdk_api_edu" />
             <option value="$PROJECT_DIR$/dmsdk_api_huawei" />
