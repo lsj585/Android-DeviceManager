@@ -1,30 +1,23 @@
-package com.nd.adhoc.dmsdk.api.knox.manager;
+package com.nd.adhoc.dmsdk.api.aosp.manager;
 
 import android.annotation.SuppressLint;
 import android.app.admin.DevicePolicyManager;
-import android.app.enterprise.license.EnterpriseLicenseManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.UserManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import com.nd.adhoc.dmsdk.api.ILicenceManager;
 import com.nd.adhoc.dmsdk.revicer.ReciverConstants;
-import com.sec.enterprise.knox.license.KnoxEnterpriseLicenseManager;
-
-import java.util.ServiceLoader;
 
 class LicenceManager extends BaseManager implements ILicenceManager {
 
     private final String TAG="activateKLM";
 
+    private UserManager mUserManager;
+
     private DevicePolicyManager devicePolicyManager;
-
-    private EnterpriseLicenseManager elmManager;
-
-    private KnoxEnterpriseLicenseManager kepManager;
 
     @Override
     public void setContext(Context context) {
@@ -41,12 +34,10 @@ class LicenceManager extends BaseManager implements ILicenceManager {
         if(devicePolicyManager==null) {
             devicePolicyManager = (DevicePolicyManager)context.getSystemService(Context.DEVICE_POLICY_SERVICE);
         }
-        ComponentName mDeviceAdmin = new ComponentName(context, com.nd.adhoc.dmsdk.revicer.AdminReciver.class);
-
-        if (!devicePolicyManager.isAdminActive(mDeviceAdmin)) {
+        if (!devicePolicyManager.isAdminActive(getComponentName())) {
             //激活
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, getComponentName());
             intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Adding app as an admin to test Knox");
             context.startActivity(intent);
         }else{
@@ -57,8 +48,6 @@ class LicenceManager extends BaseManager implements ILicenceManager {
 
     @Override
     public void release() {
-        elmManager=null;
-        kepManager=null;
         LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
         receiver=null;
     }
@@ -67,25 +56,13 @@ class LicenceManager extends BaseManager implements ILicenceManager {
     // call ELM license activation
     @SuppressLint("LongLogTag")
     private void activateELM() {
-        try {
-            elmManager = EnterpriseLicenseManager.getInstance(context);
-            elmManager.activateLicense(ReciverConstants.ELM_LICENSE_KEY, context.getPackageName());
-            Log.i(TAG, "activateELM");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
 
     @SuppressLint("LongLogTag")
     private void activateKLM() {
-        try {
-            kepManager = KnoxEnterpriseLicenseManager.getInstance(context);
-            kepManager.activateLicense(ReciverConstants.KEL_LICENSE_KEY, context.getPackageName());
-            Log.i(TAG, "activateKLM");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     private  BroadcastReceiver receiver=new BroadcastReceiver() {
