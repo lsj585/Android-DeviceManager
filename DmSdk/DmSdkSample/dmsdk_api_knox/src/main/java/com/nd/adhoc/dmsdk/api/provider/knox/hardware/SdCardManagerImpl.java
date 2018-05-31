@@ -1,29 +1,14 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.hardware;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.RestrictionPolicy;
-import android.content.ComponentName;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.ISdCardManager;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
-public class SdCardManagerImpl extends BaseManager implements ISdCardManager {
-
-    public SdCardManagerImpl(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public SdCardManagerImpl(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
-
-
+public class SdCardManagerImpl implements ISdCardManager {
 
     @Override
     public void open(@NonNull Context context) throws DeviceManagerSecurityException {

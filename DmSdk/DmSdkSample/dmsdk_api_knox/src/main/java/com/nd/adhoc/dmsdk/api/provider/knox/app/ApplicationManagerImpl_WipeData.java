@@ -1,27 +1,13 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.app;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.ApplicationPolicy;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Run;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_WipeData;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
-public class ApplicationManagerImpl_WipeData extends BaseManager implements IApplicationManager_WipeData {
-
-    public ApplicationManagerImpl_WipeData(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public ApplicationManagerImpl_WipeData(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
+public class ApplicationManagerImpl_WipeData implements IApplicationManager_WipeData {
 
     @Override
     public void release(@NonNull Context context) {

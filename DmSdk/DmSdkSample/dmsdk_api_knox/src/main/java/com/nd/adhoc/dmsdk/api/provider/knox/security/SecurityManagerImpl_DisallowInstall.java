@@ -1,28 +1,13 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.security;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.ApplicationPolicy;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowInstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowUninstall;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
-public class SecurityManagerImpl_DisallowInstall extends BaseManager implements ISecurityManager_DisallowInstall {
-
-    public SecurityManagerImpl_DisallowInstall(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public SecurityManagerImpl_DisallowInstall(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
-
+public class SecurityManagerImpl_DisallowInstall  implements ISecurityManager_DisallowInstall {
     @Override
     public void addPackageToInstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException {
 

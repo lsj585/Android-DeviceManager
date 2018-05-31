@@ -1,14 +1,9 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.hardware;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.RestrictionPolicy;
 import android.app.enterprise.kioskmode.KioskMode;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.IDeviceLock;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
@@ -17,17 +12,9 @@ import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeviceLockManagerImpl extends BaseManager implements IDeviceLock {
+public class DeviceLockManagerImpl  implements IDeviceLock {
 
     private List availableHwKeys;
-
-    public DeviceLockManagerImpl(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public DeviceLockManagerImpl(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
 
     @Override
     public void open(@NonNull Context context) throws DeviceManagerSecurityException {

@@ -21,6 +21,11 @@ class SystemManager extends BaseManager implements IDeviceSystem {
     }
 
     @Override
+    public void powerOff() {
+
+    }
+
+    @Override
     public void sleep() {
 
     }

@@ -1,29 +1,14 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.hardware;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.RestrictionPolicy;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IBluetoothManager;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
-public class BluetoothManagerImpl extends BaseManager implements IBluetoothManager {
-
-    public BluetoothManagerImpl(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public BluetoothManagerImpl(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
-
-
+public class BluetoothManagerImpl implements IBluetoothManager {
 
     @Override
     public void open(@NonNull Context context) throws DeviceManagerSecurityException {

@@ -1,7 +1,6 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.license;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.license.EnterpriseLicenseManager;
 import android.content.BroadcastReceiver;
@@ -16,7 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.nd.adhoc.dmsdk.api.BaseManager;
+import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.license.ILicenseManager_Active;
@@ -26,7 +25,7 @@ import com.sec.enterprise.knox.license.KnoxEnterpriseLicenseManager;
 /**
  * License 激活 --Knox 入口激活程序 该入口程序不能被
  */
-class LisenceManagerImpl_Active extends BaseManager implements ILicenseManager_Active {
+public class LisenceManagerImpl_Active implements ILicenseManager_Active {
 
 
     private String TAG=getClass().getSimpleName();
@@ -34,16 +33,6 @@ class LisenceManagerImpl_Active extends BaseManager implements ILicenseManager_A
     private final String ELM_LICENSE_KEY="ELM_LICENSE_KEY";
 
     private final String KEL_LICENSE_KEY="KEL_LICENSE_KEY";
-
-    public LisenceManagerImpl_Active(DevicePolicyManager devicePolicyManager, ComponentName componentName) {
-
-        super(devicePolicyManager, componentName);
-    }
-
-    public LisenceManagerImpl_Active(DevicePolicyManager devicePolicyManager) {
-
-        super(devicePolicyManager);
-    }
 
     @Override
     public void active(@NonNull Context context) throws DeviceManagerSecurityException {
@@ -138,13 +127,15 @@ class LisenceManagerImpl_Active extends BaseManager implements ILicenseManager_A
             //抛出异常
             throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_LICENSE_FAILURE);
         }
-
-        if(getDevicePolicyManager()==null ){
+        DeviceManagerContainer container=DeviceManagerContainer.getInstance();
+        DevicePolicyManager manager= container.getDevicePolicyManager();
+        ComponentName componentName=container.getComponentName();
+        if(manager==null ){
             //抛出异常
             throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
 
-        if(getComponentName()==null){
+        if(componentName==null){
             //抛出异常
             throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
@@ -156,11 +147,15 @@ class LisenceManagerImpl_Active extends BaseManager implements ILicenseManager_A
      * @param context
      */
     private void activeLicnese(@NonNull Context context){
+        DeviceManagerContainer container=DeviceManagerContainer.getInstance();
+        DevicePolicyManager manager= container.getDevicePolicyManager();
+        ComponentName componentName=container.getComponentName();
 
-        if (!getDevicePolicyManager().isAdminActive(getComponentName())) {
+
+        if (!manager.isAdminActive(componentName)) {
             //激活
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, getComponentName());
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
             intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Adding app as an admin to test Knox");
             context.startActivity(intent);
         }else{

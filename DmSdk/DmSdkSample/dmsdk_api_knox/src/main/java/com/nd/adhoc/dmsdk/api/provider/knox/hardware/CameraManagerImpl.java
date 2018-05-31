@@ -1,26 +1,13 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.hardware;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.RestrictionPolicy;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.ICameraManager;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
-public class CameraManagerImpl extends BaseManager implements ICameraManager {
-
-    public CameraManagerImpl(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public CameraManagerImpl(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
+public class CameraManagerImpl implements ICameraManager {
 
     @Override
     public void open(@NonNull Context context) throws DeviceManagerSecurityException {

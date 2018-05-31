@@ -1,31 +1,14 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.security;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.ApplicationPolicy;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_GetPackageList;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowRun;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
-
-import java.util.Arrays;
 import java.util.List;
 
-public class SecurityManagerImpl_DisallowRun extends BaseManager implements ISecurityManager_DisallowRun{
-
-    public SecurityManagerImpl_DisallowRun(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public SecurityManagerImpl_DisallowRun(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
-
+public class SecurityManagerImpl_DisallowRun implements ISecurityManager_DisallowRun{
     @Override
     public void release(@NonNull Context context) {
 

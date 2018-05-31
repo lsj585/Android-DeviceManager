@@ -1,30 +1,16 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.pac;
-
 import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.ApplicationPolicy;
 import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Uninstall;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
-class PackageManagerImpl_UnInstall extends BaseManager implements IPackageManager_Uninstall {
-
-    public PackageManagerImpl_UnInstall(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public PackageManagerImpl_UnInstall(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
+public class PackageManagerImpl_UnInstall  implements IPackageManager_Uninstall {
 
     @Override
     public void release(@NonNull Context context) {

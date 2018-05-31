@@ -1,12 +1,7 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.system;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.ApplicationPolicy;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_ApplicationList;
@@ -15,15 +10,7 @@ import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 import java.util.Arrays;
 import java.util.List;
 
-class SystemManagerImpl_GetApplicationList extends BaseManager implements ISystemManager_ApplicationList {
-
-    public SystemManagerImpl_GetApplicationList(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public SystemManagerImpl_GetApplicationList(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
+public class SystemManagerImpl_GetApplicationList implements ISystemManager_ApplicationList {
 
     @Override
     public List getApplicationPakcageList(@NonNull Context context) throws DeviceManagerSecurityException {

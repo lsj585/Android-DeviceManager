@@ -1,28 +1,13 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.security;
-
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.ApplicationPolicy;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.api.BaseManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowUninstall;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
-import java.util.List;
-
-public class SecurityManagerImpl_DisallowUninstall extends BaseManager implements ISecurityManager_DisallowUninstall {
-
-    public SecurityManagerImpl_DisallowUninstall(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
-        super(devicePolicyManager, componentName);
-    }
-
-    public SecurityManagerImpl_DisallowUninstall(@NonNull DevicePolicyManager devicePolicyManager) {
-        super(devicePolicyManager);
-    }
+public class SecurityManagerImpl_DisallowUninstall  implements ISecurityManager_DisallowUninstall {
 
     @Override
     public void addPackageToUninstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException {
