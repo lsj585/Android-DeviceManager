@@ -9,7 +9,7 @@ import android.content.IntentFilter;
 import android.os.UserManager;
 import android.support.v4.content.LocalBroadcastManager;
 import com.nd.adhoc.dmsdk.api.ILicenceManager;
-import com.nd.adhoc.dmsdk.revicer.ReciverConstants;
+import com.nd.adhoc.dmsdk.revicer.Constants;
 
 class LicenceManager extends BaseManager implements ILicenceManager {
 
@@ -23,8 +23,8 @@ class LicenceManager extends BaseManager implements ILicenceManager {
     public void setContext(Context context) {
         super.setContext(context);
         IntentFilter intentFilter=new IntentFilter();
-        intentFilter.addAction(ReciverConstants.DEVICE_MANAGER_ACTIVE_ACTION);
-        intentFilter.addAction(ReciverConstants.KNOX_LICENSE_ACTIVE_ACTION);
+        intentFilter.addAction(Constants.DEVICE_MANAGER_ACTIVE_ACTION);
+        intentFilter.addAction(Constants.KNOX_LICENSE_ACTIVE_ACTION);
         LocalBroadcastManager.getInstance(context).registerReceiver(receiver,intentFilter);
     }
 
@@ -41,7 +41,7 @@ class LicenceManager extends BaseManager implements ILicenceManager {
             intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Adding app as an admin to test Knox");
             context.startActivity(intent);
         }else{
-            Intent intent=new Intent(ReciverConstants.LICENSE_STATUS_SUCCESS);
+            Intent intent=new Intent(Constants.LICENSE_STATUS_SUCCESS);
             LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent);
         }
     }
@@ -69,9 +69,9 @@ class LicenceManager extends BaseManager implements ILicenceManager {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(intent.getAction().equalsIgnoreCase(ReciverConstants.DEVICE_MANAGER_ACTIVE_ACTION)){
+            if(intent.getAction().equalsIgnoreCase(Constants.DEVICE_MANAGER_ACTIVE_ACTION)){
                 activateKLM();
-            }else if(intent.getAction().equalsIgnoreCase(ReciverConstants.KNOX_LICENSE_ACTIVE_ACTION)){
+            }else if(intent.getAction().equalsIgnoreCase(Constants.KNOX_LICENSE_ACTIVE_ACTION)){
                 activateELM();
             }
         }

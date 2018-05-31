@@ -32,7 +32,7 @@ public class ActiveLicenseReceiver extends BroadcastReceiver {
                 int errorCode = intent.getIntExtra(KnoxEnterpriseLicenseManager.EXTRA_LICENSE_ERROR_CODE, -1);
                 if (errorCode == KnoxEnterpriseLicenseManager.ERROR_NONE) {
                     // ELM activated successfully
-                    onSuccess(context,ReciverConstants.KNOX_LICENSE_ACTIVE_ACTION);
+                    onSuccess(context, Constants.KNOX_LICENSE_ACTIVE_ACTION);
                     return;
                 } else {
                     onFailure(context);
@@ -41,7 +41,7 @@ public class ActiveLicenseReceiver extends BroadcastReceiver {
                 int errorCode = intent.getIntExtra(EnterpriseLicenseManager.EXTRA_LICENSE_ERROR_CODE, -1);
                 if (errorCode == EnterpriseLicenseManager.ERROR_NONE) {
                     // ELM activated successfully
-                    onSuccess(context,ReciverConstants.LICENSE_STATUS_SUCCESS);
+                    onSuccess(context, Constants.LICENSE_STATUS_SUCCESS);
                     return;
                 } else {
                     onFailure(context);
@@ -62,7 +62,7 @@ public class ActiveLicenseReceiver extends BroadcastReceiver {
 
     private void onFailure(Context context){
         Intent intent=new Intent();
-        intent.setAction(ReciverConstants.LICENSE_STATUS_FAILURE);
+        intent.setAction(Constants.LICENSE_STATUS_FAILURE);
         LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent);
     }
 }

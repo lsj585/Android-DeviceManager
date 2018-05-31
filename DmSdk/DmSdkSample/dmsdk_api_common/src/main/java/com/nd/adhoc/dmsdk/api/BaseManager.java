@@ -2,6 +2,11 @@ package com.nd.adhoc.dmsdk.api;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 
 public class BaseManager {
 
@@ -10,14 +15,13 @@ public class BaseManager {
     private ComponentName mComponentName;
 
 
-    public BaseManager( DevicePolicyManager devicePolicyManager,ComponentName componentName){
-
+    public BaseManager(@NonNull DevicePolicyManager devicePolicyManager, @NonNull ComponentName componentName) {
         this.mDevicePolicyManager=devicePolicyManager;
         this.mComponentName=componentName;
     }
 
 
-    public BaseManager( DevicePolicyManager devicePolicyManager){
+    public BaseManager(@NonNull DevicePolicyManager devicePolicyManager){
 
         this.mDevicePolicyManager=devicePolicyManager;
     }

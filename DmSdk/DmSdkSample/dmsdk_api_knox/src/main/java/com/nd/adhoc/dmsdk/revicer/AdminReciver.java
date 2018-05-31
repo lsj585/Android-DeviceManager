@@ -34,7 +34,7 @@ public class AdminReciver extends DeviceAdminReceiver {
 
     @Override
     public void onEnabled(Context context, Intent intent) {
-        LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ReciverConstants.DEVICE_MANAGER_ACTIVE_ACTION));
+        LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.DEVICE_MANAGER_ACTIVE_ACTION));
     }
 
     @Override

@@ -16,7 +16,7 @@ class SystemManager extends BaseManager implements IDeviceSystem {
     }
 
     @Override
-    public void  () {
+    public void reboot () {
 
     }
 

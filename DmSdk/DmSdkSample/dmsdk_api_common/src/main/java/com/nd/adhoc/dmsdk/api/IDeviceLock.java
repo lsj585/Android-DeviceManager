@@ -1,12 +1,7 @@
 package com.nd.adhoc.dmsdk.api;
 
-public interface IDeviceLock {
+import com.nd.adhoc.dmsdk.api.manager.hardware.IHardwareOperation;
 
-	boolean lock();
+public interface IDeviceLock extends IHardwareOperation {
 
-	boolean unlock();
-
-	boolean isLock();
-
-    void release();
 }

@@ -67,7 +67,4 @@ class LockManager extends BaseManager implements IDeviceLock {
             availableHwKeys.add(new Integer(KeyEvent.KEYCODE_POWER));
         }
     }
-
-
-
 }
