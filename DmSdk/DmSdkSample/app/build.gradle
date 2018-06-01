@@ -26,9 +26,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    implementation project(':dmsdk_api_knox')
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
-    implementation "io.reactivex:rxandroid:1.2.1"
-    implementation "io.reactivex:rxjava:1.2.1"
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'io.reactivex:rxjava:1.2.1'
+    implementation project(':dmsdk')
 }

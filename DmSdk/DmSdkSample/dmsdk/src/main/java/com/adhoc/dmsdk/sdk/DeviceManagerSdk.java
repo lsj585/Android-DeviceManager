@@ -58,7 +58,7 @@ public class DeviceManagerSdk {
      * @return
      */
     public IDeviceManager getManager(String manager) {
-
+        IDeviceManager dManager=null;
         RealObject<IDeviceManager> realObject = maps.get(manager);
         //TODO ZYB 通过注解标识找到对应的manager类，以保证多个provider产品下的api对应的实现类被调起
         Class<IDeviceManager> instance = realObject.getDeviceManager();
@@ -66,9 +66,9 @@ public class DeviceManagerSdk {
         ServiceLoader serviceLoader = ServiceLoader.load(instance);
         Iterator<IDeviceManager> iterator = serviceLoader.iterator();
         if(iterator.hasNext()){
-            IDeviceManager dManager= iterator.next();
+            dManager=iterator.next();
         }
-        return null;
+        return dManager;
     }
 
     /**
