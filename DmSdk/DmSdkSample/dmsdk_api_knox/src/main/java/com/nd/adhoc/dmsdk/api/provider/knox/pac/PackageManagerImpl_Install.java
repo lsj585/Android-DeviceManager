@@ -39,6 +39,7 @@ public class PackageManagerImpl_Install  implements IPackageManager_Install {
                     throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
                 }
             } catch (SecurityException e) {
+                e.printStackTrace();
                 throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
             }
         } catch (RuntimeException e) {

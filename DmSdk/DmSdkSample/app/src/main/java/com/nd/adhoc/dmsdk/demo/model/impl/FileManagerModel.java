@@ -6,11 +6,15 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.nd.adhoc.dmsdk.api.knox.manager.DeviceSdkApiManager;
+import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
+import com.nd.adhoc.dmsdk.DeviceManagerContainer;
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Install;
 import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +25,9 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
 
     private List<FileInfoBean> fileinfoList;
 
-    private DeviceSdkApiManager manager;
-
 
     public FileManagerModel(Context context) {
         super(context);
-        manager=new DeviceSdkApiManager(context);
     }
 
     @Override
@@ -69,7 +70,6 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
     public void release() {
 
         fileinfoList=null;
-        manager.release();
     }
 
     private Cursor getFileCursor(Context context) {
@@ -160,19 +160,32 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
         FileInfoBean bean =fileinfoList.get(position);
         bean.setStatus(1);
         if(bean != null){
-            return manager.installApp(bean.getPath());
+            IPackageManager_Install mInstall= (IPackageManager_Install) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_INSTALL);
+            if(mInstall != null){
+                try {
+                    mInstall.install(context,bean.getPath());
+                    return true;
+                } catch (DeviceManagerSecurityException e) {
+                    e.printStackTrace();
+                    return false;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
         }else{
             return false;
         }
+        return false;
     }
 
     public boolean forbidInstall(int position){
-        FileInfoBean bean =fileinfoList.get(position);
-        bean.setStatus(0);
-        if(bean != null){
-            return manager.installApp(bean.getPath());
-        }else{
+//        FileInfoBean bean =fileinfoList.get(position);
+//        bean.setStatus(0);
+//        if(bean != null){
+//            return manager.installApp(bean.getPath());
+//        }else{
             return false;
-        }
+//        }
     }
 }

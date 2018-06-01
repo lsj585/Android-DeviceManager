@@ -1,5 +1,4 @@
 package com.nd.adhoc.dmsdk.demo.ui;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.presenter.impl.ActiveLicensePresenter;
 import com.nd.adhoc.dmsdk.demo.view.BaseView;
-import com.nd.adhoc.dmsdk.revicer.ReciverConstants;
+import com.nd.adhoc.dmsdk.revicer.Constants;
+
 
 /**
  * 该DEMO演示的直接调用api层；sdk层未设计
@@ -68,8 +70,8 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         presenter=new ActiveLicensePresenter(this,this);
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(ReciverConstants.LICENSE_STATUS_SUCCESS);
-        filter.addAction(ReciverConstants.LICENSE_STATUS_FAILURE);
+        filter.addAction(Constants.LICENSE_STATUS_SUCCESS);
+        filter.addAction(Constants.LICENSE_STATUS_FAILURE);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
     @Override
@@ -83,19 +85,22 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
 
     private  BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, Intent intent) {
 
-            if (intent.getAction().equals(ReciverConstants.LICENSE_STATUS_FAILURE)) {
+            if (intent.getAction().equals(Constants.LICENSE_STATUS_FAILURE)) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.active_device_error), Toast.LENGTH_SHORT).show();
                     }
                 });
-            } else if (intent.getAction().equals(ReciverConstants.LICENSE_STATUS_SUCCESS)) {
+            } else if (intent.getAction().equals(Constants.LICENSE_STATUS_SUCCESS)) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(!DeviceManagerSdk.getInstance().isResgisterSDK()){
+                            DeviceManagerSdk.getInstance().registerSDK(context.getApplicationContext());
+                        }
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.active_device_success), Toast.LENGTH_SHORT).show();
                         Intent intentAction=new Intent();
                         intentAction.setAction(DEFAULT_DEVICE_LAUNCH);

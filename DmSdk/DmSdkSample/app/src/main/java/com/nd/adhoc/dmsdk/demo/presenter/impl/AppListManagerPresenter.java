@@ -23,6 +23,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
     @Override
     public void getApplist() {
 
+        RxJavaUtils.doUnsubscribe(this);
         Observable.create(new Observable.OnSubscribe<List>() {
             @Override
             public void call(Subscriber<? super List> subscriber) {
@@ -321,7 +322,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 }
             }
         });
-        
+
     }
 
     /**

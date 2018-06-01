@@ -31,4 +31,6 @@ dependencies {
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'io.reactivex:rxjava:1.2.1'
     implementation project(':dmsdk')
+    implementation project(':dmsdk_api_common')
+    implementation project(':dmsdk_api_knox')
 }

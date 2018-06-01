@@ -157,6 +157,7 @@ public class LisenceManagerImpl_Active implements ILicenseManager_Active {
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
             intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Adding app as an admin to test Knox");
+//            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }else{
             Intent intent=new Intent(Constants.LICENSE_STATUS_SUCCESS);

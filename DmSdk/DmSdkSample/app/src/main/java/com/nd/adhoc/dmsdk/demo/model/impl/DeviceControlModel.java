@@ -5,7 +5,17 @@ import android.content.Context;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.nd.adhoc.dmsdk.api.knox.manager.DeviceSdkApiManager;
+import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
+import com.nd.adhoc.dmsdk.DeviceManagerContainer;
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.manager.hardware.IBluetoothManager;
+import com.nd.adhoc.dmsdk.api.manager.hardware.ICameraManager;
+import com.nd.adhoc.dmsdk.api.manager.hardware.IDeviceLockManager;
+import com.nd.adhoc.dmsdk.api.manager.hardware.IMicrophoneManager;
+import com.nd.adhoc.dmsdk.api.manager.hardware.IMobileDataManager;
+import com.nd.adhoc.dmsdk.api.manager.hardware.ISdCardManager;
+import com.nd.adhoc.dmsdk.api.manager.hardware.IUsbMamager;
+import com.nd.adhoc.dmsdk.api.manager.hardware.IWifiManager;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.HardWareSwitchBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
@@ -22,11 +32,8 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
 
     private List<HardWareSwitchBean> list;
 
-    private DeviceSdkApiManager mDeviceManager;
-
     public DeviceControlModel(Context context) {
         super(context);
-        mDeviceManager = new DeviceSdkApiManager(context);
     }
 
     @Override
@@ -70,21 +77,21 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
     public boolean updateStatus(int position) {
         switch (position) {
             case 0:
-                return mDeviceManager.deviceWifi();
+                return deviceWifi();
             case 1:
-                return mDeviceManager.deviceMobileNetwork();
+                return deviceMobileNetwork();
             case 2:
-                return mDeviceManager.deviceBluetooth();
+                return deviceBluetooth();
             case 3:
-                return mDeviceManager.deviceCamera();
+                return deviceCamera();
             case 4:
-                return mDeviceManager.deviceMicrophone();
+                return deviceMicrophone();
             case 5:
-                return mDeviceManager.deviceUsb();
+                return deviceUsb();
             case 6:
-                return mDeviceManager.deviceSdCard();
+                return deviceSdCard();
             case 7:
-                return mDeviceManager.deviceLock();
+                return deviceLock();
             case 8:
                 return execHomeKey();
             case 9:
@@ -111,6 +118,132 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
 //                return false;
             default:
                 return false;
+        }
+    }
+
+    private boolean deviceMicrophone() {
+        IMicrophoneManager microphoneManager= (IMicrophoneManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MICROPHONE);
+        try {
+            if(!microphoneManager.isOpen(context)){
+                microphoneManager.open(context);
+            }else{
+                microphoneManager.close(context);
+            }
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean deviceUsb() {
+
+        IUsbMamager usbMamager= (IUsbMamager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_USB);
+        try {
+            if(!usbMamager.isOpen(context)){
+                usbMamager.open(context);
+            }else{
+                usbMamager.close(context);
+            }
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean deviceSdCard() {
+
+        ISdCardManager sdCardManager= (ISdCardManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_SDCARD);
+        try {
+            if(!sdCardManager.isOpen(context)){
+                sdCardManager.open(context);
+            }else{
+                sdCardManager.close(context);
+            }
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean deviceLock() {
+
+        IDeviceLockManager lockManager= (IDeviceLockManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_LOCK);
+        try {
+            if(!lockManager.isOpen(context)){
+                lockManager.open(context);
+            }else{
+                lockManager.close(context);
+            }
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean deviceBluetooth() {
+
+        IBluetoothManager bluetoothManager= (IBluetoothManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_BLUETOOTH);
+        try {
+            if(!bluetoothManager.isOpen(context)){
+                bluetoothManager.open(context);
+            }else{
+                bluetoothManager.close(context);
+            }
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean deviceCamera() {
+        ICameraManager cameraManager= (ICameraManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_CAMERA);
+        try {
+            if(!cameraManager.isOpen(context)){
+                cameraManager.open(context);
+            }else{
+                cameraManager.close(context);
+            }
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean deviceMobileNetwork() {
+
+        IMobileDataManager mobileDataManager= (IMobileDataManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MOBILEDATA);
+        try {
+            if(!mobileDataManager.isOpen(context)){
+                mobileDataManager.open(context);
+            }else{
+                mobileDataManager.close(context);
+            }
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean deviceWifi() {
+
+        IWifiManager wifiManager= (IWifiManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_WIFI);
+        try {
+            if(!wifiManager.isOpen(context)){
+                wifiManager.open(context);
+            }else{
+                wifiManager.close(context);
+            }
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -195,12 +328,27 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
             list = new ArrayList<HardWareSwitchBean>();
         }
         list.clear();
+
+        IWifiManager wifiManager= (IWifiManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_WIFI);
+        IMobileDataManager mobileDataManager= (IMobileDataManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MOBILEDATA);
+        IBluetoothManager bluetoothManager= (IBluetoothManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_BLUETOOTH);
+        ICameraManager cameraManager= (ICameraManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_CAMERA);
+        IMicrophoneManager microphoneManager= (IMicrophoneManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MICROPHONE);
+        IUsbMamager usbMamager= (IUsbMamager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_USB);
+        ISdCardManager sdCardManager= (ISdCardManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_SDCARD);
+        IDeviceLockManager lockManager= (IDeviceLockManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_LOCK);
+
+
         /**
          * wifi模块
          */
         HardWareSwitchBean wifiBean = new HardWareSwitchBean();
         wifiBean.setName(context.getResources().getString(R.string.wifi));
-        wifiBean.setStatus(mDeviceManager.isOpenWifi() == true ? 1 : 0);
+        try {
+            wifiBean.setStatus(wifiManager.isOpen(context) == true ? 1 : 0);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
         wifiBean.setDesiplaySave(true);
         list.add(wifiBean);
 
@@ -209,7 +357,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
          */
         HardWareSwitchBean t3gBean = new HardWareSwitchBean();
         t3gBean.setName(context.getResources().getString(R.string.t3g));
-        t3gBean.setStatus(mDeviceManager.isOpenNetwork() == true ? 1 : 0);
+        try {
+            t3gBean.setStatus(mobileDataManager.isOpen(context) == true ? 1 : 0);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
         t3gBean.setDesiplaySave(true);
         list.add(t3gBean);
 
@@ -218,7 +370,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
          */
         HardWareSwitchBean bluetoothBean = new HardWareSwitchBean();
         bluetoothBean.setName(context.getResources().getString(R.string.bluetooth));
-        bluetoothBean.setStatus(mDeviceManager.isOpenBluetooth() == true ? 1 : 0);
+        try {
+            bluetoothBean.setStatus(bluetoothManager.isOpen(context) == true ? 1 : 0);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
         bluetoothBean.setDesiplaySave(true);
         list.add(bluetoothBean);
 
@@ -228,7 +384,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
          */
         HardWareSwitchBean cameraBean = new HardWareSwitchBean();
         cameraBean.setName(context.getResources().getString(R.string.camera));
-        cameraBean.setStatus(mDeviceManager.isOpenCamrea() == true ? 1 : 0);
+        try {
+            cameraBean.setStatus(cameraManager.isOpen(context) == true ? 1 : 0);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
         cameraBean.setDesiplaySave(true);
         list.add(cameraBean);
 
@@ -238,7 +398,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
          */
         HardWareSwitchBean microphoneBean = new HardWareSwitchBean();
         microphoneBean.setName(context.getResources().getString(R.string.microphone));
-        microphoneBean.setStatus(mDeviceManager.isOpenMicrophone() == true ? 1 : 0);
+        try {
+            microphoneBean.setStatus(microphoneManager.isOpen(context)==true ? 1 : 0);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }  ;
         microphoneBean.setDesiplaySave(true);
         list.add(microphoneBean);
         /**
@@ -247,7 +411,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
         HardWareSwitchBean usbBean = new HardWareSwitchBean();
         usbBean.setName(context.getResources().getString(R.string.usb));
         usbBean.setDesiplaySave(true);
-        usbBean.setStatus(mDeviceManager.isOpenUsb() == true ? 1 : 0);
+        try {
+            usbBean.setStatus(usbMamager.isOpen(context) == true ? 1 : 0);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
         list.add(usbBean);
 
 
@@ -256,7 +424,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
          */
         HardWareSwitchBean sdCardBean = new HardWareSwitchBean();
         sdCardBean.setName(context.getResources().getString(R.string.sd_card));
-        sdCardBean.setStatus(mDeviceManager.isOpenUsb() == true ? 1 : 0);
+        try {
+            sdCardBean.setStatus(sdCardManager.isOpen(context) == true ? 1 : 0);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
         sdCardBean.setDesiplaySave(true);
         list.add(sdCardBean);
         Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
@@ -267,7 +439,11 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
          */
         HardWareSwitchBean locKBean = new HardWareSwitchBean();
         locKBean.setName(context.getResources().getString(R.string.lock));
-        locKBean.setStatus(mDeviceManager.isLock() == true ? 1 : 0);
+        try {
+            locKBean.setStatus(lockManager.isOpen(context) == true ? 1 : 0);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
         locKBean.setDesiplaySave(true);
         list.add(locKBean);
         Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
@@ -378,7 +554,6 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
 
     @Override
     public void release() {
-        mDeviceManager.release();
         list = null;
     }
 

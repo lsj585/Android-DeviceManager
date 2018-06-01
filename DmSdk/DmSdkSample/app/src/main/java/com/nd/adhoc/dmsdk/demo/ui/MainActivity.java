@@ -15,6 +15,10 @@ import com.nd.adhoc.dmsdk.demo.ui.fragment.AppManagerFragment;
 import com.nd.adhoc.dmsdk.demo.ui.fragment.DeviceControlManagerFragment;
 import com.nd.adhoc.dmsdk.demo.ui.fragment.SystemManagerFragment;
 import com.nd.adhoc.dmsdk.demo.ui.fragment.app.FileManagerFragment;
+//import com.nd.adhoc.dmsdk.demo.ui.fragment.AppManagerFragment;
+//import com.nd.adhoc.dmsdk.demo.ui.fragment.DeviceControlManagerFragment;
+//import com.nd.adhoc.dmsdk.demo.ui.fragment.SystemManagerFragment;
+//import com.nd.adhoc.dmsdk.demo.ui.fragment.app.FileManagerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
