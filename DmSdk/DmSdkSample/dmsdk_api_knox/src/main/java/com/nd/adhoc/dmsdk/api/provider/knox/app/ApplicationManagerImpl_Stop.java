@@ -27,7 +27,7 @@ public class ApplicationManagerImpl_Stop  implements IApplicationManager_Stop {
             if(!isSuccess){
                 throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
             }
-        }catch (Exception e){
+        }catch (SecurityException e){
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
     }

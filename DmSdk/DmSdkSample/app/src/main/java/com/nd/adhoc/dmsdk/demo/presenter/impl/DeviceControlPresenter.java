@@ -42,13 +42,14 @@ public class DeviceControlPresenter extends BasePresenter<DeviceControlView,Devi
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
             public void onNext(List list) {
 
                 view.showList(list);
+                RxJavaUtils.doUnsubscribe(this);
             }
 
 
@@ -65,10 +66,10 @@ public class DeviceControlPresenter extends BasePresenter<DeviceControlView,Devi
             return;
         }
 
-        if(position==14 || position==15 ||position==16 || position==17){
-            view.updateMsg("该功能不支持，knox没有提供相关的API");
-            return;
-        }
+//        if(position==14 || position==15 ||position==16 || position==17){
+//            view.updateMsg("该功能不支持，knox没有提供相关的API");
+//            return;
+//        }
 
         //从本地读取数据操作
         Observable.create(new Observable.OnSubscribe<Boolean>() {
@@ -95,6 +96,7 @@ public class DeviceControlPresenter extends BasePresenter<DeviceControlView,Devi
                     modle.update(position,true);
                     view.updateView(position);
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }

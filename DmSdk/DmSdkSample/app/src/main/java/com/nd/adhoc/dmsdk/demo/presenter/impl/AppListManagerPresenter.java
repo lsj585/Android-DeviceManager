@@ -22,8 +22,6 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
     }
     @Override
     public void getApplist() {
-
-        RxJavaUtils.doUnsubscribe(this);
         Observable.create(new Observable.OnSubscribe<List>() {
             @Override
             public void call(Subscriber<? super List> subscriber) {
@@ -120,7 +118,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -129,7 +127,9 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                     modle.updateToUninstall(viewPosition,true);
                     view.updateMsg("该应用允许被用户卸载");
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
+
         });
     }
 
@@ -150,7 +150,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -159,6 +159,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                     modle.updateToClearData(viewPosition,true);
                     view.updateMsg("该应用允许被用户清除数据");
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }
@@ -180,7 +181,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -189,6 +190,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                     modle.updateToRunning(viewPosition,true);
                     view.updateMsg("该应用允许被用户运行");
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
 
@@ -211,7 +213,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -220,6 +222,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                     modle.updateToUninstall(viewPosition,false);
                     view.updateMsg("该应用不允许被用户卸载");
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }
@@ -241,7 +244,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -252,6 +255,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 }else{
 
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }
@@ -277,17 +281,19 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
             public void onNext(Boolean success) {
+
                 if(success) {
                     modle.updateToRunning(viewPosition,false);
                     view.updateMsg("该应用不允许被用户运行");
                 }else{
 
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
 
@@ -309,7 +315,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -320,6 +326,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 }else{
 
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
 
@@ -346,7 +353,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -357,6 +364,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 }else{
                     view.updateMsg("该应用不允许被用户卸载");
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }
@@ -377,7 +385,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -388,7 +396,9 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 }else{
                     view.updateMsg("该应用不允许被用户停止");
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
+
         });
     }
 
@@ -413,7 +423,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -424,6 +434,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 }else{
                     view.updateMsg("该应用不允许被用户清理数据");
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }
@@ -448,7 +459,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -459,6 +470,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
                 }else{
                     view.updateMsg("该应用不允许被用户运行");
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }

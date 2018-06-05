@@ -4,15 +4,15 @@ import android.app.enterprise.kioskmode.KioskMode;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
-import com.nd.adhoc.dmsdk.api.IDeviceLock;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
+import com.nd.adhoc.dmsdk.api.manager.hardware.IDeviceLockManager;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeviceLockManagerImpl  implements IDeviceLock {
+public class DeviceLockManagerImpl  implements IDeviceLockManager {
 
     private List availableHwKeys;
 

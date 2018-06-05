@@ -24,7 +24,8 @@ public class SecurityManagerImpl_AllowRun implements ISecurityManager_AllowRun {
         //TODO zyb 此处最高异常待定，需要核对API
         try {
             applicationPolicy.removePackagesFromPreventStartBlackList(list);
-        }catch (Exception e){
+        }catch (SecurityException e){
+            e.printStackTrace();
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
     }

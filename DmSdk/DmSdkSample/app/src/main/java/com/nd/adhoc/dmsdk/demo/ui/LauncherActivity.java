@@ -68,7 +68,6 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         btnActiveDevice = findViewById(R.id.btn_activeDevice);
         btnActiveDevice.setOnClickListener(this);
         presenter=new ActiveLicensePresenter(this,this);
-
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.LICENSE_STATUS_SUCCESS);
         filter.addAction(Constants.LICENSE_STATUS_FAILURE);
@@ -116,7 +115,6 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
-        receiver=null;
         super.onDestroy();
     }
 }

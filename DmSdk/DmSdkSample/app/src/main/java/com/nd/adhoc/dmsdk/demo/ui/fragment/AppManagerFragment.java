@@ -1,37 +1,24 @@
 package com.nd.adhoc.dmsdk.demo.ui.fragment;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.base.ITabFragment;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
-import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
 import com.nd.adhoc.dmsdk.demo.model.impl.AppListManagerModel;
-import com.nd.adhoc.dmsdk.demo.model.impl.FileManagerModel;
 import com.nd.adhoc.dmsdk.demo.presenter.impl.AppListManagerPresenter;
-import com.nd.adhoc.dmsdk.demo.presenter.impl.FileManagerPresenter;
 import com.nd.adhoc.dmsdk.demo.ui.adapter.AppListManagerAdapter;
-import com.nd.adhoc.dmsdk.demo.ui.adapter.FileManagerAdapter;
 import com.nd.adhoc.dmsdk.demo.view.AppManagerView;
-import com.nd.adhoc.dmsdk.demo.view.FileManagerView;
-
 import java.util.List;
 
 /**
@@ -118,6 +105,10 @@ public class AppManagerFragment extends Fragment implements ITabFragment, AppMan
 
     @Override
     public void onItemClick(View view, final int position) {
+
+        if(dialog != null){
+            dialog=null;
+        }
         if (dialog == null) {
             dialog = new MaterialDialog.Builder(getActivity())
                     .title(R.string.title)
@@ -130,10 +121,6 @@ public class AppManagerFragment extends Fragment implements ITabFragment, AppMan
                         }
                     })
                     .positiveText(R.string.choose).build();
-        }
-        if (dialog.isShowing()) {
-            dialog.dismiss();
-        } else {
             dialog.show();
         }
     }

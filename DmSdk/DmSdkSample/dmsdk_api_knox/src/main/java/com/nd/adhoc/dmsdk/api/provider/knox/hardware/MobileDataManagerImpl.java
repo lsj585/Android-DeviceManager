@@ -5,9 +5,10 @@ import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IMicrophoneManager;
+import com.nd.adhoc.dmsdk.api.manager.hardware.IMobileDataManager;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
-public class MobileDataManagerImpl  implements IMicrophoneManager {
+public class MobileDataManagerImpl  implements IMobileDataManager {
 
     @Override
     public void open(@NonNull Context context) throws DeviceManagerSecurityException {

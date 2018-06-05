@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
+import com.nd.adhoc.dmsdk.DeviceManagerContainer;
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
 import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
@@ -43,7 +47,13 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
             holder.tvPackageName.setText(mList.get(position).getPackageName());
             holder.itemView.setTag(position);
             holder.itemView.setOnClickListener(itemClickListener);
-            if(mList.get(position).isRunning()){
+//            if(mList.get(position).isRunning()){
+//                holder.tvRunning.setText(mContext.getResources().getString(R.string.runing));
+//            }else{
+//                holder.tvRunning.setText(mContext.getResources().getString(R.string.stop));
+//            }
+
+            if(isRunning(mContext,mList.get(position).getPackageName())){
                 holder.tvRunning.setText(mContext.getResources().getString(R.string.runing));
             }else{
                 holder.tvRunning.setText(mContext.getResources().getString(R.string.stop));
@@ -57,7 +67,24 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
 
         }
     }
-
+    /**
+     * 是否在后台启动
+     * @param context
+     * @param packageName
+     * @return
+     */
+    private  boolean isRunning(Context context,String packageName){
+        IApplicationManager_IsRun applicationManagerIsRun= (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
+        if(applicationManagerIsRun != null){
+            try{
+                return applicationManagerIsRun.isRunning(context,packageName);
+            }catch (DeviceManagerSecurityException e){
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
+    }
     @Override
     public int getItemCount() {
         return mList.size();

@@ -16,6 +16,7 @@ import com.nd.adhoc.dmsdk.api.manager.hardware.IMobileDataManager;
 import com.nd.adhoc.dmsdk.api.manager.hardware.ISdCardManager;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IUsbMamager;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IWifiManager;
+import com.nd.adhoc.dmsdk.api.manager.key.IPhysicalKeyManager_Menu;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.HardWareSwitchBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
@@ -74,7 +75,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
 
 
     @Override
-    public boolean updateStatus(int position) {
+    public boolean updateStatus(int position){
         switch (position) {
             case 0:
                 return deviceWifi();
@@ -105,17 +106,17 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
             case 13:
                 return execVolumnDown();
             case 14:
-//                //唤醒
-//                return false;
-//            case 15:
-//                //休眠
-//                return false;
-//            case 16:
+                //唤醒
+                return false;
+            case 15:
+                //休眠
+                return false;
+            case 16:
 //                //关机
-//                return false;
-//            case 17:
-//                //重启
-//                return false;
+                return false;
+            case 17:
+                //重启
+                return false;
             default:
                 return false;
         }
@@ -283,7 +284,10 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
      *
      * @return
      */
-    public boolean execMenuKey() {
+    public boolean execMenuKey() throws UnsupportedOperationException {
+
+        IPhysicalKeyManager_Menu keyManagerMenu = (IPhysicalKeyManager_Menu) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_KEY_MENU);
+        keyManagerMenu.exec();
         return execKey(KeyEvent.KEYCODE_MENU);
     }
 

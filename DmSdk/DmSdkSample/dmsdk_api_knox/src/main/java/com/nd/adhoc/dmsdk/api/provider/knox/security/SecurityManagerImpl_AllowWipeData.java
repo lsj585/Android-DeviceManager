@@ -24,7 +24,8 @@ public class SecurityManagerImpl_AllowWipeData  implements  ISecurityManager_All
         //TODO zyb 此处最高异常待定，需要核对API
         try {
             applicationPolicy.removePackagesFromClearDataWhiteList(packages);
-        }catch (Exception e){
+        }catch (SecurityException e){
+            e.printStackTrace();
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
     }
@@ -38,7 +39,8 @@ public class SecurityManagerImpl_AllowWipeData  implements  ISecurityManager_All
         //TODO zyb 此处最高异常待定，需要核对API
         try {
             applicationPolicy.removePackagesFromClearCacheWhiteList(packages);
-        }catch (Exception e){
+        }catch (SecurityException e){
+            e.printStackTrace();
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
     }

@@ -1,8 +1,5 @@
-package com.nd.adhoc.dmsdk.api.provider.knox.license;
-
-import android.annotation.SuppressLint;
+package com.nd.adhoc.dmsdk.api.provider.aosp.license;
 import android.app.admin.DevicePolicyManager;
-import android.app.enterprise.license.EnterpriseLicenseManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,14 +11,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-import android.util.Log;
-
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.license.ILicenseManager_Active;
 import com.nd.adhoc.dmsdk.revicer.Constants;
-import com.sec.enterprise.knox.license.KnoxEnterpriseLicenseManager;
 
 /**
  * License 激活 --Knox 入口激活程序 该入口程序不能被
@@ -58,35 +52,11 @@ public class LisenceManagerImpl_Active implements ILicenseManager_Active {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(intent.getAction().equalsIgnoreCase(Constants.DEVICE_MANAGER_ACTIVE_ACTION)){
-                activateKLM(context);
-            }else if(intent.getAction().equalsIgnoreCase(Constants.KNOX_LICENSE_ACTIVE_ACTION)){
-                activateELM(context);
-            }
-        }
+            if (intent.getAction().equalsIgnoreCase(Constants.DEVICE_MANAGER_ACTIVE_ACTION)) {
 
-
-        // call ELM license activation
-        @SuppressLint("LongLogTag")
-        private void activateELM(Context context) {
-            try {
-                EnterpriseLicenseManager elmManager = EnterpriseLicenseManager.getInstance(context);
-                elmManager.activateLicense(Constants.ELM_LICENSE_KEY, context.getPackageName());
-                Log.i(TAG, "activateELM");
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-        @SuppressLint("LongLogTag")
-        private void activateKLM(Context context) {
-            try {
-                KnoxEnterpriseLicenseManager kepManager = KnoxEnterpriseLicenseManager.getInstance(context);
-                kepManager.activateLicense(Constants.KEL_LICENSE_KEY, context.getPackageName());
-                Log.i(TAG, "activateKLM");
-            } catch (SecurityException e) {
-                e.printStackTrace();
+                Intent its=new Intent();
+                its.setAction(Constants.LICENSE_STATUS_SUCCESS);
+                LocalBroadcastManager.getInstance(context).sendBroadcastSync(its);
             }
         }
     };

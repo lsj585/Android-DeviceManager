@@ -13,6 +13,7 @@ import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_GetPackageList;
+import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Run;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Stop;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_WipeData;
@@ -59,7 +60,6 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     public void update(ApplicationInfoBean applicationInfoBean, int position) {
         if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
             ApplicationInfoBean bean = applicationInfoBeans.get(position);
-            bean.setRunning(applicationInfoBean.isRunning());
         }
     }
 
@@ -146,10 +146,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             applicationInfoBeans.add(info);
             Log.i(this.getClass().getName(), String.format("packageNameList[i]:%s", packageInfo.packageName));
             info.setPackageName(packageInfo.packageName);
-//            if (manager.isApplicationRunning(packageInfo.packageName)) {
-//                info.setRunning(true);
-//            }
-//            productAppInfoLauncherName(pm,packageInfo,info);
+            productAppInfoLauncherName(pm,packageInfo,info);
 //            info.setRamUsage(manager.getApplicationRamUsage(packageInfo.packageName));
 //            info.setApplicationCacheSizeUsage(manager.getApplicationCacheSize(packageInfo.packageName));
 //            info.setCpuUsage(manager.getApplicationCpuUsage(packageInfo.packageName));
@@ -159,6 +156,26 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             info.setAllowRunning(true);
             info.setAllowStopApp(true);
         }
+    }
+
+
+    /**
+     * 是否在后台启动
+     * @param context
+     * @param packageName
+     * @return
+     */
+    private  boolean isRunning(Context context,String packageName){
+        IApplicationManager_IsRun applicationManagerIsRun= (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
+        if(applicationManagerIsRun != null){
+            try{
+                 return applicationManagerIsRun.isRunning(context,packageName);
+            }catch (DeviceManagerSecurityException e){
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
     }
 
     /**
@@ -181,9 +198,6 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             for (int index = 0; index < resolveinfoList.size(); index++) {
                 ResolveInfo resolveInfo = resolveinfoList.get(index);
                 ActivityInfo activityInfo = resolveInfo.activityInfo;
-                Log.i(this.getClass().getName(), String.format("activityInfo[i]:%s", activityInfo.packageName));
-                Log.i(this.getClass().getName(), String.format("packageInfo[i]:%s", packageInfo.packageName));
-                Log.i(this.getClass().getName(), String.format("resolveInfo[i]:%s", resolveInfo.resolvePackageName));
                 if (resolveInfo.activityInfo.applicationInfo.packageName.equalsIgnoreCase(packageInfo.packageName)) {
                     laucnhActivity = activityInfo.name;
                     break OUTER;
@@ -192,6 +206,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
         }
         if (laucnhActivity != null) {
+            Log.i(this.getClass().getName(), String.format("activityInfo[i]:%s", laucnhActivity));
             info.setLauncherName(laucnhActivity);
         }
     }
@@ -226,7 +241,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         ApplicationInfoBean bean = applicationInfoBeans.get(position);
         if (bean != null && bean.getPackageName() != null && bean.getLauncherName() != null) {
             //判断是否可以运行
-            if (bean.isRunning()) {
+            if (isRunning(context,bean.getPackageName())) {
 
                 IApplicationManager_Run applicationManagerRun = (IApplicationManager_Run) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_RUN);
                 try {
@@ -295,7 +310,6 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             ApplicationInfoBean bean = applicationInfoBeans.get(position);
             //执行成功或失败
             if (isSuccess) {
-                bean.setRunning(bean.isRunning() == false ? true : false);
                 update(bean, position);
             }
         }
@@ -500,6 +514,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
                 try {
                     list = new ArrayList();
                     list.add(bean.getPackageName());
+                    bean.setAllowRunning(true);
                     allowInstall.removePackageToRunList(context, list);
                 } catch (DeviceManagerSecurityException e) {
                     e.printStackTrace();

@@ -27,7 +27,7 @@ public class ApplicationManagerImpl_WipeData implements IApplicationManager_Wipe
            if(!isSuccess){
                throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
            }
-        }catch (Exception e){
+        }catch (SecurityException e){
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
     }

@@ -18,7 +18,8 @@ public class SecurityManagerImpl_AllowUninstall implements ISecurityManager_Allo
         //TODO zyb 此处最高异常待定，需要核对API
         try {
             applicationPolicy.setApplicationUninstallationDisabled(packageName);
-        }catch (Exception e){
+        }catch (SecurityException e){
+            e.printStackTrace();
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
     }

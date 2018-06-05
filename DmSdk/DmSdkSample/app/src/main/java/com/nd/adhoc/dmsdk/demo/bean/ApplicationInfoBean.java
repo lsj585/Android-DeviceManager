@@ -1,7 +1,5 @@
 package com.nd.adhoc.dmsdk.demo.bean;
 
-import android.graphics.drawable.Drawable;
-
 /**
  * 应用列表状态
  */
@@ -9,159 +7,146 @@ public class ApplicationInfoBean extends BaseBean {
     /**
      * 应用包名
      */
-    private String packageName;
+    private String mPackageName;
     /**
      * 应用的启动入口类
      */
-    private String launcherName;
+    private String mLauncherName;
     /**
      * 应用名称
      */
-    private String name;
-    /**
-     * 应用是否运行
-     */
-    private boolean isRunning;
+    private String mName;
     /**
      * 应用状态 0 黑名单 1白名单
      */
-    private int status;
+    private int mStatus;
     /**
      * cpu 使用率
      */
-    private long cpuUsage;
+    private long mCpuUsage;
     /**
      * 内存使用率
      */
-    private long ramUsage;
+    private long mRamUsage;
     /**
      * 应用数据
      */
-    private long applicationDataSizeUsage;
+    private long mApplicationDataSizeUsage;
     /**
      * 应用缓存
      */
-    private long applicationCacheSizeUsage;
+    private long mApplicationCacheSizeUsage;
     /**
      * 允许卸载
      */
-    private boolean allowUninstall;
+    private boolean mAllowUninstall;
     /**
      * 允许清除数据
      */
-    private boolean allowClearData;
+    private boolean mAllowClearData;
     /**
      * 允许运行
      */
-    private boolean allowRunning;
+    private boolean mAllowRunning;
     /**
      * 允许停止APP
      */
-    private boolean allowStopApp;
+    private boolean mAllowStopApp;
 
 
     public String getPackageName() {
-        return packageName;
+        return mPackageName;
     }
 
     public void setPackageName(String packageName) {
-        this.packageName = packageName;
+        this.mPackageName = packageName;
     }
 
     public String getLauncherName() {
-        return launcherName;
+        return mLauncherName;
     }
 
     public void setLauncherName(String launcherName) {
-        this.launcherName = launcherName;
+        this.mLauncherName = launcherName;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-    public void setRunning(boolean running) {
-        isRunning = running;
+        this.mName = name;
     }
 
     public int getStatus() {
-        return status;
+        return mStatus;
     }
 
     public void setStatus(int status) {
-        this.status = status;
+        this.mStatus = status;
     }
 
     public long getCpuUsage() {
-        return cpuUsage;
+        return mCpuUsage;
     }
 
     public void setCpuUsage(long cpuUsage) {
-        this.cpuUsage = cpuUsage;
+        this.mCpuUsage = cpuUsage;
     }
 
     public long getRamUsage() {
-        return ramUsage;
+        return mRamUsage;
     }
 
     public void setRamUsage(long ramUsage) {
-        this.ramUsage = ramUsage;
+        this.mRamUsage = ramUsage;
     }
 
     public long getApplicationDataSizeUsage() {
-        return applicationDataSizeUsage;
+        return mApplicationDataSizeUsage;
     }
 
     public void setApplicationDataSizeUsage(long applicationDataSizeUsage) {
-        this.applicationDataSizeUsage = applicationDataSizeUsage;
+        this.mApplicationDataSizeUsage = applicationDataSizeUsage;
     }
 
     public long getApplicationCacheSizeUsage() {
-        return applicationCacheSizeUsage;
+        return mApplicationCacheSizeUsage;
     }
 
     public void setApplicationCacheSizeUsage(long applicationCacheSizeUsage) {
-        this.applicationCacheSizeUsage = applicationCacheSizeUsage;
+        this.mApplicationCacheSizeUsage = applicationCacheSizeUsage;
     }
 
     public boolean isAllowUninstall() {
-        return allowUninstall;
+        return mAllowUninstall;
     }
 
     public void setAllowUninstall(boolean allowUninstall) {
-        this.allowUninstall = allowUninstall;
+        this.mAllowUninstall = allowUninstall;
     }
 
     public boolean isAllowClearData() {
-        return allowClearData;
+        return mAllowClearData;
     }
 
     public void setAllowClearData(boolean allowClearData) {
-        this.allowClearData = allowClearData;
+        this.mAllowClearData = allowClearData;
     }
 
     public boolean isAllowRunning() {
-        return allowRunning;
+        return mAllowRunning;
     }
 
     public void setAllowRunning(boolean allowRunning) {
-        this.allowRunning = allowRunning;
+        this.mAllowRunning = allowRunning;
     }
 
     public boolean isAllowStopApp() {
-        return allowStopApp;
+        return mAllowStopApp;
     }
 
     public void setAllowStopApp(boolean allowStopApp) {
-        this.allowStopApp = allowStopApp;
+        this.mAllowStopApp = allowStopApp;
     }
 }

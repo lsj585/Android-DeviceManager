@@ -43,12 +43,13 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
             public void onNext(List list) {
                 view.showList(list);
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }
@@ -87,7 +88,7 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
 
             @Override
             public void onError(Throwable throwable) {
-
+                RxJavaUtils.doUnsubscribe(this);
             }
 
             @Override
@@ -95,6 +96,7 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
                 if(isSuccess){
                     view.updateView(viewPosition);
                 }
+                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }

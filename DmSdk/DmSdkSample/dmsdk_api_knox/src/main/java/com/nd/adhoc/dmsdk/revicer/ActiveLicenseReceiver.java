@@ -32,19 +32,19 @@ public class ActiveLicenseReceiver extends BroadcastReceiver {
                 int errorCode = intent.getIntExtra(KnoxEnterpriseLicenseManager.EXTRA_LICENSE_ERROR_CODE, -1);
                 if (errorCode == KnoxEnterpriseLicenseManager.ERROR_NONE) {
                     // ELM activated successfully
-                    onSuccess(context, Constants.KNOX_LICENSE_ACTIVE_ACTION);
+                    onSuccess(context.getApplicationContext(), Constants.KNOX_LICENSE_ACTIVE_ACTION);
                     return;
                 } else {
-                    onFailure(context);
+                    onFailure(context.getApplicationContext());
                 }
             }else if(action.equalsIgnoreCase(EnterpriseLicenseManager.ACTION_LICENSE_STATUS)){
                 int errorCode = intent.getIntExtra(EnterpriseLicenseManager.EXTRA_LICENSE_ERROR_CODE, -1);
                 if (errorCode == EnterpriseLicenseManager.ERROR_NONE) {
                     // ELM activated successfully
-                    onSuccess(context, Constants.LICENSE_STATUS_SUCCESS);
+                    onSuccess(context.getApplicationContext(), Constants.LICENSE_STATUS_SUCCESS);
                     return;
                 } else {
-                    onFailure(context);
+                    onFailure(context.getApplicationContext());
                 }
             }
         }

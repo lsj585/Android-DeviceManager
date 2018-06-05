@@ -27,7 +27,8 @@ public class ApplicationManagerImpl_Run implements IApplicationManager_Run {
            if(!isSuccess){
                throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
            }
-        }catch (Exception e){
+        }catch (SecurityException e){
+            e.printStackTrace();
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
     }

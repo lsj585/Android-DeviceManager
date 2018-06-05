@@ -94,6 +94,10 @@ public class DeviceManagerContainer {
      */
     public static final String MANAGER_APPLICATION_WIPEDATA ="application_wipedata" ;
     /**
+     * 应用是否运行
+     */
+    public static final String MANAGER_APPLICATION_ISRUNNING = "application_isRunning";
+    /**
      *
      */
     public static final String MANAGER_APPLICATION_RUN = "application_run";
@@ -142,6 +146,8 @@ public class DeviceManagerContainer {
      */
     public static final String MANAGER_HARDWARE_MICROPHONE = "microphone";
 
+
+    public static final String MANAGER_KEY_MENU="KEY_MENU";
 
     public  static DeviceManagerContainer getInstance() {
         //使用同步锁，避免在多个线程中使用，导致产生多个实体类。
