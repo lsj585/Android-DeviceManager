@@ -6,7 +6,7 @@ public interface IDeviceControlModel{
     /**
      * 更新状态
      */
-    boolean updateStatus(int position);
+    boolean updateStatus(int position) throws Exception;
 
     /**
      * 更新状态是否成功

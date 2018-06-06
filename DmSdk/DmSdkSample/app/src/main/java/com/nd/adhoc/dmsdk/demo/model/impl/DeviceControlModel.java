@@ -75,7 +75,7 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
 
 
     @Override
-    public boolean updateStatus(int position){
+    public boolean updateStatus(int position) throws Exception{
         switch (position) {
             case 0:
                 return deviceWifi();

@@ -146,7 +146,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             applicationInfoBeans.add(info);
             Log.i(this.getClass().getName(), String.format("packageNameList[i]:%s", packageInfo.packageName));
             info.setPackageName(packageInfo.packageName);
-            productAppInfoLauncherName(pm,packageInfo,info);
+            productAppInfoLauncherName(pm, packageInfo, info);
 //            info.setRamUsage(manager.getApplicationRamUsage(packageInfo.packageName));
 //            info.setApplicationCacheSizeUsage(manager.getApplicationCacheSize(packageInfo.packageName));
 //            info.setCpuUsage(manager.getApplicationCpuUsage(packageInfo.packageName));
@@ -161,16 +161,17 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     /**
      * 是否在后台启动
+     *
      * @param context
      * @param packageName
      * @return
      */
-    private  boolean isRunning(Context context,String packageName){
-        IApplicationManager_IsRun applicationManagerIsRun= (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
-        if(applicationManagerIsRun != null){
-            try{
-                 return applicationManagerIsRun.isRunning(context,packageName);
-            }catch (DeviceManagerSecurityException e){
+    private boolean isRunning(Context context, String packageName) {
+        IApplicationManager_IsRun applicationManagerIsRun = (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
+        if (applicationManagerIsRun != null) {
+            try {
+                return applicationManagerIsRun.isRunning(context, packageName);
+            } catch (DeviceManagerSecurityException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -240,18 +241,12 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     public boolean startApp(int position) {
         ApplicationInfoBean bean = applicationInfoBeans.get(position);
         if (bean != null && bean.getPackageName() != null && bean.getLauncherName() != null) {
-            //判断是否可以运行
-            if (isRunning(context,bean.getPackageName())) {
-
-                IApplicationManager_Run applicationManagerRun = (IApplicationManager_Run) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_RUN);
-                try {
-                    applicationManagerRun.startApp(context, bean.getPackageName(), bean.getLauncherName());
-                    return true;
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            } else {
+            IApplicationManager_Run applicationManagerRun = (IApplicationManager_Run) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_RUN);
+            try {
+                applicationManagerRun.startApp(context, bean.getPackageName(), bean.getLauncherName());
+                return true;
+            } catch (DeviceManagerSecurityException e) {
+                e.printStackTrace();
                 return false;
             }
         } else {
