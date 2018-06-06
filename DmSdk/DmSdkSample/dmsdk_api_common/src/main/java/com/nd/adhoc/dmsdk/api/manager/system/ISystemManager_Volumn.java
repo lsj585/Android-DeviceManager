@@ -4,5 +4,5 @@ import com.nd.adhoc.dmsdk.api.IDeviceManager;
 
 public interface ISystemManager_Volumn extends IDeviceManager {
 
-    void exec();
+    void execute();
 }
