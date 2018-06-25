@@ -3,7 +3,6 @@ import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.UserManager;
 import android.support.annotation.NonNull;
@@ -12,6 +11,7 @@ import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IBluetoothManager;
+import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 
 public class BluetoothManagerImpl implements IBluetoothManager {
 
@@ -46,9 +46,8 @@ public class BluetoothManagerImpl implements IBluetoothManager {
                 Bundle bundle= devicePolicyManager.getUserRestrictions(componentName);
                 if(bundle != null) {
                     return bundle.getBoolean(UserManager.DISALLOW_BLUETOOTH);
-                }else{
-                    throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_ERROR_CODE);
                 }
+                throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_ERROR_CODE);
             }
         } catch (SecurityException e) {
             e.printStackTrace();
@@ -64,43 +63,7 @@ public class BluetoothManagerImpl implements IBluetoothManager {
 
 
     private void turnOff(@NonNull Context context,boolean isOpen) throws DeviceManagerSecurityException {
-
-        DeviceManagerContainer container = DeviceManagerContainer.getInstance();
-
-        DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
-
-        ComponentName componentName = container.getComponentName();
-
-        if (container.getComponentName() == null) {
-            return;
-        }
-
-        if (devicePolicyManager == null) {
-            return;
-        }
-
-        if(isOpen){
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    devicePolicyManager.addUserRestriction(componentName, UserManager.DISALLOW_BLUETOOTH);
-                }else{
-                    throw  new DeviceManagerSecurityException(ErrorCode.DEFAULT_ERROR_CODE);
-                }
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }else{
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    devicePolicyManager.clearUserRestriction(componentName, UserManager.DISALLOW_BLUETOOTH);
-                }else{
-                    throw  new DeviceManagerSecurityException(ErrorCode.DEFAULT_ERROR_CODE);
-                }
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
-
+        DeviceControlUtils.operation(context,isOpen,UserManager.DISALLOW_BLUETOOTH);
     }
 
 

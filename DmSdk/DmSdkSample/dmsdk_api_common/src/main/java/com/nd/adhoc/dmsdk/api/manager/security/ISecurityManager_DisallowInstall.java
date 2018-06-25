@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.api.IDeviceManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface ISecurityManager_DisallowInstall extends IDeviceManager {
      * 加入黑名单中移除被限制安装应用的应用列表
      * @param packageName 应用包名
      */
-    void addPackageToInstallList(@NonNull Context context,@NonNull String packageName)  throws DeviceManagerSecurityException;
+    void addPackageToInstallList(@NonNull Context context,@NonNull String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException;
 }

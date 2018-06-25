@@ -27,7 +27,7 @@ public class AllowWipeDataApplicationApplicationStrategy implements ApplicationS
         mSunscription = Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(model.wipeData(position));
+                subscriber.onNext(model.allowClearData(position));
                 subscriber.onCompleted();
             }
         }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {

@@ -9,6 +9,7 @@ import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.ICameraManager;
+import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 
 public class CameraManagerImpl implements ICameraManager {
 
@@ -30,13 +31,8 @@ public class CameraManagerImpl implements ICameraManager {
 
         ComponentName componentName = container.getComponentName();
 
-        if (container.getComponentName() == null) {
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
+        DeviceControlUtils.isVerificationNull(context,devicePolicyManager,componentName);
 
-        if (devicePolicyManager == null) {
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
         try {
             return devicePolicyManager.getCameraDisabled(componentName);
         } catch (SecurityException e) {
@@ -55,22 +51,20 @@ public class CameraManagerImpl implements ICameraManager {
 
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
+        if(container==null){
+            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+        }
+
         DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
 
         ComponentName componentName = container.getComponentName();
 
-        if (container.getComponentName() == null) {
-            return;
-        }
-
-        if (devicePolicyManager == null) {
-            return;
-        }
-
+        DeviceControlUtils.isVerificationNull(context,devicePolicyManager,componentName);
         try {
             devicePolicyManager.setCameraDisabled(componentName, isOpen);
         } catch (SecurityException e) {
             e.printStackTrace();
+            throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
         }
     }
 }

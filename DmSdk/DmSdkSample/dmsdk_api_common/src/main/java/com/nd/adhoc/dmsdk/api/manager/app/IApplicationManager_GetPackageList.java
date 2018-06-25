@@ -2,6 +2,7 @@ package com.nd.adhoc.dmsdk.api.manager.app;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.nd.adhoc.dmsdk.api.IDeviceManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
@@ -13,5 +14,5 @@ import java.util.List;
  */
 public interface IApplicationManager_GetPackageList extends IDeviceManager {
 
-    List<String> getApplicationPackageList(@NonNull Context context) throws DeviceManagerSecurityException;
+    @Nullable List<String> getApplicationPackageList(@NonNull Context context) throws DeviceManagerSecurityException;
 }

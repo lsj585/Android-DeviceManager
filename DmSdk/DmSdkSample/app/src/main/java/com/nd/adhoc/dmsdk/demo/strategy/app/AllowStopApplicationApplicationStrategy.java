@@ -24,7 +24,7 @@ public class AllowStopApplicationApplicationStrategy implements ApplicationStrat
         mSunscription = Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(model.stopApp(position));
+                subscriber.onNext(model.allowDaemon(position));
                 subscriber.onCompleted();
             }
         }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {

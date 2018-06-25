@@ -16,9 +16,12 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 
 public class FileManagerPresenter extends BasePresenter<FileManagerView,FileManagerModel> implements IFileManagerPresenter {
 
+
+    private Subscription mSubscription;
 
     public FileManagerPresenter(Context context, FileManagerView view) {
         super(context, view);
@@ -27,6 +30,9 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
     @Override
     public void getFileAppList() {
         Log.i(this.getClass().getName(),"getFileAppList");
+
+        RxJavaUtils.doUnsubscribe(mSubscription);
+
         Observable.create(new Observable.OnSubscribe<List>() {
             @Override
             public void call(Subscriber<? super List> subscriber) {
@@ -43,13 +49,12 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
 
             @Override
             public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
+                throwable.printStackTrace();
             }
 
             @Override
             public void onNext(List list) {
                 view.showList(list);
-                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }
@@ -74,7 +79,7 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
                 try{
                     isIntsall=modle.install(viewPosition);
                 }catch (Exception e){
-                    e.printStackTrace();
+                    subscriber.onError(e);
                 }
                 subscriber.onNext(isIntsall);
                 subscriber.onCompleted();
@@ -88,7 +93,7 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
 
             @Override
             public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
+                throwable.printStackTrace();
             }
 
             @Override
@@ -96,7 +101,6 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
                 if(isSuccess){
                     view.updateView(viewPosition);
                 }
-                RxJavaUtils.doUnsubscribe(this);
             }
         });
     }

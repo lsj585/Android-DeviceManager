@@ -6,6 +6,7 @@ import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.ICameraManager;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.adhoc.dmsdk.api.provider.utils.Verification;
 
 public class CameraManagerImpl implements ICameraManager {
 
@@ -21,7 +22,7 @@ public class CameraManagerImpl implements ICameraManager {
 
     @Override
     public boolean isOpen(@NonNull Context context) throws DeviceManagerSecurityException {
-        RestrictionPolicy restrictionPolicy= verifyIsNull(context);
+        RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
         try {
             return restrictionPolicy.isCameraEnabled(true);
         }catch (SecurityException e){
@@ -37,29 +38,16 @@ public class CameraManagerImpl implements ICameraManager {
 
 
     private void turnOff(@NonNull Context context,boolean isOpen) throws DeviceManagerSecurityException {
-        RestrictionPolicy restrictionPolicy= verifyIsNull(context);
+        RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
         try {
             boolean isSuccess = restrictionPolicy.setCameraState(isOpen);
             if (!isSuccess) {
                 //TODO zyb 此处需要定义ErrorCode中的枚举值为开启失败
-                throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+                throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
             }
         }catch (SecurityException e){
             //TODO zyb 此处需要定义ErrorCode中的枚举值为开启失败
             throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
-    }
-
-    /**
-     * 校验从工厂中获取到数值是否为空
-     * @return
-     * @throws DeviceManagerSecurityException
-     */
-    private RestrictionPolicy verifyIsNull(@NonNull Context context) throws DeviceManagerSecurityException {
-        RestrictionPolicy restrictionPolicy= KnoxDeviceManagerFactory.getInstance().getRestrictionPolicy(context);
-        if(restrictionPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
-        return restrictionPolicy;
     }
 }

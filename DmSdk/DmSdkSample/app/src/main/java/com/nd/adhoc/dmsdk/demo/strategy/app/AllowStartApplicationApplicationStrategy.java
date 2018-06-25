@@ -24,7 +24,7 @@ public class AllowStartApplicationApplicationStrategy implements ApplicationStra
         mSunscription = Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(model.startApp(position));
+                subscriber.onNext(model.allowRunApp(position));
                 subscriber.onCompleted();
             }
         }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {

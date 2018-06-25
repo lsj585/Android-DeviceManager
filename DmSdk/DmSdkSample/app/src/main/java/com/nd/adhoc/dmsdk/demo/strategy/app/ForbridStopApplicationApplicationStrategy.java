@@ -27,7 +27,7 @@ public class ForbridStopApplicationApplicationStrategy implements ApplicationStr
         mSunscription = Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(model.forceUnInstall(position));
+                subscriber.onNext(model.unallowRunning(position));
                 subscriber.onCompleted();
             }
         }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {

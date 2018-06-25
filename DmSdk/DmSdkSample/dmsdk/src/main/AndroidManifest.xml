@@ -1,3 +1,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nd.adhoc.dmsdk" >
+    <application>
+        <meta-data android:name="KEL_LICENSE_KEY" android:value="KLM06-2SWKZ-NSL3A-93911-SSMAW-OCUCU"></meta-data>
+        <meta-data android:name="ELM_LICENSE_KEY" android:value="2597D84D978FDADB00DD43BC30ACA35FE9396F88B671F069F72D50705367D711AAEC116B0485165465DC6D80087C727FFD8F3476269A6652A91E9A71792D2EB7"></meta-data>
+        <!-- 设备管理 -->
+        <receiver android:name="com.nd.adhoc.dmsdk.revicer.AdminReciver"
+            android:label="@string/device"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_receiver" />
+            <intent-filter>
+                <action
+                    android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="com.nd.adhoc.dmsdk.revicer.ActiveLicenseReceiver">
+            <intent-filter>
+                <action android:name="edm.intent.action.license.status" />
+                <action android:name="edm.intent.action.knox_license.status"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
 </manifest>

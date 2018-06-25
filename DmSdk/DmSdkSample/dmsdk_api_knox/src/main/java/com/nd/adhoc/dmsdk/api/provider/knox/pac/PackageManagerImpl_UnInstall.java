@@ -1,7 +1,5 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.pac;
-import android.app.admin.DevicePolicyManager;
 import android.app.enterprise.ApplicationPolicy;
-import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -30,7 +28,7 @@ public class PackageManagerImpl_UnInstall  implements IPackageManager_Uninstall 
             try{
                boolean isSuccess= applicationPolicy.uninstallApplication(packageName,false);
                if(!isSuccess){
-                   throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+                   throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
                }
             }catch (SecurityException e){
                 throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);

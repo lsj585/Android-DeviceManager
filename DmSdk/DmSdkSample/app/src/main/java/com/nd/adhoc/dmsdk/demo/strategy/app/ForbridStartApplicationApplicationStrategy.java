@@ -24,7 +24,7 @@ public class ForbridStartApplicationApplicationStrategy implements ApplicationSt
         mSunscription = Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(model.startApp(position));
+                subscriber.onNext(model.unallowRunning(position));
                 subscriber.onCompleted();
             }
         }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
@@ -41,10 +41,8 @@ public class ForbridStartApplicationApplicationStrategy implements ApplicationSt
 
             @Override
             public void onNext(Boolean success) {
-                if (success) {
-                    model.update(position, success);
-                    view.updateView(position);
-                } else {
+                if(success) {
+                    model.updateToRunning(position,false);
                     view.updateMsg("该应用不允许被用户运行");
                 }
                 RxJavaUtils.doUnsubscribe(this);

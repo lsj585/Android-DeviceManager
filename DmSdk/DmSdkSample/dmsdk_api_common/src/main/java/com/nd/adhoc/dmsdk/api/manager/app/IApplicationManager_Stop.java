@@ -15,5 +15,5 @@ public interface IApplicationManager_Stop extends IDeviceManager {
      * 停止某个应用
      * @param packageName 包名
      */
-    void stopApp(@NonNull Context context, String packageName) throws DeviceManagerSecurityException;
+    void stopApp(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException;
 }

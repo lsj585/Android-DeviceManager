@@ -1,1 +1,2 @@
-com.nd.adhoc.dmsdk.api.provider.knox.hardware.DeviceLockManagerImpl
+#com.nd.adhoc.dmsdk.api.provider.knox.hardware.DeviceLockManagerImpl
+com.nd.adhoc.dmsdk.api.provider.aosp.hardware.DeviceLockManagerImpl

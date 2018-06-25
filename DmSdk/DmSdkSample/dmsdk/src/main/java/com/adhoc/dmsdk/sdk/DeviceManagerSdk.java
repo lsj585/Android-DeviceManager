@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.IDeviceManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_GetPackageList;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Run;
@@ -99,7 +101,7 @@ public class DeviceManagerSdk {
         maps.put(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWINSTALL,new RealObject(ISecurityManager_DisallowInstall.class));
         maps.put(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWRUN,new RealObject(ISecurityManager_DisallowRun.class));
         maps.put(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWSTOP,new RealObject(ISecurityManager_DisallowStop.class));
-        maps.put(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWSTOP,new RealObject(ISystemManager_ApplicationList.class));
+//        maps.put(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWSTOP,new RealObject(ISystemManager_ApplicationList.class));
         /**
          * system
          */
@@ -149,7 +151,7 @@ public class DeviceManagerSdk {
      * @param manager
      * @return
      */
-    public IDeviceManager getManager(String manager) throws UnsupportedOperationException {
+    public IDeviceManager getManager(String manager) throws DeviceManagerUnsupportException {
         IDeviceManager dManager=null;
         RealObject<IDeviceManager> realObject = maps.get(manager);
         //TODO ZYB 通过注解标识找到对应的manager类，以保证多个provider产品下的api对应的实现类被调起
@@ -161,7 +163,7 @@ public class DeviceManagerSdk {
             dManager=iterator.next();
         }
         if(dManager==null){
-            throw new UnsupportedOperationException("未找到与该方法匹配的API");
+            throw new DeviceManagerUnsupportException(ErrorCode.DEFAULT_OPERATION_ERROR);
         }
         return dManager;
     }
@@ -218,6 +220,8 @@ public class DeviceManagerSdk {
             licenseManagerActive = (ILicenseManager_Active) getManager(DeviceManagerContainer.MANAGER_LICENSE_ACTIVE);
         } catch (UnsupportedOperationException e) {
             e.printStackTrace();
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
         }
         if(licenseManagerActive != null){
             try {
@@ -237,6 +241,8 @@ public class DeviceManagerSdk {
         try {
             licenseManagerActive = (ILicenseManager_DeActive) getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWINSTALL);
         } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+        } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
         }
         if(licenseManagerActive != null){

@@ -1,1 +1,2 @@
-com.nd.adhoc.dmsdk.api.provider.knox.hardware.BluetoothManagerImpl
+#com.nd.adhoc.dmsdk.api.provider.knox.hardware.BluetoothManagerImpl
+com.nd.adhoc.dmsdk.api.provider.aosp.hardware.BluetoothManagerImpl

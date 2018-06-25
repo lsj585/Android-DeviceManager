@@ -31,9 +31,9 @@ public class LisenceManagerImpl_Active implements ILicenseManager_Active {
 
     private String TAG=getClass().getSimpleName();
 
-    private final String ELM_LICENSE_KEY="ELM_LICENSE_KEY";
+    private final static String ELM_LICENSE_KEY="ELM_LICENSE_KEY";
 
-    private final String KEL_LICENSE_KEY="KEL_LICENSE_KEY";
+    private final static String KEL_LICENSE_KEY="KEL_LICENSE_KEY";
 
     @Override
     public void active(@NonNull Context context) throws DeviceManagerSecurityException {
@@ -107,17 +107,16 @@ public class LisenceManagerImpl_Active implements ILicenseManager_Active {
                 throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_LICENSE_FAILURE);
             }
             //验证ELM_LICENSE_KEY 是否配置在Mainifest.xml中
-            if(!TextUtils.isEmpty(metaData.getString(ELM_LICENSE_KEY))){
-                Constants.ELM_LICENSE_KEY=applicationInfo.metaData.getString(ELM_LICENSE_KEY);
-            }else{
+            if(TextUtils.isEmpty(metaData.getString(ELM_LICENSE_KEY))){
+                throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_LICENSE_FAILURE);
+            }
+            Constants.ELM_LICENSE_KEY=applicationInfo.metaData.getString(ELM_LICENSE_KEY);
+
+            if(TextUtils.isEmpty(metaData.getString(KEL_LICENSE_KEY))){
                 throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_LICENSE_FAILURE);
             }
 
-            if(!TextUtils.isEmpty(metaData.getString(KEL_LICENSE_KEY))){
-                Constants.KEL_LICENSE_KEY=applicationInfo.metaData.getString(KEL_LICENSE_KEY);
-            }else{
-                throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_LICENSE_FAILURE);
-            }
+            Constants.KEL_LICENSE_KEY=applicationInfo.metaData.getString(KEL_LICENSE_KEY);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -139,7 +138,6 @@ public class LisenceManagerImpl_Active implements ILicenseManager_Active {
             //抛出异常
             throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
-
         if(componentName==null){
             //抛出异常
             throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
@@ -156,14 +154,15 @@ public class LisenceManagerImpl_Active implements ILicenseManager_Active {
         DevicePolicyManager manager= container.getDevicePolicyManager();
         ComponentName componentName=container.getComponentName();
 
-
         if (!manager.isAdminActive(componentName)) {
             //激活
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
             intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Adding app as an admin to test Knox");
-//            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+
+            if (context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+                context.startActivity(intent);
+            }
         }else{
             Intent intent=new Intent(Constants.LICENSE_STATUS_SUCCESS);
             LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent);

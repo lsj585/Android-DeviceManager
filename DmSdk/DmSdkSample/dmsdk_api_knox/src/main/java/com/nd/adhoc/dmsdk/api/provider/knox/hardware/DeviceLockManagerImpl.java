@@ -8,6 +8,7 @@ import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IDeviceLockManager;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.adhoc.dmsdk.api.provider.utils.Verification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class DeviceLockManagerImpl  implements IDeviceLockManager {
 
     @Override
     public boolean isOpen(@NonNull Context context) throws DeviceManagerSecurityException {
-        RestrictionPolicy restrictionPolicy= verifyIsNull(context);
+        RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
         return restrictionPolicy.isActivationLockAllowed(true);
     }
 
@@ -40,14 +41,14 @@ public class DeviceLockManagerImpl  implements IDeviceLockManager {
 
 
     private void turnOff(@NonNull Context context,boolean isOpen) throws DeviceManagerSecurityException {
-        RestrictionPolicy restrictionPolicy= verifyIsNull(context);
+        RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
         KioskMode kioskMode=KioskMode.getInstance(context);
         try {
             kioskMode.allowHardwareKeys(availableHwKeys,isOpen);
             boolean isSuccess=restrictionPolicy.allowActivationLock(isOpen);
             if(!isSuccess){
                 //TODO zyb 此处需要定义ErrorCode中的枚举值为开启失败
-                throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+                throw  new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
             }
         }catch (SecurityException e){
             //TODO zyb 此处需要定义ErrorCode中的枚举值为开启失败
@@ -56,25 +57,6 @@ public class DeviceLockManagerImpl  implements IDeviceLockManager {
 
 
     }
-
-    /**
-     * 校验从工厂中获取到数值是否为空
-     * @return
-     * @throws DeviceManagerSecurityException
-     */
-    private RestrictionPolicy verifyIsNull(@NonNull Context context) throws DeviceManagerSecurityException {
-
-        if(context==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
-
-        RestrictionPolicy restrictionPolicy= KnoxDeviceManagerFactory.getInstance().getRestrictionPolicy(context);
-        if(restrictionPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
-        return restrictionPolicy;
-    }
-
     /**
      * 设备锁定时，不允许按键响应
      */

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
@@ -74,7 +75,12 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
      * @return
      */
     private  boolean isRunning(Context context,String packageName){
-        IApplicationManager_IsRun applicationManagerIsRun= (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
+        IApplicationManager_IsRun applicationManagerIsRun= null;
+        try {
+            applicationManagerIsRun = (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+        }
         if(applicationManagerIsRun != null){
             try{
                 return applicationManagerIsRun.isRunning(context,packageName);

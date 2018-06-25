@@ -12,11 +12,13 @@ import android.util.Log;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_GetPackageList;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Run;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Stop;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_WipeData;
+import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Uninstall;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowInstall;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowRun;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowUnInstall;
@@ -37,7 +39,7 @@ import java.util.List;
  */
 public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implements IAppManagerModel {
 
-    private List<ApplicationInfoBean> applicationInfoBeans;
+    private List<ApplicationInfoBean> mApplicationInfoBeans;
 
 
     public AppListManagerModel(Context context) {
@@ -47,33 +49,33 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     @Override
     public List<ApplicationInfoBean> getList() {
 
-        if (applicationInfoBeans == null) {
+        if (mApplicationInfoBeans == null) {
 
-            applicationInfoBeans = new ArrayList<ApplicationInfoBean>();
+            mApplicationInfoBeans = new ArrayList<ApplicationInfoBean>();
         }
 
-        applicationInfoBeans.clear();
+        mApplicationInfoBeans.clear();
         return createList();
     }
 
     @Override
     public void update(ApplicationInfoBean applicationInfoBean, int position) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
         }
     }
 
     @Override
     public void delete(ApplicationInfoBean fileInfoBean) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            applicationInfoBeans.remove(fileInfoBean);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            mApplicationInfoBeans.remove(fileInfoBean);
         }
     }
 
     @Override
     public void delete(int position) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            applicationInfoBeans.remove(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            mApplicationInfoBeans.remove(position);
         }
     }
 
@@ -89,7 +91,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public void release() {
-        applicationInfoBeans = null;
+        mApplicationInfoBeans = null;
     }
 
     /**
@@ -98,9 +100,14 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
      * @return
      */
     private List<ApplicationInfoBean> createList() {
-        Log.i(this.getClass().getName(), String.format("showList:%d", applicationInfoBeans.size()));
+        Log.i(this.getClass().getName(), String.format("showList:%d", mApplicationInfoBeans.size()));
         PackageManager pm = this.context.getPackageManager();
-        IApplicationManager_GetPackageList getPackageList = (IApplicationManager_GetPackageList) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_GETPACKAGELIST);
+        IApplicationManager_GetPackageList getPackageList = null;
+        try {
+            getPackageList = (IApplicationManager_GetPackageList) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_GETPACKAGELIST);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+        }
         if (getPackageList != null) {
             List packageNameList = null;
             try {
@@ -118,7 +125,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Log.i(this.getClass().getName(), String.format("showList 2 :%d", applicationInfoBeans.size()));
+                Log.i(this.getClass().getName(), String.format("showList 2 :%d", mApplicationInfoBeans.size()));
 
 
             } catch (DeviceManagerSecurityException e) {
@@ -128,7 +135,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         }
 
 
-        return applicationInfoBeans;
+        return mApplicationInfoBeans;
     }
 
     /**
@@ -143,7 +150,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             PackageInfo packageInfo = packageList.get(packIndex);
             ApplicationInfoBean info = new ApplicationInfoBean();
             info.setName(packageInfo.applicationInfo.loadLabel(pm).toString());
-            applicationInfoBeans.add(info);
+            mApplicationInfoBeans.add(info);
             Log.i(this.getClass().getName(), String.format("packageNameList[i]:%s", packageInfo.packageName));
             info.setPackageName(packageInfo.packageName);
             productAppInfoLauncherName(pm, packageInfo, info);
@@ -157,28 +164,6 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             info.setAllowStopApp(true);
         }
     }
-
-
-    /**
-     * 是否在后台启动
-     *
-     * @param context
-     * @param packageName
-     * @return
-     */
-    private boolean isRunning(Context context, String packageName) {
-        IApplicationManager_IsRun applicationManagerIsRun = (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
-        if (applicationManagerIsRun != null) {
-            try {
-                return applicationManagerIsRun.isRunning(context, packageName);
-            } catch (DeviceManagerSecurityException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        return false;
-    }
-
     /**
      * 生成Package所对应的属性值
      *
@@ -239,9 +224,14 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean startApp(int position) {
-        ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
         if (bean != null && bean.getPackageName() != null && bean.getLauncherName() != null) {
-            IApplicationManager_Run applicationManagerRun = (IApplicationManager_Run) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_RUN);
+            IApplicationManager_Run applicationManagerRun = null;
+            try {
+                applicationManagerRun = (IApplicationManager_Run) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_RUN);
+            } catch (DeviceManagerUnsupportException e) {
+                e.printStackTrace();
+            }
             try {
                 applicationManagerRun.startApp(context, bean.getPackageName(), bean.getLauncherName());
                 return true;
@@ -257,10 +247,15 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean stopApp(int position) {
-        ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
         if (bean != null && bean.getPackageName() != null) {
             if (bean.isAllowStopApp()) {
-                IApplicationManager_Stop applicationManagerStop = (IApplicationManager_Stop) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_STOP);
+                IApplicationManager_Stop applicationManagerStop = null;
+                try {
+                    applicationManagerStop = (IApplicationManager_Stop) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_STOP);
+                } catch (DeviceManagerUnsupportException e) {
+                    e.printStackTrace();
+                }
                 try {
                     applicationManagerStop.stopApp(context, bean.getPackageName());
                     return true;
@@ -278,19 +273,25 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean wipeData(int position) {
-        ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
         if (bean != null && bean.getPackageName() != null) {
             if (bean.isAllowClearData()) {
-                IApplicationManager_WipeData applicationManagerWipeData = (IApplicationManager_WipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_WIPEDATA);
+                IApplicationManager_WipeData applicationManagerWipeData = null;
+                try {
+                    applicationManagerWipeData = (IApplicationManager_WipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_WIPEDATA);
+                } catch (DeviceManagerUnsupportException e) {
+                    e.printStackTrace();
+                }
                 try {
                     applicationManagerWipeData.clearData(context, bean.getPackageName());
                     return true;
                 } catch (DeviceManagerSecurityException e) {
                     e.printStackTrace();
-                    return false;
+
+                } catch (DeviceManagerUnsupportException e) {
+                    e.printStackTrace();
                 }
-
-
+                return false;
             } else {
                 return false;
             }
@@ -301,8 +302,8 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public void update(int position, boolean isSuccess) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             //执行成功或失败
             if (isSuccess) {
                 update(bean, position);
@@ -312,8 +313,8 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public void updateWipeStatus(int position) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             //执行成功或失败
             bean.setRamUsage(0);
             bean.setApplicationDataSizeUsage(0);
@@ -324,15 +325,15 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean uninstallApp(int position) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             //判断是否允许卸载
             if (bean.isAllowUninstall()) {
                 try {
 
-                    ISecurityManager_AllowInstall securityManagerAllowInstall = (ISecurityManager_AllowInstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWINSTALL);
+                    IPackageManager_Uninstall uninstall = (IPackageManager_Uninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_UNINSTALL);
                     try {
-                        securityManagerAllowInstall.removePackageToInstallList(context, bean.getPackageName());
+                        uninstall.uninstall(context, bean.getPackageName());
                         return true;
                     } catch (DeviceManagerSecurityException e) {
                         e.printStackTrace();
@@ -351,8 +352,8 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean unallowRunning(int position) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             List list = null;
             try {
                 list = new ArrayList();
@@ -387,12 +388,17 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     @Override
     public boolean allowDaemon(int position) {
 
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             List list = null;
 
 
-            ISecurityManager_DisallowStop securityManagerDisalloStop = (ISecurityManager_DisallowStop) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWSTOP);
+            ISecurityManager_DisallowStop securityManagerDisalloStop = null;
+            try {
+                securityManagerDisalloStop = (ISecurityManager_DisallowStop) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWSTOP);
+            } catch (DeviceManagerUnsupportException e) {
+                e.printStackTrace();
+            }
             if (securityManagerDisalloStop != null) {
                 try {
                     list = new ArrayList();
@@ -416,10 +422,15 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean forceClearData(int viewPosition) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
             List list = null;
-            ISecurityManager_DisallowWipeData wipeData = (ISecurityManager_DisallowWipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWWIPEDATA);
+            ISecurityManager_DisallowWipeData wipeData = null;
+            try {
+                wipeData = (ISecurityManager_DisallowWipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWWIPEDATA);
+            } catch (DeviceManagerUnsupportException e) {
+                e.printStackTrace();
+            }
             if (wipeData != null) {
                 try {
                     list = new ArrayList();
@@ -441,8 +452,8 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public void updateToClearData(int position, boolean isClearData) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             //执行成功或失败
             bean.setAllowClearData(isClearData);
             update(bean, position);
@@ -451,8 +462,8 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public void updateToRunning(int position, boolean isRunning) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             //执行成功或失败
             bean.setAllowRunning(isRunning);
             update(bean, position);
@@ -461,8 +472,8 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public void updateToUninstall(int position, boolean isUninstall) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             //执行成功或失败
             bean.setAllowUninstall(isUninstall);
             update(bean, position);
@@ -471,8 +482,8 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public void updateToStopApp(int position, boolean isStop) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(position);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
             //执行成功或失败
             bean.setAllowStopApp(isStop);
             update(bean, position);
@@ -481,9 +492,14 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean forceUnInstall(int viewPosition) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
-            ISecurityManager_DisallowUninstall disallowUninstall = (ISecurityManager_DisallowUninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWUNINSTALL);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
+            ISecurityManager_DisallowUninstall disallowUninstall = null;
+            try {
+                disallowUninstall = (ISecurityManager_DisallowUninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWUNINSTALL);
+            } catch (DeviceManagerUnsupportException e) {
+                e.printStackTrace();
+            }
             if (disallowUninstall != null) {
                 try {
                     disallowUninstall.addPackageToUninstallList(context, bean.getPackageName());
@@ -491,6 +507,8 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
                 } catch (DeviceManagerSecurityException e) {
                     e.printStackTrace();
                     return false;
+                } catch (DeviceManagerUnsupportException e) {
+                    e.printStackTrace();
                 }
             }
         } else {
@@ -501,10 +519,15 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean allowRunApp(int viewPosition) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
             List list = null;
-            ISecurityManager_AllowRun allowInstall = (ISecurityManager_AllowRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWRUN);
+            ISecurityManager_AllowRun allowInstall = null;
+            try {
+                allowInstall = (ISecurityManager_AllowRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWRUN);
+            } catch (DeviceManagerUnsupportException e) {
+                e.printStackTrace();
+            }
             if (allowInstall != null) {
                 try {
                     list = new ArrayList();
@@ -526,10 +549,15 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean allowClearData(int viewPosition) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
             List list = null;
-            ISecurityManager_AllowWipeData allowWipeData = (ISecurityManager_AllowWipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWWIPEDATA);
+            ISecurityManager_AllowWipeData allowWipeData = null;
+            try {
+                allowWipeData = (ISecurityManager_AllowWipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWWIPEDATA);
+            } catch (DeviceManagerUnsupportException e) {
+                e.printStackTrace();
+            }
             if (allowWipeData != null) {
                 try {
                     list = new ArrayList();
@@ -550,9 +578,14 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean allowUninstall(int viewPosition) {
-        if (applicationInfoBeans != null && applicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = applicationInfoBeans.get(viewPosition);
-            ISecurityManager_AllowUnInstall allowUnInstall = (ISecurityManager_AllowUnInstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWUNINSTALL);
+        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
+            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
+            ISecurityManager_AllowUnInstall allowUnInstall = null;
+            try {
+                allowUnInstall = (ISecurityManager_AllowUnInstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWUNINSTALL);
+            } catch (DeviceManagerUnsupportException e) {
+                e.printStackTrace();
+            }
             if (allowUnInstall != null) {
                 try {
                     allowUnInstall.removePackageToUninstallList(context, bean.getPackageName());

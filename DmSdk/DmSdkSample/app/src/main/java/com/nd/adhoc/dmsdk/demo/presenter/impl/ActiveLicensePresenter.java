@@ -12,8 +12,6 @@ import com.nd.adhoc.dmsdk.demo.view.BaseView;
  */
 public class ActiveLicensePresenter extends BasePresenter<BaseView,BaseModel> implements IActivePresenter {
 
-    private DeviceManagerSdk deviceManagerSdk;
-
     public ActiveLicensePresenter(Context context, BaseView view) {
         super(context, view);
     }

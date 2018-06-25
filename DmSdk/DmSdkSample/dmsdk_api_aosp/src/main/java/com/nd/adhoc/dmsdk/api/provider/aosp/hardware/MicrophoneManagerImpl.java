@@ -12,6 +12,7 @@ import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IMicrophoneManager;
+import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 
 public class MicrophoneManagerImpl implements IMicrophoneManager {
 
@@ -27,33 +28,7 @@ public class MicrophoneManagerImpl implements IMicrophoneManager {
 
     @Override
     public boolean isOpen(@NonNull Context context) throws DeviceManagerSecurityException {
-        DeviceManagerContainer container = DeviceManagerContainer.getInstance();
-
-        DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
-
-        ComponentName componentName = container.getComponentName();
-
-        if (container.getComponentName() == null) {
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
-
-        if (devicePolicyManager == null) {
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
-        try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                Bundle bundle= devicePolicyManager.getUserRestrictions(componentName);
-                if(bundle != null) {
-                    return bundle.getBoolean(UserManager.DISALLOW_UNMUTE_MICROPHONE);
-                }else{
-                    throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_ERROR_CODE);
-                }
-            }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
-        return false;
+        return DeviceControlUtils.isOpen(context,UserManager.DISALLOW_UNMUTE_MICROPHONE);
     }
 
     @Override
@@ -63,40 +38,6 @@ public class MicrophoneManagerImpl implements IMicrophoneManager {
 
 
     private void turnOff(@NonNull Context context,boolean isOpen) throws DeviceManagerSecurityException {
-        DeviceManagerContainer container = DeviceManagerContainer.getInstance();
-
-        DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
-
-        ComponentName componentName = container.getComponentName();
-
-        if (container.getComponentName() == null) {
-            return;
-        }
-
-        if (devicePolicyManager == null) {
-            return;
-        }
-
-        if(isOpen){
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    devicePolicyManager.addUserRestriction(componentName, UserManager.DISALLOW_UNMUTE_MICROPHONE);
-                }else{
-                    throw  new DeviceManagerSecurityException(ErrorCode.DEFAULT_ERROR_CODE);
-                }
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }else{
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    devicePolicyManager.clearUserRestriction(componentName, UserManager.DISALLOW_UNMUTE_MICROPHONE);
-                }else{
-                    throw  new DeviceManagerSecurityException(ErrorCode.DEFAULT_ERROR_CODE);
-                }
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
+        DeviceControlUtils.operation(context,isOpen,UserManager.DISALLOW_UNMUTE_MICROPHONE);
     }
 }
