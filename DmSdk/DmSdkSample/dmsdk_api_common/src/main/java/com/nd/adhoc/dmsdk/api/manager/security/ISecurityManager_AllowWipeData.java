@@ -16,11 +16,11 @@ public interface ISecurityManager_AllowWipeData extends IDeviceManager {
      * 从黑名单中移除被限制清理应用数据的应用列表
      * @param packages 应用清单
      */
-    void removePackageToClearDataList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
+    boolean removePackageToClearDataList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
 
     /**
      * 从黑名单中移除被限制清理应用缓存的应用列表
      * @param packages 应用清单
      */
-    void removePackageToClearCacheList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
+    boolean removePackageToClearCacheList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
 }

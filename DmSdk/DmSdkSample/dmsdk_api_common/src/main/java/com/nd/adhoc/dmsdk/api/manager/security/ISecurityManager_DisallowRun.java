@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.api.IDeviceManager;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
 
 import java.util.List;
 
@@ -18,5 +19,5 @@ public interface ISecurityManager_DisallowRun extends IDeviceManager {
      * @param packages 需要被禁用的APP列表
      * @throws DeviceManagerSecurityException
      */
-    void addPackageToRunList(@NonNull Context context,@NonNull List packages) throws DeviceManagerSecurityException;
+    boolean addPackageToRunList(@NonNull Context context,@NonNull List packages) throws DeviceManagerSecurityException, DeviceManagerUnsupportException;
 }

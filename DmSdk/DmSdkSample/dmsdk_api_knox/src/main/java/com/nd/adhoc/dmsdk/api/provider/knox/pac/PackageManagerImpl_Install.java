@@ -20,7 +20,7 @@ public class PackageManagerImpl_Install implements IPackageManager_Install {
     }
 
     @Override
-    public void install(@NonNull Context context, @NonNull String apKFile) throws DeviceManagerSecurityException, FileNotFoundException {
+    public boolean install(@NonNull Context context, @NonNull String apKFile) throws DeviceManagerSecurityException, FileNotFoundException {
 
         if (TextUtils.isEmpty(apKFile)) {
             throw new NullPointerException("");
@@ -34,19 +34,15 @@ public class PackageManagerImpl_Install implements IPackageManager_Install {
         try {
             ApplicationPolicy applicationPolicy = KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
             if (applicationPolicy == null) {
-                throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+                return false;
             }
-            boolean isSuccess = applicationPolicy.installApplication(apKFile, false);
-            if (!isSuccess) {
-                throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-            }
-        } catch (SecurityException e) {
+            return applicationPolicy.installApplication(apKFile, false);
+        } catch (SecurityException  e ) {
             e.printStackTrace();
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            //TODO zyb 此处最高异常待定，需要核对API
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+
     }
 }

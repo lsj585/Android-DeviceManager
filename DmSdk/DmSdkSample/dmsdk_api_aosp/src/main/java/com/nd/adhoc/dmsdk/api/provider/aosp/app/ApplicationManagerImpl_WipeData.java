@@ -20,12 +20,12 @@ public class ApplicationManagerImpl_WipeData implements IApplicationManager_Wipe
     }
 
     @Override
-    public void clearData(@NonNull Context context,String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException {
+    public boolean clearData(@NonNull Context context,String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException {
 
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
         if(container==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
 
         DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
@@ -37,21 +37,13 @@ public class ApplicationManagerImpl_WipeData implements IApplicationManager_Wipe
         if (Build.VERSION.SDK_INT >= 28) {
             try{
                 devicePolicyManager.clearApplicationUserData(componentName,packageName,context.getMainExecutor(),null);
+                return true;
             }catch (SecurityException e){
                 e.printStackTrace();
-                throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
             }
-        }else{
-            throw new DeviceManagerUnsupportException(ErrorCode.ERROR_CODE_UN_SUPPORT);
+            return false;
         }
+        throw new DeviceManagerUnsupportException(ErrorCode.ERROR_CODE_UN_SUPPORT);
 
     }
-
-
-//    private DevicePolicyManager.OnClearApplicationUserDataListener listener=new DevicePolicyManager.OnClearApplicationUserDataListener() {
-//        @Override
-//        public void onApplicationUserDataCleared(String packageName, boolean succeeded) {
-//
-//        }
-//    };
 }

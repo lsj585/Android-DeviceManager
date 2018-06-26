@@ -11,13 +11,25 @@ import com.nd.adhoc.dmsdk.api.provider.utils.Verification;
 public class MicrophoneManagerImpl implements IMicrophoneManager {
 
     @Override
-    public void open(@NonNull Context context) throws DeviceManagerSecurityException {
-        turnOff(context,true);
+    public boolean open(@NonNull Context context) throws DeviceManagerSecurityException {
+        try {
+            turnOff(context,true);
+        }catch (DeviceManagerSecurityException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public void close(@NonNull Context context) throws DeviceManagerSecurityException {
-        turnOff(context,false);
+    public boolean close(@NonNull Context context) throws DeviceManagerSecurityException {
+        try {
+            turnOff(context,false);
+        }catch (DeviceManagerSecurityException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override

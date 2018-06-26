@@ -15,5 +15,5 @@ public interface IApplicationManager_Run extends IDeviceManager {
      * @param packageName 包名
      * @param clsName apk所对应的launcher_activity的类名
      */
-    void startApp(@NonNull Context context, String packageName, String clsName) throws DeviceManagerSecurityException;
+    boolean startApp(@NonNull Context context, @NonNull String packageName,@NonNull String clsName) throws DeviceManagerSecurityException;
 }

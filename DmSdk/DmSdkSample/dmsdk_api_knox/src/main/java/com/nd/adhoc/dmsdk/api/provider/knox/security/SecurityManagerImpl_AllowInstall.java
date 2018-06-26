@@ -10,19 +10,20 @@ import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 public class SecurityManagerImpl_AllowInstall  implements ISecurityManager_AllowInstall {
 
     @Override
-    public void removePackageToInstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException {
+    public boolean removePackageToInstallList(@NonNull Context context, @NonNull String packageName){
 
         ApplicationPolicy applicationPolicy= KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
             applicationPolicy.setApplicationUninstallationDisabled(packageName);
+            return true;
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return false;
     }
 
     @Override

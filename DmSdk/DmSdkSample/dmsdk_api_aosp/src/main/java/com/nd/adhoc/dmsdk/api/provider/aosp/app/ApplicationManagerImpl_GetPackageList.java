@@ -20,7 +20,7 @@ public class ApplicationManagerImpl_GetPackageList implements IApplicationManage
     }
 
     @Override
-    public List<String> getApplicationPackageList(@NonNull Context context) throws DeviceManagerSecurityException {
+    public List<String> getApplicationPackageList(@NonNull Context context){
         List<String> packages=new ArrayList<String>();
         PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(0);

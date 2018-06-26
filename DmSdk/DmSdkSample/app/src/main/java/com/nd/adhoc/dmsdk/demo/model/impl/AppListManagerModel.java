@@ -60,9 +60,6 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public void update(ApplicationInfoBean applicationInfoBean, int position) {
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
-        }
     }
 
     @Override
@@ -108,33 +105,25 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
         }
-        if (getPackageList != null) {
-            List packageNameList = null;
-            try {
-                packageNameList = getPackageList.getApplicationPackageList(context);
-
-                List<PackageInfo> packageList = new ArrayList<PackageInfo>();
-                try {
-                    if (packageNameList != null && packageNameList.size() > 0) {
-                        productPackageList(packageNameList, packageList, pm);
-                    }
-                    if (packageList.size() > 0) {
-                        productNoSystemPakcgaes(packageList, pm);
-                    }
-                    packageList.clear();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Log.i(this.getClass().getName(), String.format("showList 2 :%d", mApplicationInfoBeans.size()));
-
-
-            } catch (DeviceManagerSecurityException e) {
-                e.printStackTrace();
-            }
-
+        if (getPackageList == null) {
+            return null;
+        }
+        List packageNameList = null;
+        try {
+            packageNameList = getPackageList.getApplicationPackageList(context);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
         }
 
+        List<PackageInfo> packageList = new ArrayList<PackageInfo>();
 
+        if (packageNameList != null && packageNameList.size() > 0) {
+            productPackageList(packageNameList, packageList, pm);
+        }
+        if (packageList.size() > 0) {
+            productNoSystemPakcgaes(packageList, pm);
+        }
+        Log.i(this.getClass().getName(), String.format("showList 2 :%d", mApplicationInfoBeans.size()));
         return mApplicationInfoBeans;
     }
 
@@ -164,6 +153,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             info.setAllowStopApp(true);
         }
     }
+
     /**
      * 生成Package所对应的属性值
      *
@@ -178,7 +168,12 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> resolveinfoList = pm.queryIntentActivities(resolveIntent, 0);
         String laucnhActivity = null;
-        if (resolveinfoList != null && resolveinfoList.size() > 0) {
+
+        if (resolveinfoList == null) {
+            return;
+        }
+
+        if (resolveinfoList.size() > 0) {
 
             OUTER:
             for (int index = 0; index < resolveinfoList.size(); index++) {
@@ -208,15 +203,13 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
+                return;
             }
-            if (packageInfo != null) {
-                //判断是否是系统应用 如果是系统应用则不处理
-                if ((packageInfo.applicationInfo.flags & android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0) {
-
-                } else {
-                    packageInfos.add(packageInfo);
-                }
+            //判断是否是系统应用 如果是系统应用则不处理
+            if ((packageInfo.applicationInfo.flags & android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0) {
+                return;
             }
+            packageInfos.add(packageInfo);
         }
 
     }
@@ -224,80 +217,85 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean startApp(int position) {
-        ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
-        if (bean != null && bean.getPackageName() != null && bean.getLauncherName() != null) {
-            IApplicationManager_Run applicationManagerRun = null;
-            try {
-                applicationManagerRun = (IApplicationManager_Run) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_RUN);
-            } catch (DeviceManagerUnsupportException e) {
-                e.printStackTrace();
-            }
-            try {
-                applicationManagerRun.startApp(context, bean.getPackageName(), bean.getLauncherName());
-                return true;
-            } catch (DeviceManagerSecurityException e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else {
+
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(position);
+        if (bean == null) {
+            return false;
+        }
+        if (bean.getLauncherName() == null) {
             return false;
         }
 
+        IApplicationManager_Run applicationManagerRun = null;
+        try {
+            applicationManagerRun = (IApplicationManager_Run) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_RUN);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        try {
+            applicationManagerRun.startApp(context, bean.getPackageName(), bean.getLauncherName());
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
+
 
     @Override
     public boolean stopApp(int position) {
-        ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
-        if (bean != null && bean.getPackageName() != null) {
-            if (bean.isAllowStopApp()) {
-                IApplicationManager_Stop applicationManagerStop = null;
-                try {
-                    applicationManagerStop = (IApplicationManager_Stop) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_STOP);
-                } catch (DeviceManagerUnsupportException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    applicationManagerStop.stopApp(context, bean.getPackageName());
-                    return true;
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else {
+
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(position);
+        if (bean == null) {
             return false;
         }
+
+        if (!bean.isAllowStopApp()) {
+            return false;
+        }
+
+        IApplicationManager_Stop applicationManagerStop = null;
+        try {
+            applicationManagerStop = (IApplicationManager_Stop) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_STOP);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        try {
+            applicationManagerStop.stopApp(context, bean.getPackageName());
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+
+        }
+        return false;
     }
 
     @Override
     public boolean wipeData(int position) {
-        ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
-        if (bean != null && bean.getPackageName() != null) {
-            if (bean.isAllowClearData()) {
-                IApplicationManager_WipeData applicationManagerWipeData = null;
-                try {
-                    applicationManagerWipeData = (IApplicationManager_WipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_WIPEDATA);
-                } catch (DeviceManagerUnsupportException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    applicationManagerWipeData.clearData(context, bean.getPackageName());
-                    return true;
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-
-                } catch (DeviceManagerUnsupportException e) {
-                    e.printStackTrace();
-                }
-                return false;
-            } else {
-                return false;
-            }
-        } else {
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(position);
+        if (bean == null) {
             return false;
         }
+        IApplicationManager_WipeData applicationManagerWipeData = null;
+        try {
+            applicationManagerWipeData = (IApplicationManager_WipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_WIPEDATA);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            applicationManagerWipeData.clearData(context, bean.getPackageName());
+            return true;
+        } catch (DeviceManagerSecurityException | DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+        }
+        return false;
+
     }
 
     @Override
@@ -325,130 +323,108 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean uninstallApp(int position) {
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
-            //判断是否允许卸载
-            if (bean.isAllowUninstall()) {
-                try {
 
-                    IPackageManager_Uninstall uninstall = (IPackageManager_Uninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_UNINSTALL);
-                    try {
-                        uninstall.uninstall(context, bean.getPackageName());
-                        return true;
-                    } catch (DeviceManagerSecurityException e) {
-                        e.printStackTrace();
-                        return false;
-                    }
-                } catch (Exception e) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        } else {
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(position);
+        if (bean == null) {
             return false;
         }
+        //判断是否允许卸载
+        if (!bean.isAllowUninstall()) {
+            return false;
+        }
+
+        IPackageManager_Uninstall uninstall = null;
+        try {
+            uninstall = (IPackageManager_Uninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_UNINSTALL);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            uninstall.uninstall(context, bean.getPackageName());
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public boolean unallowRunning(int position) {
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
-            List list = null;
-            try {
-                list = new ArrayList();
-                list.add(bean.getPackageName());
-                try {
 
-                    ISecurityManager_DisallowRun securityManagerDisallowRun = (ISecurityManager_DisallowRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWRUN);
-                    try {
-                        List packages = new ArrayList();
-                        packages.add(bean.getPackageName());
-                        securityManagerDisallowRun.addPackageToRunList(context, packages);
-                        return true;
-                    } catch (DeviceManagerSecurityException e) {
-                        e.printStackTrace();
-                        return false;
-                    }
-                } catch (Exception e) {
-                    return false;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                if (list != null) {
-                    list = null;
-                }
-                return false;
-            }
-        } else {
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(position);
+        if (bean == null) {
             return false;
         }
+
+        ISecurityManager_DisallowRun securityManagerDisallowRun = null;
+        try {
+            securityManagerDisallowRun = (ISecurityManager_DisallowRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWRUN);
+        } catch (DeviceManagerUnsupportException  e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        try {
+            List packages = new ArrayList();
+            packages.add(bean.getPackageName());
+            return securityManagerDisallowRun.addPackageToRunList(context, packages);
+        } catch (DeviceManagerSecurityException  | DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override
     public boolean allowDaemon(int position) {
 
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(position);
-            List list = null;
-
-
-            ISecurityManager_DisallowStop securityManagerDisalloStop = null;
-            try {
-                securityManagerDisalloStop = (ISecurityManager_DisallowStop) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWSTOP);
-            } catch (DeviceManagerUnsupportException e) {
-                e.printStackTrace();
-            }
-            if (securityManagerDisalloStop != null) {
-                try {
-                    list = new ArrayList();
-                    list.add(bean.getPackageName());
-                    List packages = new ArrayList();
-                    packages.add(bean.getPackageName());
-                    securityManagerDisalloStop.addPackageToStopList(context, packages);
-                    return true;
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            } else
-
-            {
-                return false;
-            }
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(position);
+        if (bean == null) {
+            return false;
+        }
+        ISecurityManager_DisallowStop securityManagerDisalloStop = null;
+        try {
+            securityManagerDisalloStop = (ISecurityManager_DisallowStop) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWSTOP);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            List packages = new ArrayList();
+            packages.add(bean.getPackageName());
+            securityManagerDisalloStop.addPackageToStopList(context, packages);
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
     @Override
     public boolean forceClearData(int viewPosition) {
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
-            List list = null;
-            ISecurityManager_DisallowWipeData wipeData = null;
-            try {
-                wipeData = (ISecurityManager_DisallowWipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWWIPEDATA);
-            } catch (DeviceManagerUnsupportException e) {
-                e.printStackTrace();
-            }
-            if (wipeData != null) {
-                try {
-                    list = new ArrayList();
-                    list.add(bean.getPackageName());
-                    wipeData.addPackageToClearCacheList(context, list);
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-                    if (list != null) {
-                        list = null;
-                    }
-                    return false;
-                }
-            }
-        } else {
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(viewPosition);
+        if (bean == null) {
             return false;
+        }
+        ISecurityManager_DisallowWipeData wipeData = null;
+        try {
+            wipeData = (ISecurityManager_DisallowWipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWWIPEDATA);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            List list = new ArrayList();
+            list.add(bean.getPackageName());
+            wipeData.addPackageToClearCacheList(context, list);
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
         }
         return false;
     }
+
 
     @Override
     public void updateToClearData(int position, boolean isClearData) {
@@ -492,111 +468,125 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
 
     @Override
     public boolean forceUnInstall(int viewPosition) {
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
-            ISecurityManager_DisallowUninstall disallowUninstall = null;
-            try {
-                disallowUninstall = (ISecurityManager_DisallowUninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWUNINSTALL);
-            } catch (DeviceManagerUnsupportException e) {
-                e.printStackTrace();
-            }
-            if (disallowUninstall != null) {
-                try {
-                    disallowUninstall.addPackageToUninstallList(context, bean.getPackageName());
-                    return true;
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-                    return false;
-                } catch (DeviceManagerUnsupportException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(viewPosition);
+        if (bean == null) {
             return false;
+        }
+        ISecurityManager_DisallowUninstall disallowUninstall = null;
+        try {
+            disallowUninstall = (ISecurityManager_DisallowUninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWUNINSTALL);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            disallowUninstall.addPackageToUninstallList(context, bean.getPackageName());
+            return true;
+        } catch (DeviceManagerSecurityException | DeviceManagerUnsupportException e) {
+            e.printStackTrace();
         }
         return false;
     }
+
 
     @Override
     public boolean allowRunApp(int viewPosition) {
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
-            List list = null;
-            ISecurityManager_AllowRun allowInstall = null;
-            try {
-                allowInstall = (ISecurityManager_AllowRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWRUN);
-            } catch (DeviceManagerUnsupportException e) {
-                e.printStackTrace();
-            }
-            if (allowInstall != null) {
-                try {
-                    list = new ArrayList();
-                    list.add(bean.getPackageName());
-                    bean.setAllowRunning(true);
-                    allowInstall.removePackageToRunList(context, list);
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-                    if (list != null) {
-                        list = null;
-                    }
-                }
-            }
-        } else {
+
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(viewPosition);
+        if (bean == null) {
             return false;
+        }
+        ISecurityManager_AllowRun allowInstall = null;
+        try {
+            allowInstall = (ISecurityManager_AllowRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWRUN);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            List list = new ArrayList();
+            list.add(bean.getPackageName());
+            bean.setAllowRunning(true);
+            allowInstall.removePackageToRunList(context, list);
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+
         }
         return false;
     }
 
+
     @Override
     public boolean allowClearData(int viewPosition) {
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
-            List list = null;
-            ISecurityManager_AllowWipeData allowWipeData = null;
-            try {
-                allowWipeData = (ISecurityManager_AllowWipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWWIPEDATA);
-            } catch (DeviceManagerUnsupportException e) {
-                e.printStackTrace();
-            }
-            if (allowWipeData != null) {
-                try {
-                    list = new ArrayList();
-                    list.add(bean.getPackageName());
-                    allowWipeData.removePackageToClearCacheList(context, list);
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-                    if (list != null) {
-                        list = null;
-                    }
-                }
-            }
-        } else {
+
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(viewPosition);
+        if (bean == null) {
             return false;
+        }
+        ISecurityManager_AllowWipeData allowWipeData = null;
+        try {
+            allowWipeData = (ISecurityManager_AllowWipeData) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWWIPEDATA);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            List list = new ArrayList();
+            list.add(bean.getPackageName());
+            allowWipeData.removePackageToClearCacheList(context, list);
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
     @Override
     public boolean allowUninstall(int viewPosition) {
-        if (mApplicationInfoBeans != null && mApplicationInfoBeans.size() > 0) {
-            ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
-            ISecurityManager_AllowUnInstall allowUnInstall = null;
-            try {
-                allowUnInstall = (ISecurityManager_AllowUnInstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWUNINSTALL);
-            } catch (DeviceManagerUnsupportException e) {
-                e.printStackTrace();
-            }
-            if (allowUnInstall != null) {
-                try {
-                    allowUnInstall.removePackageToUninstallList(context, bean.getPackageName());
-                } catch (DeviceManagerSecurityException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-        } else {
+
+        ApplicationInfoBean bean = vertifiedMemeberIsNull(viewPosition);
+        if (bean == null) {
             return false;
         }
+        ISecurityManager_AllowUnInstall allowUnInstall = null;
+        try {
+            allowUnInstall = (ISecurityManager_AllowUnInstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_SECURITY_ALLOWUNINSTALL);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            allowUnInstall.removePackageToUninstallList(context, bean.getPackageName());
+            return true;
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
         return false;
+    }
+
+    /**
+     * 校验该对象是否为NULL，为空则返回
+     *
+     * @param viewPosition
+     * @return
+     */
+    private ApplicationInfoBean vertifiedMemeberIsNull(int viewPosition) {
+
+
+        if (mApplicationInfoBeans == null) {
+            return null;
+        }
+        if (mApplicationInfoBeans.size() == 0) {
+            return null;
+        }
+        ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
+        if (bean == null) {
+            return null;
+        }
+        if (bean.getPackageName() == null) {
+            return null;
+        }
+        return bean;
     }
 }

@@ -21,12 +21,13 @@ public class SecurityManagerImpl_AllowRun implements ISecurityManager_AllowRun {
     public void release(@NonNull Context context) {
 
     }
+
     @Override
-    public void removePackageToRunList(@NonNull Context context, @NonNull List list) throws DeviceManagerSecurityException {
+    public boolean removePackageToRunList(@NonNull Context context, @NonNull List list) throws DeviceManagerSecurityException {
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
         if (container == null) {
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
 
         DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
@@ -35,18 +36,17 @@ public class SecurityManagerImpl_AllowRun implements ISecurityManager_AllowRun {
 
         DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
         //清除缓存  Android  P可使用
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            try {
                 devicePolicyManager.setPackagesSuspended(componentName, (String[]) list.toArray(), false);
-            }else{
-                throw new DeviceManagerUnsupportException(ErrorCode.ERROR_CODE_UN_SUPPORT);
+                return true;
+            } catch (SecurityException e) {
+                e.printStackTrace();
             }
-        } catch (SecurityException e) {
-            e.printStackTrace();
-            throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
-        } catch (DeviceManagerUnsupportException e) {
-            e.printStackTrace();
+            return false;
         }
+        throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
     }
 
 }

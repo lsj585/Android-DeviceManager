@@ -25,7 +25,7 @@ public class DeviceControlUtils {
      * @param key 用户策略的KEY 类似UserManager.DISALLOW_BLUETOOTH
      * @throws DeviceManagerSecurityException
      */
-    public   static void operation(@NonNull Context context,boolean isOpen,@NonNull String key) throws DeviceManagerSecurityException {
+    public static void operation(@NonNull Context context,boolean isOpen,@NonNull String key) throws DeviceManagerSecurityException {
 
         if(TextUtils.isEmpty(key)){
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);

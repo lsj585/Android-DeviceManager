@@ -39,9 +39,9 @@ public class PowerManagerImpl_Reboot implements IPowerManager_Reboot {
             }catch (RuntimeException e){
                 e.printStackTrace();
             }
-        }else{
-            throw new UnsupportedOperationException("不支持此API的操作");
+            return;
         }
+        throw new UnsupportedOperationException("不支持此API的操作");
     }
 
     @Override

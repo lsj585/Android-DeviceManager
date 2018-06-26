@@ -24,9 +24,8 @@ public class SystemManagerImpl_GetApplicationList implements ISystemManager_Appl
 
         }catch (SecurityException e){
             e.printStackTrace();
-            //TODO zyb 此处最高异常待定，需要核对API
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return null;
     }
 
     @Override

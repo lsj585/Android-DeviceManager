@@ -16,5 +16,5 @@ public interface ISecurityManager_AllowStop extends IDeviceManager {
      * 从黑名单中移除被限制停止运行应用的应用列表
      * @param pakcages 应用清单
      */
-    void removePackageToStopList(@NonNull Context context, @NonNull List pakcages) throws DeviceManagerSecurityException;
+    boolean removePackageToStopList(@NonNull Context context, @NonNull List pakcages) throws DeviceManagerSecurityException;
 }

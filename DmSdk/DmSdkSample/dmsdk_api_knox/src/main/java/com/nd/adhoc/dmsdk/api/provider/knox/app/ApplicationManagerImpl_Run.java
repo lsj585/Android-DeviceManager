@@ -15,21 +15,18 @@ public class ApplicationManagerImpl_Run implements IApplicationManager_Run {
     }
 
     @Override
-    public void startApp(@NonNull Context context,String packageName,String clsName) throws DeviceManagerSecurityException {
+    public boolean startApp(@NonNull Context context,String packageName,String clsName) throws DeviceManagerSecurityException {
 
         ApplicationPolicy applicationPolicy=KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+           return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
-           boolean isSuccess= applicationPolicy.startApp(packageName, clsName);
-           if(!isSuccess){
-               throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-           }
+           return applicationPolicy.startApp(packageName, clsName);
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return false;
     }
 }

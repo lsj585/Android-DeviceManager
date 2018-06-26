@@ -137,19 +137,21 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
             do {
                 String filePath = cursor.getString(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATA));
                 FileInfoBean fileInfo = getFileInfo(filePath);
-                if (fileInfo != null) {
-                    String name = getFileName(fileInfo.getPath()).toLowerCase();
-                    fileInfo.setLastTime(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATE_MODIFIED)) * 1000 + "");
-                    fileInfo.setName(name);
-                    int lastIndex = name.lastIndexOf(".");
-                    if (lastIndex != -1) {
-                        String temp = name.substring(lastIndex);
-                        if (".apk".equals(temp)) {
-                            //判断文件是否存在
-                            File f = new File(fileInfo.getPath());
-                            if (f.exists())
-                                fileinfoList.add(fileInfo);
-                        }
+
+                if (fileInfo == null) {
+                    continue;
+                }
+                String name = getFileName(fileInfo.getPath()).toLowerCase();
+                fileInfo.setLastTime(cursor.getLong(cursor.getColumnIndex(MediaStore.Files.FileColumns.DATE_MODIFIED)) * 1000 + "");
+                fileInfo.setName(name);
+                int lastIndex = name.lastIndexOf(".");
+                if (lastIndex != -1) {
+                    String temp = name.substring(lastIndex);
+                    if (".apk".equals(temp)) {
+                        //判断文件是否存在
+                        File f = new File(fileInfo.getPath());
+                        if (f.exists())
+                            fileinfoList.add(fileInfo);
                     }
                 }
             } while (cursor.moveToNext());
@@ -158,37 +160,31 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
     }
 
     public boolean install(int position) {
-        FileInfoBean bean = fileinfoList.get(position);
-        bean.setStatus(1);
-        if (bean != null) {
-            IPackageManager_Install mInstall = null;
-            try {
-                mInstall = (IPackageManager_Install) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_INSTALL);
-            } catch (DeviceManagerUnsupportException e) {
-                e.printStackTrace();
-            }
-            if (mInstall != null) {
-                try {
-                    mInstall.install(context, bean.getPath());
-                    return true;
-                } catch (DeviceManagerSecurityException  | FileNotFoundException e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            }
-        } else {
+        if (fileinfoList == null) {
             return false;
         }
-        return false;
-    }
+        if (fileinfoList.size() == 0) {
+            return false;
+        }
+        FileInfoBean bean = fileinfoList.get(position);
+        bean.setStatus(1);
+        if (bean == null) {
+            return false;
+        }
 
-    public boolean forbidInstall(int position) {
-//        FileInfoBean bean =fileinfoList.get(position);
-//        bean.setStatus(0);
-//        if(bean != null){
-//            return manager.installApp(bean.getPath());
-//        }else{
+        IPackageManager_Install mInstall = null;
+        try {
+            mInstall = (IPackageManager_Install) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_INSTALL);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            mInstall.install(context, bean.getPath());
+            return true;
+        } catch (DeviceManagerSecurityException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return false;
-//        }
     }
 }

@@ -38,18 +38,29 @@ public class HardwareAdapter extends RecyclerView.Adapter<HardwareAdapter.HardWa
     @Override
     public void onBindViewHolder(@NonNull HardwareAdapter.HardWareSwitchHolder holder, final int position) {
         Log.i(this.getClass().getName(),String.format("Get list=%d",mList.size()));
-        if(mList.size()>0 && mList.get(position) != null) {
-            holder.tvHardwareName.setText(mList.get(position).getName());
-            holder.tvHardWareStatus.setText(mList.get(position).getStatus()==0?"关":"开");
-            holder.itemView.setTag(position);
-            holder.itemView.setOnClickListener(itemClickListener);
-            if(mList.get(position).isDesiplaySave() && mList.get(position).getStatus()==0){
-                holder.ivHardWareStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_signal_gray));
-                holder.tvDevicePolicy.setVisibility(View.VISIBLE);
-            }else{
-                holder.ivHardWareStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_signal_green));
-                holder.tvDevicePolicy.setVisibility(View.GONE);
-            }
+
+        if(mList==null){
+            return;
+        }
+
+        if(mList.size()==0){
+            return ;
+        }
+
+        if(mList.get(position)==null){
+            return;
+        }
+
+        holder.tvHardwareName.setText(mList.get(position).getName());
+        holder.tvHardWareStatus.setText(mList.get(position).getStatus()==0?"关":"开");
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(itemClickListener);
+        if(mList.get(position).isDesiplaySave() && mList.get(position).getStatus()==0){
+            holder.ivHardWareStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_signal_gray));
+            holder.tvDevicePolicy.setVisibility(View.VISIBLE);
+        }else{
+            holder.ivHardWareStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_signal_green));
+            holder.tvDevicePolicy.setVisibility(View.GONE);
         }
     }
 
@@ -79,12 +90,13 @@ public class HardwareAdapter extends RecyclerView.Adapter<HardwareAdapter.HardWa
 
     public void setData(List list){
 
-        if(mList != null && mList.size()>0){
+        if(mList==null){
+            return;
+        }
+        if(mList.size()>0){
             mList.clear();
         }
-        if(list != null) {
-            mList.addAll(list);
-        }
+        mList.addAll(list);
     }
 
     public  interface OnItemClickListener {

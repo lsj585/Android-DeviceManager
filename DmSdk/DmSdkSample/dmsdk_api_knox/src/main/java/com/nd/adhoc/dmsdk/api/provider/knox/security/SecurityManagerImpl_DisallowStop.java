@@ -16,17 +16,17 @@ public class SecurityManagerImpl_DisallowStop  implements ISecurityManager_Disal
 
     }
     @Override
-    public void addPackageToStopList(@NonNull Context context, @NonNull List list) throws DeviceManagerSecurityException {
+    public boolean addPackageToStopList(@NonNull Context context, @NonNull List list){
         ApplicationPolicy applicationPolicy=KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
-            applicationPolicy.addPackagesToForceStopBlackList(list);
+            return applicationPolicy.addPackagesToForceStopBlackList(list);
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return false;
     }
 }

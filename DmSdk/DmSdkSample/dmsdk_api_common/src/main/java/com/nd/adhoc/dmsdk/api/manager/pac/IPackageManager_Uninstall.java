@@ -16,6 +16,6 @@ public interface IPackageManager_Uninstall extends IDeviceManager {
      * 卸载应用
      * @param packageName 需要被卸载的应用的包名
      */
-    void uninstall(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException;
+    boolean uninstall(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException;
 
 }

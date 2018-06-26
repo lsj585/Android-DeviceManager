@@ -14,17 +14,21 @@ public class SecurityManagerImpl_DisallowRun implements ISecurityManager_Disallo
 
     }
     @Override
-    public void addPackageToRunList(@NonNull Context context, @NonNull List list) throws DeviceManagerSecurityException {
+    public boolean addPackageToRunList(@NonNull Context context, @NonNull List list){
         ApplicationPolicy applicationPolicy=KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
-            applicationPolicy.addPackagesToPreventStartBlackList(list);
+            List<String> blacks= applicationPolicy.addPackagesToPreventStartBlackList(list);
+            if(blacks==null){
+                return false;
+            }
+            return true;
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return false;
     }
 }

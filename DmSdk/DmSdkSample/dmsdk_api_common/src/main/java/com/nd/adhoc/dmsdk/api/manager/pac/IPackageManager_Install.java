@@ -17,5 +17,5 @@ public interface IPackageManager_Install extends IDeviceManager {
      *
      * @param apKFile 路径
      */
-    void install(@NonNull Context context, @NonNull String apKFile) throws DeviceManagerSecurityException, FileNotFoundException;
+    boolean install(@NonNull Context context, @NonNull String apKFile) throws DeviceManagerSecurityException, FileNotFoundException;
 }

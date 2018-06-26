@@ -15,20 +15,18 @@ public class ApplicationManagerImpl_Stop  implements IApplicationManager_Stop {
     }
 
     @Override
-    public void stopApp(@NonNull Context context,String packageName) throws DeviceManagerSecurityException {
+    public boolean stopApp(@NonNull Context context,String packageName) throws DeviceManagerSecurityException {
 
         ApplicationPolicy applicationPolicy=KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
-            boolean isSuccess= applicationPolicy.stopApp(packageName);
-            if(!isSuccess){
-                throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-            }
+            return applicationPolicy.stopApp(packageName);
         }catch (SecurityException e){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            e.printStackTrace();
         }
+        return false;
     }
 }

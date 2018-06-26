@@ -22,9 +22,7 @@ public class SystemManagerImpl_RestoreProduct implements ISystemManager_RestoreP
     @Override
     public void execute() throws DeviceManagerSecurityException {
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
-
         DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
-
         if (devicePolicyManager == null) {
             throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }

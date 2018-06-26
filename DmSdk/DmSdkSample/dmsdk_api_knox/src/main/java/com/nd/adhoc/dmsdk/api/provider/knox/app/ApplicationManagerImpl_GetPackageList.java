@@ -32,7 +32,7 @@ public class ApplicationManagerImpl_GetPackageList  implements IApplicationManag
             return  null;
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return null;
     }
 }

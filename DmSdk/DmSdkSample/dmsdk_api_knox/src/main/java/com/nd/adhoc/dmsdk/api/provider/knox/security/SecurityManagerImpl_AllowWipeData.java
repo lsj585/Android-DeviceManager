@@ -16,32 +16,32 @@ public class SecurityManagerImpl_AllowWipeData  implements  ISecurityManager_All
     }
 
     @Override
-    public void removePackageToClearDataList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException {
+    public boolean removePackageToClearDataList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException {
         ApplicationPolicy applicationPolicy= KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
-            applicationPolicy.removePackagesFromClearDataWhiteList(packages);
+            return applicationPolicy.removePackagesFromClearDataWhiteList(packages);
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return false;
     }
 
     @Override
-    public void removePackageToClearCacheList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException {
+    public boolean removePackageToClearCacheList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException {
         ApplicationPolicy applicationPolicy= KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
             throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
-            applicationPolicy.removePackagesFromClearCacheWhiteList(packages);
+            return applicationPolicy.removePackagesFromClearCacheWhiteList(packages);
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return false;
     }
 }

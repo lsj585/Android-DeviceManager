@@ -1,4 +1,4 @@
-package com.nd.adhoc.dmsdk.demo.presenter.impl;
+package com.nd.adhoc.dmsdk.demo.presenter;
 
 public interface IActivePresenter {
 

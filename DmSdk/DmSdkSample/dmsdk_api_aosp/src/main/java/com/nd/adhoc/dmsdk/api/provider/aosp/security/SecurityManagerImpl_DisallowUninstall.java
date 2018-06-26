@@ -16,11 +16,11 @@ import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 public class SecurityManagerImpl_DisallowUninstall implements ISecurityManager_DisallowUninstall {
 
     @Override
-    public void addPackageToUninstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException {
+    public boolean addPackageToUninstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException {
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
         if (container == null) {
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
 
         DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
@@ -31,12 +31,14 @@ public class SecurityManagerImpl_DisallowUninstall implements ISecurityManager_D
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
                 devicePolicyManager.setUninstallBlocked(componentName, packageName, true);
-            }catch (SecurityException e){
+                return true;
+            } catch (SecurityException e) {
                 e.printStackTrace();
             }
-        }else{
-            throw   new DeviceManagerUnsupportException(ErrorCode.ERROR_CODE_UN_SUPPORT);
+            return false;
         }
+        throw new DeviceManagerUnsupportException(ErrorCode.ERROR_CODE_UN_SUPPORT);
+
     }
 
     @Override

@@ -3,6 +3,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -102,7 +103,9 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.active_device_error), Toast.LENGTH_SHORT).show();
                     }
                 });
-            } else if (intent.getAction().equals(Constants.LICENSE_STATUS_SUCCESS)) {
+                return;
+            }
+            if (intent.getAction().equals(Constants.LICENSE_STATUS_SUCCESS)) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -113,8 +116,11 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
                         Intent intentAction=new Intent();
                         intentAction.setAction(DEFAULT_DEVICE_LAUNCH);
                         intentAction.addCategory(DEFAULT_DEVICE_CATEGORY);
-                        startActivity(intentAction);
-                        finish();
+                        if (getPackageManager().resolveActivity(intentAction, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+                            startActivity(intentAction);
+                            finish();
+                        }
+                        return;
                     }
                 });
             }

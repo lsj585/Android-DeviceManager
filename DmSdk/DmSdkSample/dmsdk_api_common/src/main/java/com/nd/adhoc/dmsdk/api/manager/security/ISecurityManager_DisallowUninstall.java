@@ -17,5 +17,5 @@ public interface ISecurityManager_DisallowUninstall extends IDeviceManager {
      * 添加某个应用被限制卸载的应用列表进黑名单
      * @param packageName 应用包名
      */
-    void addPackageToUninstallList(@NonNull Context context,@NonNull String  packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException;
+    boolean addPackageToUninstallList(@NonNull Context context,@NonNull String  packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException;
 }

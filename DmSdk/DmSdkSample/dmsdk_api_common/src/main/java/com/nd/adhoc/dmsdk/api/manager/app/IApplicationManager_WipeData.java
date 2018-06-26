@@ -15,5 +15,5 @@ public interface IApplicationManager_WipeData extends IDeviceManager {
      * 移除数据
      * @param packageName 包名
      */
-    void clearData(@NonNull Context context,  @NonNull String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException;
+    boolean clearData(@NonNull Context context,  @NonNull String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException;
 }

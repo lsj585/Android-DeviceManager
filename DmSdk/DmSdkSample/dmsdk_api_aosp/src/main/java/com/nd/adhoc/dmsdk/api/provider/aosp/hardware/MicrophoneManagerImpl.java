@@ -1,29 +1,33 @@
 package com.nd.adhoc.dmsdk.api.provider.aosp.hardware;
-
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.UserManager;
 import android.support.annotation.NonNull;
-
-import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IMicrophoneManager;
 import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 
 public class MicrophoneManagerImpl implements IMicrophoneManager {
 
     @Override
-    public void open(@NonNull Context context) throws DeviceManagerSecurityException {
-        turnOff(context,true);
+    public boolean open(@NonNull Context context){
+        try {
+            turnOff(context,true);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public void close(@NonNull Context context) throws DeviceManagerSecurityException {
-        turnOff(context,false);
+    public boolean close(@NonNull Context context){
+        try {
+            turnOff(context,false);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override

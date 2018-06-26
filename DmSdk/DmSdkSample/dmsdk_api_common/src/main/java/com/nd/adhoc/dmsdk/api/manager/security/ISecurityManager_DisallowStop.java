@@ -20,6 +20,6 @@ public interface ISecurityManager_DisallowStop extends IDeviceManager {
      * @param packages 需要被禁用的APP列表
      * @throws DeviceManagerSecurityException
      */
-    void addPackageToStopList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
+    boolean addPackageToStopList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
 
 }

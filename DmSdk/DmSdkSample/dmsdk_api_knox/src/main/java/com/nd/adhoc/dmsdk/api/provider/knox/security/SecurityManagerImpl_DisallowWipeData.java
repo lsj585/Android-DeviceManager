@@ -17,32 +17,32 @@ public class SecurityManagerImpl_DisallowWipeData implements ISecurityManager_Di
     }
 
     @Override
-    public void addPackageToClearDataList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException {
+    public boolean addPackageToClearDataList(@NonNull Context context, @NonNull List packages) {
         ApplicationPolicy applicationPolicy= KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
-            applicationPolicy.addPackagesToClearDataWhiteList(packages);
+            return applicationPolicy.addPackagesToClearDataWhiteList(packages);
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return false;
     }
 
     @Override
-    public void addPackageToClearCacheList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException {
+    public boolean addPackageToClearCacheList(@NonNull Context context, @NonNull List packages){
         ApplicationPolicy applicationPolicy= KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
-            applicationPolicy.addPackagesToClearCacheWhiteList(packages);
+            return applicationPolicy.addPackagesToClearCacheWhiteList(packages);
         }catch (SecurityException e){
             e.printStackTrace();
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
+        return false;
     }
 }
