@@ -22,18 +22,20 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
     public void getApplist() {
         verifyNull();
         ApplicationStrategy applicationStrategy =mFactory.getStrategy(ApplicationManagerFactory.STRATEGY_GET_APPLIST);
-        if(applicationStrategy != null) {
-            applicationStrategy.execute(0, view, modle);
+        if(applicationStrategy == null) {
+            return;
         }
+        applicationStrategy.execute(0, view, modle);
     }
 
     @Override
     public void onClick(int dialogPos,int viewPosition) {
         verifyNull();
         ApplicationStrategy applicationStrategy =mFactory.getStrategy(dialogPos);
-        if(applicationStrategy != null) {
-            applicationStrategy.execute(viewPosition, view, modle);
+        if(applicationStrategy== null) {
+            return;
         }
+        applicationStrategy.execute(viewPosition, view, modle);
     }
 
 

@@ -11,11 +11,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/dmsdk" />
             <option value="$PROJECT_DIR$/dmsdk_api" />
-            <option value="$PROJECT_DIR$/dmsdk_api_aosp" />
-            <option value="$PROJECT_DIR$/dmsdk_api_common" />
-            <option value="$PROJECT_DIR$/dmsdk_api_edu" />
-            <option value="$PROJECT_DIR$/dmsdk_api_huawei" />
-            <option value="$PROJECT_DIR$/dmsdk_api_knox" />
+            <option value="$PROJECT_DIR$/dmsdk_provider_aosp" />
+            <option value="$PROJECT_DIR$/dmsdk_provider_edu" />
+            <option value="$PROJECT_DIR$/dmsdk_provider_huawei" />
+            <option value="$PROJECT_DIR$/dmsdk_provider_knox" />
             <option value="$PROJECT_DIR$/serviceloader" />
             <option value="$PROJECT_DIR$/serviceloader/service-loader" />
             <option value="$PROJECT_DIR$/serviceloader/service-loader-annotation" />

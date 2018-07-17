@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.HardWareSwitchBean;
+import com.nd.adhoc.dmsdk.demo.ui.viewholder.AppItemView;
+import com.nd.adhoc.dmsdk.demo.ui.viewholder.HardwareView;
 import com.nd.adhoc.dmsdk.demo.ui.weget.GridDivider;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class HardwareAdapter extends RecyclerView.Adapter<HardwareAdapter.HardWa
 
     public HardwareAdapter(Context context){
         this.mContext= context;
-        mList=new ArrayList<HardWareSwitchBean>();
+        mList=new ArrayList<>();
     }
     @NonNull
     @Override
@@ -38,11 +40,6 @@ public class HardwareAdapter extends RecyclerView.Adapter<HardwareAdapter.HardWa
     @Override
     public void onBindViewHolder(@NonNull HardwareAdapter.HardWareSwitchHolder holder, final int position) {
         Log.i(this.getClass().getName(),String.format("Get list=%d",mList.size()));
-
-        if(mList==null){
-            return;
-        }
-
         if(mList.size()==0){
             return ;
         }
@@ -51,17 +48,10 @@ public class HardwareAdapter extends RecyclerView.Adapter<HardwareAdapter.HardWa
             return;
         }
 
-        holder.tvHardwareName.setText(mList.get(position).getName());
-        holder.tvHardWareStatus.setText(mList.get(position).getStatus()==0?"关":"开");
+        holder.getHardView().setView(mContext,mList,position);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(itemClickListener);
-        if(mList.get(position).isDesiplaySave() && mList.get(position).getStatus()==0){
-            holder.ivHardWareStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_signal_gray));
-            holder.tvDevicePolicy.setVisibility(View.VISIBLE);
-        }else{
-            holder.ivHardWareStatus.setImageDrawable(mContext.getResources().getDrawable(R.drawable.icon_signal_green));
-            holder.tvDevicePolicy.setVisibility(View.GONE);
-        }
+
     }
 
     @Override
@@ -70,23 +60,25 @@ public class HardwareAdapter extends RecyclerView.Adapter<HardwareAdapter.HardWa
     }
 
 
-    class HardWareSwitchHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvHardwareName;
-        private ImageView ivHardWare;
-        private TextView tvHardWareStatus;
-        private ImageView ivHardWareStatus;
-        private TextView tvDevicePolicy;
+
+    static class HardWareSwitchHolder extends RecyclerView.ViewHolder {
+
+        private HardwareView mHardView;
 
         public HardWareSwitchHolder(View itemView) {
             super(itemView);
-            tvHardwareName=(TextView) itemView.findViewById(R.id.tv_devicename_control);
-            ivHardWare=itemView.findViewById(R.id.iv_devicename_control);
-            tvHardWareStatus=itemView.findViewById(R.id.tv_devicestatus_control);
-            ivHardWareStatus=itemView.findViewById(R.id.iv_devicestatus_control);
-            tvDevicePolicy=itemView.findViewById(R.id.tv_devicepolicy_control);
+            this.mHardView=new HardwareView(itemView);
         }
+
+        public HardwareView getHardView(){
+
+            return mHardView;
+        }
+
     }
+
+
 
     public void setData(List list){
 

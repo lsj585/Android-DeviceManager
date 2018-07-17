@@ -1,0 +1,13 @@
+package com.nd.adhoc.dmsdk.filed;
+
+/**
+ * @author richsjeson
+ *
+ * 全局类，可以被覆盖
+ */
+
+public class DmSdkGlobal {
+
+    public static  String KEL_LICENSE_KEY = "KLM06-2SWKZ-NSL3A-93911-SSMAW-OCUCU";
+    public static  String ELM_LICENSE_KEY = "2597D84D978FDADB00DD43BC30ACA35FE9396F88B671F069F72D50705367D711AAEC116B0485165465DC6D80087C727FFD8F3476269A6652A91E9A71792D2EB7";
+}

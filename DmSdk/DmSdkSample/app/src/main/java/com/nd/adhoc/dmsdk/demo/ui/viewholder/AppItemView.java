@@ -14,11 +14,13 @@ import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
+import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 
 import java.util.List;
 
 /**
  * @author richsjeson
+ * 未安装的APP列表
  */
 
 public class AppItemView{
@@ -73,7 +75,7 @@ public class AppItemView{
     private boolean isRunning(Context context, String packageName) {
         IApplicationManager_IsRun applicationManagerIsRun = null;
         try {
-            applicationManagerIsRun = (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
+            applicationManagerIsRun = (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_APPLICATION_ISRUNNING);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;

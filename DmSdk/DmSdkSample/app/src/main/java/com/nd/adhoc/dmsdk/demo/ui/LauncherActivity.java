@@ -16,7 +16,7 @@ import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.presenter.impl.ActiveLicensePresenter;
 import com.nd.adhoc.dmsdk.demo.view.BaseView;
-import com.nd.adhoc.dmsdk.revicer.Constants;
+import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 
 
 /**
@@ -70,8 +70,8 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         btnActiveDevice.setOnClickListener(this);
         presenter=new ActiveLicensePresenter(this,this);
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.LICENSE_STATUS_SUCCESS);
-        filter.addAction(Constants.LICENSE_STATUS_FAILURE);
+        filter.addAction(DmSdkConstants.LICENSE_STATUS_SUCCESS);
+        filter.addAction(DmSdkConstants.LICENSE_STATUS_FAILURE);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
     @Override
@@ -96,7 +96,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onReceive(final Context context, Intent intent) {
 
-            if (intent.getAction().equals(Constants.LICENSE_STATUS_FAILURE)) {
+            if (intent.getAction().equals(DmSdkConstants.LICENSE_STATUS_FAILURE)) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -105,7 +105,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
                 });
                 return;
             }
-            if (intent.getAction().equals(Constants.LICENSE_STATUS_SUCCESS)) {
+            if (intent.getAction().equals(DmSdkConstants.LICENSE_STATUS_SUCCESS)) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

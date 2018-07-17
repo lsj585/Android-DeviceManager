@@ -32,6 +32,9 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
 
     @Override
     public void getFileAppList() {
+        if(this.mFactory==null){
+            return;
+        }
         FileControlStrategy strategy=this.mFactory.getStrategy(ApkFireFactory.STRATEGY_FILE_GETLIST);
         if(strategy != null){
             strategy.execute(0,view,modle);
@@ -50,6 +53,9 @@ public class FileManagerPresenter extends BasePresenter<FileManagerView,FileMana
     }
 
     private void installApp(final int viewPosition){
+        if(this.mFactory==null){
+            return;
+        }
         FileControlStrategy strategy= this.mFactory.getStrategy(ApkFireFactory.STRATEGY_FILE_INSTALLAPK);
         if(strategy != null){
             strategy.execute(viewPosition,view,modle);
