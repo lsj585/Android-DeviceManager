@@ -5,9 +5,10 @@ import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IUsbMamager;
-import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 import com.nd.adhoc.dmsdk.api.provider.utils.Verification;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(IUsbMamager.class)
 public class UsbManagerImpl  implements IUsbMamager {
 
     @Override

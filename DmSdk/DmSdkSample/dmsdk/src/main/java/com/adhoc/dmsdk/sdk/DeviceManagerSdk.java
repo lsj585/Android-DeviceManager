@@ -44,11 +44,11 @@ import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_Brightness;
 import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_RestoreProduct;
 import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_Volumn;
 import com.nd.adhoc.dmsdk.revicer.AdminReciver;
+import com.nd.sdp.android.serviceloader.AnnotationServiceLoader;
+import com.nd.sdp.android.serviceloader.ServiceLoader;
 
-import java.net.UnknownServiceException;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -157,7 +157,7 @@ public class DeviceManagerSdk {
         //TODO ZYB 通过注解标识找到对应的manager类，以保证多个provider产品下的api对应的实现类被调起
         Class<IDeviceManager> instance = realObject.getDeviceManager();
         //TODO 该处要通过注解返回具体对象实例
-        ServiceLoader serviceLoader = ServiceLoader.load(instance);
+        ServiceLoader serviceLoader=AnnotationServiceLoader.load(instance);
         Iterator<IDeviceManager> iterator = serviceLoader.iterator();
         if(iterator.hasNext()){
             dManager=iterator.next();

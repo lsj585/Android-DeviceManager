@@ -13,7 +13,7 @@ public interface IHardwareOperation extends IDeviceManager {
     /**
      * 开启
      */
-    boolean open(@NonNull Context context);
+    boolean open(@NonNull Context context) throws DeviceManagerSecurityException;
     /**
      * 关闭
      */

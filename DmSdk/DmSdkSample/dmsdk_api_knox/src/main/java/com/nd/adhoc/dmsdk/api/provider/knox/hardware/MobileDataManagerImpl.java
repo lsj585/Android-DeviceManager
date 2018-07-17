@@ -4,11 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IMicrophoneManager;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IMobileDataManager;
-import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 import com.nd.adhoc.dmsdk.api.provider.utils.Verification;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(IMobileDataManager.class)
 public class MobileDataManagerImpl  implements IMobileDataManager {
 
     @Override

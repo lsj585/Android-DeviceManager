@@ -7,7 +7,9 @@ import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IBluetoothManager;
 import com.nd.adhoc.dmsdk.api.provider.utils.Verification;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(BluetoothManagerImpl.class)
 public class BluetoothManagerImpl implements IBluetoothManager {
 
     @Override

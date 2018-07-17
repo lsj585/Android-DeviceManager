@@ -2,13 +2,12 @@ package com.nd.adhoc.dmsdk.api.provider.knox.security;
 import android.app.enterprise.ApplicationPolicy;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowRun;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.util.List;
-
+@Service(ISecurityManager_AllowRun.class)
 public class SecurityManagerImpl_AllowRun implements ISecurityManager_AllowRun {
 
     @Override

@@ -6,9 +6,10 @@ import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowWipeData;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.util.List;
-
+@Service(ISecurityManager_AllowWipeData.class)
 public class SecurityManagerImpl_AllowWipeData  implements  ISecurityManager_AllowWipeData{
     @Override
     public void release(@NonNull Context context) {

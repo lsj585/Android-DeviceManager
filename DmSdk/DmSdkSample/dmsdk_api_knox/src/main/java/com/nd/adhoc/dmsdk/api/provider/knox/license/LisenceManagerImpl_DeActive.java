@@ -8,10 +8,12 @@ import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.license.ILicenseManager_DeActive;
-
+import com.nd.sdp.android.serviceloader.annotation.Service;
 /**
  * License 激活
  */
+@Service(ILicenseManager_DeActive.class)
+
 public class LisenceManagerImpl_DeActive implements ILicenseManager_DeActive {
 
     @Override

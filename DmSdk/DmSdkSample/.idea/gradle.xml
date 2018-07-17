@@ -16,6 +16,11 @@
             <option value="$PROJECT_DIR$/dmsdk_api_edu" />
             <option value="$PROJECT_DIR$/dmsdk_api_huawei" />
             <option value="$PROJECT_DIR$/dmsdk_api_knox" />
+            <option value="$PROJECT_DIR$/serviceloader" />
+            <option value="$PROJECT_DIR$/serviceloader/service-loader" />
+            <option value="$PROJECT_DIR$/serviceloader/service-loader-annotation" />
+            <option value="$PROJECT_DIR$/serviceloader/service-loader-compiler" />
+            <option value="$PROJECT_DIR$/serviceloader/service-loader-compiler-app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

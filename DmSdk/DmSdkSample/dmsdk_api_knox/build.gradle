@@ -5,7 +5,7 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -43,6 +43,9 @@ dependencies {
     implementation files('libs/cdm.jar')
     implementation files('libs/edm.jar')
     implementation files('libs/rc.jar')
+    implementation project(':serviceloader:service-loader')
+    implementation project(':serviceloader:service-loader-annotation')
+    annotationProcessor project(':serviceloader:service-loader-compiler')
     //加入单元测试
     testImplementation 'org.robolectric:robolectric:3.8'
     testImplementation 'com.android.support.test:monitor:1.0.2'

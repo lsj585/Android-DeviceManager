@@ -3,10 +3,11 @@ import android.app.enterprise.ApplicationPolicy;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Run;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(IApplicationManager_Run.class)
 public class ApplicationManagerImpl_Run implements IApplicationManager_Run {
 
     @Override

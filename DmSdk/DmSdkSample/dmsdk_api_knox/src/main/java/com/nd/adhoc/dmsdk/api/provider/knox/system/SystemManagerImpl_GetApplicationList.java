@@ -6,10 +6,11 @@ import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_ApplicationList;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.util.Arrays;
 import java.util.List;
-
+@Service(ISystemManager_ApplicationList.class)
 public class SystemManagerImpl_GetApplicationList implements ISystemManager_ApplicationList {
 
     @Override

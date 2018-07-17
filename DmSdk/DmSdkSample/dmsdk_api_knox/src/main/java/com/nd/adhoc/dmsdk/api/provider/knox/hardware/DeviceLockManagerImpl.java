@@ -7,12 +7,13 @@ import android.view.KeyEvent;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.IDeviceLockManager;
-import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 import com.nd.adhoc.dmsdk.api.provider.utils.Verification;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service(IDeviceLockManager.class)
 public class DeviceLockManagerImpl  implements IDeviceLockManager {
 
     private List availableHwKeys;
@@ -55,6 +56,7 @@ public class DeviceLockManagerImpl  implements IDeviceLockManager {
     private void turnOff(@NonNull Context context,boolean isOpen) throws DeviceManagerSecurityException {
         RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
         KioskMode kioskMode=KioskMode.getInstance(context);
+        getKeyList();
         try {
             kioskMode.allowHardwareKeys(availableHwKeys,isOpen);
             boolean isSuccess=restrictionPolicy.allowActivationLock(isOpen);
@@ -72,7 +74,7 @@ public class DeviceLockManagerImpl  implements IDeviceLockManager {
     /**
      * 设备锁定时，不允许按键响应
      */
-    public void getKeyList(){
+    public List<Integer> getKeyList(){
         if(availableHwKeys==null) {
             availableHwKeys= new ArrayList();
             availableHwKeys.add(new Integer(KeyEvent.KEYCODE_BACK));
@@ -81,5 +83,6 @@ public class DeviceLockManagerImpl  implements IDeviceLockManager {
             availableHwKeys.add(new Integer(KeyEvent.KEYCODE_HOME));
             availableHwKeys.add(new Integer(KeyEvent.KEYCODE_POWER));
         }
+        return availableHwKeys;
     }
 }

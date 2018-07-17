@@ -2,11 +2,11 @@ package com.nd.adhoc.dmsdk.api.provider.knox.security;
 import android.app.enterprise.ApplicationPolicy;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowInstall;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(ISecurityManager_AllowInstall.class)
 public class SecurityManagerImpl_AllowInstall  implements ISecurityManager_AllowInstall {
 
     @Override

@@ -9,10 +9,11 @@ import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Install;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-
+@Service(PackageManagerImpl_Install.class)
 public class PackageManagerImpl_Install implements IPackageManager_Install {
     @Override
     public void release(@NonNull Context context) {

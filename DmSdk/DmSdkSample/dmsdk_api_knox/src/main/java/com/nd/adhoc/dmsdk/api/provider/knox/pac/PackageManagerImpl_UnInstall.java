@@ -4,12 +4,11 @@ import android.app.enterprise.ApplicationPolicy;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Uninstall;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(IPackageManager_Uninstall.class)
 public class PackageManagerImpl_UnInstall implements IPackageManager_Uninstall {
 
     @Override

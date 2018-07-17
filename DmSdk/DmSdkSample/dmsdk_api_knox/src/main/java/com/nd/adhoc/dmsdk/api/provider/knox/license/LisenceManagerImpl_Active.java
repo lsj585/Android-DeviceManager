@@ -21,11 +21,14 @@ import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.license.ILicenseManager_Active;
 import com.nd.adhoc.dmsdk.revicer.Constants;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 import com.sec.enterprise.knox.license.KnoxEnterpriseLicenseManager;
 
 /**
  * License 激活 --Knox 入口激活程序 该入口程序不能被
  */
+
+@Service(ILicenseManager_Active.class)
 public class LisenceManagerImpl_Active implements ILicenseManager_Active {
 
 

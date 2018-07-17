@@ -63,10 +63,6 @@ public class CameraManagerImpl implements ICameraManager {
 
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
-        if(container==null){
-            throw  new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-        }
-
         DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
 
         ComponentName componentName = container.getComponentName();

@@ -18,6 +18,7 @@ import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
 import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
+import com.nd.adhoc.dmsdk.demo.ui.viewholder.AppItemView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,89 +45,30 @@ public class AppListManagerAdapter extends RecyclerView.Adapter<AppListManagerAd
 
     @Override
     public void onBindViewHolder(@NonNull AppListManagerAdapter.FileInfoHolder holder, final int position) {
-        Log.i(this.getClass().getName(), String.format("Get list=%d", mList.size()));
-
-        if (mList == null) {
-            return;
-        }
-
-        if (mList.size() == 0) {
-            return;
-        }
-
-        if (mList.get(position) == null) {
-            return;
-        }
-
-
-        holder.tvAppInfoName.setText(mList.get(position).getName());
-        holder.tvPackageName.setText(mList.get(position).getPackageName());
+        holder.getAppItemView().setView(mContext,mList,position);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(itemClickListener);
-//            if(mList.get(position).isRunning()){
-//                holder.tvRunning.setText(mContext.getResources().getString(R.string.runing));
-//            }else{
-//                holder.tvRunning.setText(mContext.getResources().getString(R.string.stop));
-//            }
-
-        if (isRunning(mContext, mList.get(position).getPackageName())) {
-            holder.tvRunning.setText(mContext.getResources().getString(R.string.runing));
-        } else {
-            holder.tvRunning.setText(mContext.getResources().getString(R.string.stop));
-        }
-
-        holder.tvUsage.setText(String.format(mContext.getResources().getString(R.string.app_usage),
-                formatSize(mList.get(position).getCpuUsage()),
-                formatSize(mList.get(position).getRamUsage()),
-                formatSize(mList.get(position).getApplicationDataSizeUsage()),
-                formatSize(mList.get(position).getApplicationCacheSizeUsage())));
-
     }
-
-    /**
-     * 是否在后台启动
-     *
-     * @param context
-     * @param packageName
-     * @return
-     */
-    private boolean isRunning(Context context, String packageName) {
-        IApplicationManager_IsRun applicationManagerIsRun = null;
-        try {
-            applicationManagerIsRun = (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_APPLICATION_ISRUNNING);
-        } catch (DeviceManagerUnsupportException e) {
-            e.printStackTrace();
-            return false;
-        }
-        try {
-            return applicationManagerIsRun.isRunning(context, packageName);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-
-        }
-        return false;
-    }
-
     @Override
     public int getItemCount() {
         return mList.size();
     }
 
 
-    class FileInfoHolder extends RecyclerView.ViewHolder {
+    static class FileInfoHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvAppInfoName;
-        private TextView tvPackageName;
-        private TextView tvRunning;
-        private TextView tvUsage;
+        private AppItemView mAppItemView;
 
         public FileInfoHolder(View itemView) {
             super(itemView);
-            tvAppInfoName = (TextView) itemView.findViewById(R.id.tv_appname_app);
-            tvPackageName = (TextView) itemView.findViewById(R.id.tv_package_app);
-            tvRunning = itemView.findViewById(R.id.tv_running_app);
-            tvUsage = itemView.findViewById(R.id.tv_usage_app);
+            this.mAppItemView=new AppItemView(itemView);
         }
+
+        public AppItemView getAppItemView(){
+
+            return mAppItemView;
+        }
+
     }
 
     public void setData(List list) {

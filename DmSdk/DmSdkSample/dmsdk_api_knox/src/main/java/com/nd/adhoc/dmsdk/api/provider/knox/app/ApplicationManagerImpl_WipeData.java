@@ -5,10 +5,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_WipeData;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(IApplicationManager_WipeData.class)
 public class ApplicationManagerImpl_WipeData implements IApplicationManager_WipeData {
 
     @Override

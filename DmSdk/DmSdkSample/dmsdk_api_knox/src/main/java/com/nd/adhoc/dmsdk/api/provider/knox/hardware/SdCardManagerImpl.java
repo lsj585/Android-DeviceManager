@@ -1,14 +1,14 @@
 package com.nd.adhoc.dmsdk.api.provider.knox.hardware;
 import android.app.enterprise.RestrictionPolicy;
 import android.content.Context;
-import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.hardware.ISdCardManager;
-import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 import com.nd.adhoc.dmsdk.api.provider.utils.Verification;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(ISdCardManager.class)
 public class SdCardManagerImpl implements ISdCardManager {
 
     @Override

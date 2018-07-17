@@ -3,10 +3,11 @@ import android.app.enterprise.ApplicationPolicy;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowUnInstall;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
+import com.nd.sdp.android.serviceloader.annotation.Service;
 
+@Service(ISecurityManager_AllowUnInstall.class)
 public class SecurityManagerImpl_AllowUninstall implements ISecurityManager_AllowUnInstall{
     @Override
     public boolean removePackageToUninstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException {
