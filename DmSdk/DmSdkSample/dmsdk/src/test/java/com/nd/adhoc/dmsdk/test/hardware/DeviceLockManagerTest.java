@@ -7,9 +7,8 @@ import android.os.Build;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.BuildConfig;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IDeviceLockManager;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
 import com.nd.adhoc.dmsdk.shadow.ShdowKioskMode;
 import com.nd.adhoc.dmsdk.shadow.ShowEnterpriseDeviceManager;
 
@@ -29,7 +28,7 @@ import org.robolectric.annotation.Config;
 
 public class DeviceLockManagerTest {
 
-    IDeviceLockManager deviceLockManager;
+    IDeviceLock deviceLockManager;
 
     Context context;
 
@@ -44,7 +43,7 @@ public class DeviceLockManagerTest {
     public void testRegister(){
         DeviceManagerSdk.getInstance().registerSDK(context);
         try {
-            deviceLockManager= (IDeviceLockManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_LOCK);
+            deviceLockManager= (IDeviceLock) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_LOCK);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
         }

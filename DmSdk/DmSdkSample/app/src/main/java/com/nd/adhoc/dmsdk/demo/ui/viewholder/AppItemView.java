@@ -2,16 +2,14 @@ package com.nd.adhoc.dmsdk.demo.ui.viewholder;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.view.View;
 import android.widget.TextView;
 
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
-import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.app.IApp_IsRun;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
 import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
@@ -29,13 +27,9 @@ public class AppItemView{
     private TextView tvPackageName;
     private TextView tvRunning;
     private TextView tvUsage;
-
-    private View mItemView;
-
     public AppItemView(View itemView) {
-        this.mItemView=itemView;
-        tvAppInfoName = (TextView) itemView.findViewById(R.id.tv_appname_app);
-        tvPackageName = (TextView) itemView.findViewById(R.id.tv_package_app);
+        tvAppInfoName =itemView.findViewById(R.id.tv_appname_app);
+        tvPackageName = itemView.findViewById(R.id.tv_package_app);
         tvRunning = itemView.findViewById(R.id.tv_running_app);
         tvUsage = itemView.findViewById(R.id.tv_usage_app);
     }
@@ -73,9 +67,9 @@ public class AppItemView{
      * @return
      */
     private boolean isRunning(Context context, String packageName) {
-        IApplicationManager_IsRun applicationManagerIsRun = null;
+        IApp_IsRun applicationManagerIsRun;
         try {
-            applicationManagerIsRun = (IApplicationManager_IsRun) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_APPLICATION_ISRUNNING);
+            applicationManagerIsRun = (IApp_IsRun) DeviceManagerSdk.getInstance().getApi(IApp_IsRun.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;

@@ -7,12 +7,12 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
-import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Install;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.pac.IPackage_Install;
 import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
+import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -172,9 +172,9 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
             return false;
         }
 
-        IPackageManager_Install mInstall = null;
+        IPackage_Install mInstall = null;
         try {
-            mInstall = (IPackageManager_Install) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_INSTALL);
+            mInstall = (IPackage_Install) DeviceManagerSdk.getInstance().getApi(IPackage_Install.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;

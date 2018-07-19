@@ -9,8 +9,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.ErrorCode;
 
 /**
  * 校验类

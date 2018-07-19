@@ -55,7 +55,7 @@ dependencies {
     }
     testImplementation files('/Users/richsjeson/git/Dmsdk_Demo/Android-DeviceManager/DmSdk/DmSdkSample/dmsdk_api_knox/libs/edm.jar')
     testImplementation 'org.mockito:mockito-core:1.10.19'
-    implementation project(':dmsdk_provider_aosp')
+//    implementation project(':dmsdk_provider_aosp')
 
     annotationProcessor project(':serviceloader:service-loader-compiler-app')
     implementation project(':serviceloader:service-loader')

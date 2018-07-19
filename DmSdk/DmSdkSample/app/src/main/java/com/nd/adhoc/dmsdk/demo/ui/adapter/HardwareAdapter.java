@@ -80,11 +80,7 @@ public class HardwareAdapter extends RecyclerView.Adapter<HardwareAdapter.HardWa
 
 
 
-    public void setData(List list){
-
-        if(mList==null){
-            return;
-        }
+    public void setData(@NonNull List list){
         if(mList.size()>0){
             mList.clear();
         }

@@ -44,6 +44,10 @@ public class AllowWipeDataApplicationApplicationStrategy implements ApplicationS
 
             @Override
             public void onNext(Boolean success) {
+
+                if(view == null){
+                    return;
+                }
                 if (success) {
                     model.updateWipeStatus(position);
                     view.updateView(position);

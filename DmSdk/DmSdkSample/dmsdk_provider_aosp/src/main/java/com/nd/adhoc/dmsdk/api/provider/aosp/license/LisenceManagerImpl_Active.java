@@ -12,17 +12,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
-import com.nd.adhoc.dmsdk.api.manager.license.ILicenseManager_Active;
+import com.nd.adhoc.dmsdk.api.license.ILicense_Active;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
+import com.nd.adhoc.dmsdk.filed.DmSdkGlobal;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 /**
  * License 激活 --Knox 入口激活程序 该入口程序不能被
  */
-@Service(ILicenseManager_Active.class)
-public class LisenceManagerImpl_Active implements ILicenseManager_Active {
+@Service(ILicense_Active.class)
+public class LisenceManagerImpl_Active implements ILicense_Active {
 
 
     private String TAG=getClass().getSimpleName();
@@ -80,13 +81,13 @@ public class LisenceManagerImpl_Active implements ILicenseManager_Active {
             }
             //验证ELM_LICENSE_KEY 是否配置在Mainifest.xml中
             if(!TextUtils.isEmpty(metaData.getString(ELM_LICENSE_KEY))){
-                DmSdkConstants.ELM_LICENSE_KEY=applicationInfo.metaData.getString(ELM_LICENSE_KEY);
+                DmSdkGlobal.ELM_LICENSE_KEY=applicationInfo.metaData.getString(ELM_LICENSE_KEY);
             }else{
                 throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_LICENSE_FAILURE);
             }
 
             if(!TextUtils.isEmpty(metaData.getString(KEL_LICENSE_KEY))){
-                DmSdkConstants.KEL_LICENSE_KEY=applicationInfo.metaData.getString(KEL_LICENSE_KEY);
+                DmSdkGlobal.KEL_LICENSE_KEY=applicationInfo.metaData.getString(KEL_LICENSE_KEY);
             }else{
                 throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_LICENSE_FAILURE);
             }

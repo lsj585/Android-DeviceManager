@@ -7,9 +7,9 @@ import android.os.Build;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.BuildConfig;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IBluetoothManager;
+import com.nd.adhoc.dmsdk.api.hardware.bluetooth.IBluetooth_Open;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
 import com.nd.adhoc.dmsdk.shadow.ShadowCustomerDevicePolicyManager;
 
 import org.junit.Assert;
@@ -29,7 +29,7 @@ import org.robolectric.annotation.Config;
 
 public class BloothManagerTest {
 
-    IBluetoothManager bluetoothManager;
+    IBluetooth_Open bluetoothManager;
 
     Context context;
 
@@ -45,7 +45,7 @@ public class BloothManagerTest {
     public void testRegister() {
         DeviceManagerSdk.getInstance().registerSDK(context);
         try {
-            bluetoothManager = (IBluetoothManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_BLUETOOTH);
+            bluetoothManager = (IBluetooth_Open) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_BLUETOOTH);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
         }

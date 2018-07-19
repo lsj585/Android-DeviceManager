@@ -41,6 +41,9 @@ public class ForbridStartApplicationApplicationStrategy implements ApplicationSt
 
             @Override
             public void onNext(Boolean success) {
+                if(view==null){
+                    return;
+                }
                 if(success) {
                     model.updateToRunning(position,false);
                     view.updateMsg("该应用不允许被用户运行");

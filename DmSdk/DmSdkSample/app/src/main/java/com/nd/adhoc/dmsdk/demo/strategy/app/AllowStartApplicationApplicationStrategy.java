@@ -41,6 +41,11 @@ public class AllowStartApplicationApplicationStrategy implements ApplicationStra
 
             @Override
             public void onNext(Boolean success) {
+
+                if(view==null){
+                    return;
+                }
+
                 if (success) {
                     model.update(position, success);
                     view.updateView(position);

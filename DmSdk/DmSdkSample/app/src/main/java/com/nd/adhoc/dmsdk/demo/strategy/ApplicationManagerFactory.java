@@ -13,6 +13,9 @@ import com.nd.adhoc.dmsdk.demo.strategy.app.StopApplicationApplicationStrategy;
 import com.nd.adhoc.dmsdk.demo.strategy.app.UninstallApplicationApplicationStrategy;
 import com.nd.adhoc.dmsdk.demo.strategy.app.WipeDataApplicationApplicationStrategy;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * 应用管理类
  */
@@ -83,6 +86,88 @@ public class ApplicationManagerFactory {
     public static final int STRATEGY_ALLOW_UNINSTALL = 10;
     public static final int STRATEGY_GET_APPLIST = 11;
 
+
+    private Map<Integer, ApplicationStrategy> mStrategys = new ConcurrentHashMap();
+
+
+    public ApplicationManagerFactory() {
+
+        if (mUninstallApplicationApplicationStrategy == null) {
+            mUninstallApplicationApplicationStrategy = new UninstallApplicationApplicationStrategy();
+        }
+
+        mStrategys.put(STRATEGY_UNINSTALL, mUninstallApplicationApplicationStrategy);
+
+        if (mForbridUnIntallApplicationApplicationStrategy == null) {
+
+             mForbridUnIntallApplicationApplicationStrategy = new ForbridUnIntallApplicationApplicationStrategy();
+        }
+
+        mStrategys.put(STRATEGY_FORBIDUNINSTALL, mForbridUnIntallApplicationApplicationStrategy);
+
+        if (mWipeDataApplicationApplicationStrategy == null) {
+
+             mWipeDataApplicationApplicationStrategy = new WipeDataApplicationApplicationStrategy();
+        }
+        mStrategys.put(STRATEGY_WIPEDATA, mWipeDataApplicationApplicationStrategy);
+
+        if (mForbridStartApplicationApplicationStrategy == null) {
+             mForbridStartApplicationApplicationStrategy = new ForbridStartApplicationApplicationStrategy();
+        }
+
+        mStrategys.put(STRATEGY_FORBRID_STARTAPP, mForbridStartApplicationApplicationStrategy);
+
+        if (mAllowStopApplicationApplicationStrategy == null) {
+             mAllowStopApplicationApplicationStrategy = new AllowStopApplicationApplicationStrategy();
+        }
+        mStrategys.put(STRATEGY_ALLOW_STOPAPP, mAllowStopApplicationApplicationStrategy);
+
+
+        if (mStartApplicationApplicationStrategy == null) {
+             mStartApplicationApplicationStrategy = new StartApplicationApplicationStrategy();
+        }
+
+        mStrategys.put(STRATEGY_START, mStartApplicationApplicationStrategy);
+
+        if (mStopApplicationApplicationStrategy == null) {
+            mStopApplicationApplicationStrategy = new StopApplicationApplicationStrategy();
+        }
+
+        mStrategys.put(STRATEGY_STOP, mStopApplicationApplicationStrategy);
+
+
+        if (mForbridStopApplicationApplicationStrategy == null) {
+            mForbridStopApplicationApplicationStrategy = new ForbridStopApplicationApplicationStrategy();
+        }
+
+        mStrategys.put(STRATEGY_FORBRID_STOPAPSP, mForbridStopApplicationApplicationStrategy);
+
+
+        if (mAllowStartApplicationApplicationStrategy == null) {
+             mAllowStartApplicationApplicationStrategy = new AllowStartApplicationApplicationStrategy();
+        }
+        mStrategys.put(STRATEGY_ALLOW_START, mAllowStartApplicationApplicationStrategy);
+
+        if (mAllowWipeDataApplicationApplicationStrategy == null) {
+            mAllowWipeDataApplicationApplicationStrategy = new AllowWipeDataApplicationApplicationStrategy();
+        }
+
+        mStrategys.put(STRATEGY_ALLOW_WIPEDATA, mAllowWipeDataApplicationApplicationStrategy);
+
+        if (mAllowUninstallApplicationApplicationStrategy == null) {
+            mAllowUninstallApplicationApplicationStrategy = new AllowUninstallApplicationApplicationStrategy();
+        }
+
+        mStrategys.put(STRATEGY_ALLOW_UNINSTALL, mAllowUninstallApplicationApplicationStrategy);
+
+
+        if (mGetApplicationListApplicationStrategy == null) {
+             mGetApplicationListApplicationStrategy = new GetApplicationListApplicationStrategy();
+        }
+        mStrategys.put(STRATEGY_GET_APPLIST, mGetApplicationListApplicationStrategy);
+    }
+
+
     /**
      * 产品目标对象
      *
@@ -91,79 +176,7 @@ public class ApplicationManagerFactory {
      */
     public ApplicationStrategy getStrategy(int position) {
 
-        switch (position) {
-            case STRATEGY_UNINSTALL:
-                if (mUninstallApplicationApplicationStrategy == null) {
-                    return mUninstallApplicationApplicationStrategy = new UninstallApplicationApplicationStrategy();
-                }
-                return mUninstallApplicationApplicationStrategy;
-            case STRATEGY_FORBIDUNINSTALL:
-                if (mForbridUnIntallApplicationApplicationStrategy == null) {
-                    return mForbridUnIntallApplicationApplicationStrategy = new ForbridUnIntallApplicationApplicationStrategy();
-                }
-                return mForbridUnIntallApplicationApplicationStrategy;
-            case STRATEGY_WIPEDATA:
-                if (mWipeDataApplicationApplicationStrategy == null) {
-                    return mWipeDataApplicationApplicationStrategy = new WipeDataApplicationApplicationStrategy();
-                }
-                return mWipeDataApplicationApplicationStrategy;
-            case STRATEGY_FORBRID_STARTAPP:
-                if (mForbridStartApplicationApplicationStrategy == null) {
-                    return mForbridStartApplicationApplicationStrategy = new ForbridStartApplicationApplicationStrategy();
-                }
-                return mForbridStartApplicationApplicationStrategy;
-            case STRATEGY_ALLOW_STOPAPP:
-                if (mAllowStopApplicationApplicationStrategy == null) {
-                    return mAllowStopApplicationApplicationStrategy = new AllowStopApplicationApplicationStrategy();
-                }
-                return mAllowStopApplicationApplicationStrategy;
-            case STRATEGY_START:
-                if (mStartApplicationApplicationStrategy == null) {
-                    return mStartApplicationApplicationStrategy = new StartApplicationApplicationStrategy();
-                }
-                return mStartApplicationApplicationStrategy;
-            case STRATEGY_STOP:
-                if (mStopApplicationApplicationStrategy == null) {
-                    return mStopApplicationApplicationStrategy = new StopApplicationApplicationStrategy();
-                }
-                return mStopApplicationApplicationStrategy;
-            case STRATEGY_FORBRID_STOPAPSP:
-                if (mForbridStopApplicationApplicationStrategy == null) {
-                    return mForbridStopApplicationApplicationStrategy = new ForbridStopApplicationApplicationStrategy();
-                }
-                return mStopApplicationApplicationStrategy;
-            case STRATEGY_ALLOW_START:
-//                if (mForbridStartApplicationApplicationStrategy == null) {
-//                    return mForbridStartApplicationApplicationStrategy = new ForbridStartApplicationApplicationStrategy();
-//                }
-//                return mForbridStartApplicationApplicationStrategy;
-
-                if (mAllowStartApplicationApplicationStrategy == null) {
-                    return mAllowStartApplicationApplicationStrategy = new AllowStartApplicationApplicationStrategy();
-                }
-                return mAllowStartApplicationApplicationStrategy;
-
-            case STRATEGY_ALLOW_WIPEDATA:
-                if (mAllowWipeDataApplicationApplicationStrategy == null) {
-                    return mAllowWipeDataApplicationApplicationStrategy = new AllowWipeDataApplicationApplicationStrategy();
-                }
-                return mAllowWipeDataApplicationApplicationStrategy;
-
-            case STRATEGY_ALLOW_UNINSTALL:
-                if (mAllowUninstallApplicationApplicationStrategy == null) {
-                    return mAllowUninstallApplicationApplicationStrategy = new AllowUninstallApplicationApplicationStrategy();
-                }
-                return mAllowUninstallApplicationApplicationStrategy;
-            case STRATEGY_GET_APPLIST:
-                if (mGetApplicationListApplicationStrategy == null) {
-                    return mGetApplicationListApplicationStrategy = new GetApplicationListApplicationStrategy();
-                }
-                return mGetApplicationListApplicationStrategy;
-            default:
-                if (mGetApplicationListApplicationStrategy == null) {
-                    return mGetApplicationListApplicationStrategy = new GetApplicationListApplicationStrategy();
-                }
-                return mGetApplicationListApplicationStrategy;
-        }
+        return mStrategys.get(position);
     }
+
 }

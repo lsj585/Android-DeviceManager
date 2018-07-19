@@ -4,46 +4,15 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
+import android.util.Log;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.IDeviceManager;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_GetPackageList;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_IsRun;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Run;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Stop;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_WipeData;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IBluetoothManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.ICameraManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IDeviceLockManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IMicrophoneManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IMobileDataManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.ISdCardManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IUsbMamager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IWifiManager;
-import com.nd.adhoc.dmsdk.api.manager.key.IPhysicalKeyManager_Menu;
-import com.nd.adhoc.dmsdk.api.manager.license.ILicenseManager_Active;
-import com.nd.adhoc.dmsdk.api.manager.license.ILicenseManager_DeActive;
-import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Install;
-import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Uninstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowInstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowRun;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowStop;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowUnInstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowWipeData;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowInstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowRun;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowStop;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowUninstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowWipeData;
-import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_ApplicationList;
-import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_Backup;
-import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_Brightness;
-import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_RestoreProduct;
-import com.nd.adhoc.dmsdk.api.manager.system.ISystemManager_Volumn;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
+import com.nd.adhoc.dmsdk.IDmSdkApi;
+import com.nd.adhoc.dmsdk.annotation.ApiImpl;
+import com.nd.adhoc.dmsdk.api.license.ILicense_DeActive;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.license.ILicense_Active;
+import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.revicer.AdminReciver;
 import com.nd.sdp.android.serviceloader.AnnotationServiceLoader;
 import com.nd.sdp.android.serviceloader.ServiceLoader;
@@ -60,7 +29,7 @@ public class DeviceManagerSdk {
 
     private static DeviceManagerSdk instance;
 
-    private Map<String, RealObject> maps = new ConcurrentHashMap();
+    private Map<Class, IDmSdkApi> maps = new ConcurrentHashMap();
 
     private DevicePolicyManager mDevicePolicyManager;
 
@@ -89,62 +58,16 @@ public class DeviceManagerSdk {
 
 
     private void initManager() {
-        //测试安全测试管理器
-        /**
-         * security
-         */
-        maps.put(DmSdkConstants.MANAGER_SECURITY_ALLOWWIPEDATA, new RealObject(ISecurityManager_AllowWipeData.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_ALLOWUNINSTALL, new RealObject(ISecurityManager_AllowUnInstall.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_ALLOWINSTALL, new RealObject(ISecurityManager_AllowInstall.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_ALLOWRUN, new RealObject(ISecurityManager_AllowRun.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_ALLOWSTOP, new RealObject(ISecurityManager_AllowStop.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_DISALLOWWIPEDATA, new RealObject(ISecurityManager_DisallowWipeData.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_DISALLOWUNINSTALL, new RealObject(ISecurityManager_DisallowUninstall.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_DISALLOWINSTALL, new RealObject(ISecurityManager_DisallowInstall.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_DISALLOWRUN, new RealObject(ISecurityManager_DisallowRun.class));
-        maps.put(DmSdkConstants.MANAGER_SECURITY_DISALLOWSTOP, new RealObject(ISecurityManager_DisallowStop.class));
-//        maps.put(DeviceManagerContainer.MANAGER_SECURITY_DISALLOWSTOP,new RealObject(ISystemManager_ApplicationList.class));
-        /**
-         * system
-         */
-        maps.put(DmSdkConstants.MANAGER_SYSTEM_GETAPPLICATIONLIST, new RealObject(ISystemManager_ApplicationList.class));
-        maps.put(DmSdkConstants.MANAGER_SYSTEM_BACKUP, new RealObject(ISystemManager_Backup.class));
-        maps.put(DmSdkConstants.MANAGER_SYSTEM_BRIGHTNESS, new RealObject(ISystemManager_Brightness.class));
-        maps.put(DmSdkConstants.MANAGER_SYSTEM_RESTOREPRODUCT, new RealObject(ISystemManager_RestoreProduct.class));
-        maps.put(DmSdkConstants.MANAGER_SYSTEM_VOLUMN, new RealObject(ISystemManager_Volumn.class));
-        /**
-         * PAC
-         */
-        maps.put(DmSdkConstants.MANAGER_PACKAGE_INSTALL, new RealObject(IPackageManager_Install.class));
-        maps.put(DmSdkConstants.MANAGER_PACKAGE_UNINSTALL, new RealObject(IPackageManager_Uninstall.class));
-        /**
-         *APP
-         */
-        maps.put(DmSdkConstants.MANAGER_APPLICATION_GETPACKAGELIST, new RealObject(IApplicationManager_GetPackageList.class));
-        maps.put(DmSdkConstants.MANAGER_APPLICATION_WIPEDATA, new RealObject(IApplicationManager_WipeData.class));
-        maps.put(DmSdkConstants.MANAGER_APPLICATION_RUN, new RealObject(IApplicationManager_Run.class));
-        maps.put(DmSdkConstants.MANAGER_APPLICATION_STOP, new RealObject(IApplicationManager_Stop.class));
-        maps.put(DmSdkConstants.MANAGER_APPLICATION_ISRUNNING, new RealObject(IApplicationManager_IsRun.class));
-        /**
-         * LICENSE
-         */
-        maps.put(DmSdkConstants.MANAGER_LICENSE_ACTIVE, new RealObject(ILicenseManager_Active.class));
-        maps.put(DmSdkConstants.MANAGER_LICENSE_DEACTIVE, new RealObject(ILicenseManager_DeActive.class));
-        /**
-         * hardware
-         */
-        maps.put(DmSdkConstants.MANAGER_HARDWARE_BLUETOOTH, new RealObject(IBluetoothManager.class));
-        maps.put(DmSdkConstants.MANAGER_HARDWARE_CAMERA, new RealObject(ICameraManager.class));
-        maps.put(DmSdkConstants.MANAGER_HARDWARE_USB, new RealObject(IUsbMamager.class));
-        maps.put(DmSdkConstants.MANAGER_HARDWARE_SDCARD, new RealObject(ISdCardManager.class));
-        maps.put(DmSdkConstants.MANAGER_HARDWARE_WIFI, new RealObject(IWifiManager.class));
-        maps.put(DmSdkConstants.MANAGER_HARDWARE_LOCK, new RealObject(IDeviceLockManager.class));
-        maps.put(DmSdkConstants.MANAGER_HARDWARE_MOBILEDATA, new RealObject(IMobileDataManager.class));
-        maps.put(DmSdkConstants.MANAGER_HARDWARE_MICROPHONE, new RealObject(IMicrophoneManager.class));
-        /**
-         * key
-         */
-        maps.put(DmSdkConstants.MANAGER_KEY_MENU, new RealObject(IPhysicalKeyManager_Menu.class));
+        ServiceLoader serviceLoader = AnnotationServiceLoader.load(IDmSdkApi.class);
+        Iterator<IDmSdkApi> iterator = serviceLoader.iterator();
+        while(iterator.hasNext()){
+            IDmSdkApi deviceManager=iterator.next();
+            ApiImpl apiImpl=deviceManager.getClass().getAnnotation(ApiImpl.class);
+            if(apiImpl!=null){
+                maps.put(apiImpl.value(),deviceManager);
+            }
+        }
+        Log.i(this.getClass().getName(),"maps:"+maps.size());
     }
 
     /**
@@ -153,21 +76,12 @@ public class DeviceManagerSdk {
      * @param manager
      * @return
      */
-    public IDeviceManager getManager(String manager) throws DeviceManagerUnsupportException {
-        IDeviceManager dManager = null;
-        RealObject<IDeviceManager> realObject = maps.get(manager);
-        //TODO ZYB 通过注解标识找到对应的manager类，以保证多个provider产品下的api对应的实现类被调起
-        Class<IDeviceManager> instance = realObject.getDeviceManager();
-        //TODO 该处要通过注解返回具体对象实例
-        ServiceLoader serviceLoader = AnnotationServiceLoader.load(instance);
-        Iterator<IDeviceManager> iterator = serviceLoader.iterator();
-        if (iterator.hasNext()) {
-            dManager = iterator.next();
+    public IDmSdkApi getApi(Class manager) throws DeviceManagerUnsupportException {
+        IDmSdkApi dmSdkApi= maps.get(manager);
+        if(dmSdkApi==null){
+            throw new DeviceManagerUnsupportException(ErrorCode.ERROR_CODE_UN_SUPPORT);
         }
-        if (dManager == null) {
-            throw new DeviceManagerUnsupportException(ErrorCode.DEFAULT_OPERATION_ERROR);
-        }
-        return dManager;
+        return dmSdkApi;
     }
 
     /**
@@ -175,11 +89,14 @@ public class DeviceManagerSdk {
      *
      * @param
      */
-    public void destoryManager(Context context, RealObject<IDeviceManager> realObject, IDeviceManager manager) {
-        if (manager != null) {
-            manager.release(context);
+    public void destoryManager(Context context,Class manager) {
+        try {
+            IDmSdkApi dmSdkApi=getApi(manager);
+            maps.remove(manager);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
         }
-        maps.remove(realObject);
+
     }
 
     /**
@@ -195,23 +112,6 @@ public class DeviceManagerSdk {
             return false;
         }
     }
-
-    /**
-     * 内部类创建一个引用对象
-     */
-    class RealObject<T> {
-
-        private Class dManager;
-
-        public RealObject(Class<IDeviceManager> manager) {
-            this.dManager = manager;
-        }
-
-        public Class<IDeviceManager> getDeviceManager() {
-            return dManager;
-        }
-    }
-
     /**
      * 激活license 设备管理器
      *
@@ -219,9 +119,9 @@ public class DeviceManagerSdk {
      */
     public void registerLicense(@NonNull Context context) {
 
-        ILicenseManager_Active licenseManagerActive = null;
+        ILicense_Active licenseManagerActive = null;
         try {
-            licenseManagerActive = (ILicenseManager_Active) getManager(DmSdkConstants.MANAGER_LICENSE_ACTIVE);
+            licenseManagerActive = (ILicense_Active) getApi(ILicense_Active.class);
         } catch (DeviceManagerUnsupportException | UnsupportedOperationException e) {
             e.printStackTrace();
         }
@@ -241,9 +141,9 @@ public class DeviceManagerSdk {
      */
     public void unRegisterLicense() {
 
-        ILicenseManager_DeActive licenseManagerActive = null;
+        ILicense_DeActive licenseManagerActive = null;
         try {
-            licenseManagerActive = (ILicenseManager_DeActive) getManager(DmSdkConstants.MANAGER_SECURITY_ALLOWINSTALL);
+            licenseManagerActive = (ILicense_DeActive) getApi(ILicense_DeActive.class);
         } catch (DeviceManagerUnsupportException | UnsupportedOperationException e) {
             e.printStackTrace();
         }

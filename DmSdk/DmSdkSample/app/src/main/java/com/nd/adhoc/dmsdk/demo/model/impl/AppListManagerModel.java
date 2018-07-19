@@ -9,25 +9,22 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_GetPackageList;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Run;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_Stop;
-import com.nd.adhoc.dmsdk.api.manager.app.IApplicationManager_WipeData;
-import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Uninstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowRun;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowUnInstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_AllowWipeData;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowRun;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowStop;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowUninstall;
-import com.nd.adhoc.dmsdk.api.manager.security.ISecurityManager_DisallowWipeData;
+import com.nd.adhoc.dmsdk.api.app.IApp_GetPackageList;
+import com.nd.adhoc.dmsdk.api.app.IApp_Run;
+import com.nd.adhoc.dmsdk.api.app.IApp_Stop;
+import com.nd.adhoc.dmsdk.api.security.ISecurity_DisallowRun;
+import com.nd.adhoc.dmsdk.api.security.ISecurity_DisallowStop;
+import com.nd.adhoc.dmsdk.api.security.ISecurity_DisallowWipeData;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.app.IApp_WipeData;
+import com.nd.adhoc.dmsdk.api.pac.IPackage_Uninstall;
+import com.nd.adhoc.dmsdk.api.security.ISecurity_AllowRun;
+import com.nd.adhoc.dmsdk.api.security.ISecurity_AllowUnInstall;
+import com.nd.adhoc.dmsdk.api.security.ISecurity_DisallowUninstall;
 import com.nd.adhoc.dmsdk.demo.bean.ApplicationInfoBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
 import com.nd.adhoc.dmsdk.demo.model.IAppManagerModel;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,9 +94,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         }
         Log.i(this.getClass().getName(), String.format("showList:%d", mApplicationInfoBeans.size()));
         PackageManager pm = this.context.getPackageManager();
-        IApplicationManager_GetPackageList getPackageList = null;
+        IApp_GetPackageList getPackageList = null;
         try {
-            getPackageList = (IApplicationManager_GetPackageList) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_APPLICATION_GETPACKAGELIST);
+            getPackageList = (IApp_GetPackageList) DeviceManagerSdk.getInstance().getApi(IApp_GetPackageList.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
         }
@@ -224,9 +221,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             return false;
         }
 
-        IApplicationManager_Run applicationManagerRun;
+        IApp_Run applicationManagerRun;
         try {
-            applicationManagerRun = (IApplicationManager_Run) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_APPLICATION_RUN);
+            applicationManagerRun = (IApp_Run) DeviceManagerSdk.getInstance().getApi(IApp_Run.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
@@ -255,9 +252,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             return false;
         }
 
-        IApplicationManager_Stop applicationManagerStop;
+        IApp_Stop applicationManagerStop;
         try {
-            applicationManagerStop = (IApplicationManager_Stop) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_APPLICATION_STOP);
+            applicationManagerStop = (IApp_Stop) DeviceManagerSdk.getInstance().getApi(IApp_Stop.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
@@ -279,9 +276,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        IApplicationManager_WipeData applicationManagerWipeData;
+        IApp_WipeData applicationManagerWipeData;
         try {
-            applicationManagerWipeData = (IApplicationManager_WipeData) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_APPLICATION_WIPEDATA);
+            applicationManagerWipeData = (IApp_WipeData) DeviceManagerSdk.getInstance().getApi(IApp_WipeData.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
@@ -331,9 +328,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             return false;
         }
 
-        IPackageManager_Uninstall uninstall;
+        IPackage_Uninstall uninstall;
         try {
-            uninstall = (IPackageManager_Uninstall) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_PACKAGE_UNINSTALL);
+            uninstall = (IPackage_Uninstall) DeviceManagerSdk.getInstance().getApi(IPackage_Uninstall.class);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -354,9 +351,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurityManager_DisallowRun securityManagerDisallowRun;
+        ISecurity_DisallowRun securityManagerDisallowRun;
         try {
-            securityManagerDisallowRun = (ISecurityManager_DisallowRun) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_SECURITY_DISALLOWRUN);
+            securityManagerDisallowRun = (ISecurity_DisallowRun) DeviceManagerSdk.getInstance().getApi(ISecurity_DisallowRun.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
@@ -379,9 +376,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurityManager_DisallowStop securityManagerDisalloStop;
+        ISecurity_DisallowStop securityManagerDisalloStop;
         try {
-            securityManagerDisalloStop = (ISecurityManager_DisallowStop) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_SECURITY_DISALLOWSTOP);
+            securityManagerDisalloStop = (ISecurity_DisallowStop) DeviceManagerSdk.getInstance().getApi(ISecurity_DisallowStop.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
@@ -403,9 +400,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurityManager_DisallowWipeData wipeData;
+        ISecurity_DisallowWipeData wipeData;
         try {
-            wipeData = (ISecurityManager_DisallowWipeData) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_SECURITY_DISALLOWWIPEDATA);
+            wipeData = (ISecurity_DisallowWipeData) DeviceManagerSdk.getInstance().getApi(ISecurity_DisallowWipeData.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
@@ -468,9 +465,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurityManager_DisallowUninstall disallowUninstall;
+        ISecurity_DisallowUninstall disallowUninstall;
         try {
-            disallowUninstall = (ISecurityManager_DisallowUninstall) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_SECURITY_DISALLOWUNINSTALL);
+            disallowUninstall = (ISecurity_DisallowUninstall) DeviceManagerSdk.getInstance().getApi(ISecurity_DisallowUninstall.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
@@ -492,9 +489,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurityManager_AllowRun allowInstall;
+        ISecurity_AllowRun allowInstall;
         try {
-            allowInstall = (ISecurityManager_AllowRun) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_SECURITY_ALLOWRUN);
+            allowInstall = (ISecurity_AllowRun) DeviceManagerSdk.getInstance().getApi(ISecurity_AllowRun.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
@@ -516,25 +513,25 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
     @Override
     public boolean allowClearData(int viewPosition) {
 
-        ApplicationInfoBean bean = vertifiedMemeberIsNull(viewPosition);
-        if (bean == null) {
-            return false;
-        }
-        ISecurityManager_AllowWipeData allowWipeData;
-        try {
-            allowWipeData = (ISecurityManager_AllowWipeData) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_SECURITY_ALLOWWIPEDATA);
-        } catch (DeviceManagerUnsupportException e) {
-            e.printStackTrace();
-            return false;
-        }
-        try {
-            ArrayList<String> list = new ArrayList<>();
-            list.add(bean.getPackageName());
-            allowWipeData.removePackageToClearCacheList(context, list);
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
+//        ApplicationInfoBean bean = vertifiedMemeberIsNull(viewPosition);
+//        if (bean == null) {
+//            return false;
+//        }
+//        ISecurity_AllowWipeData allowWipeData;
+//        try {
+//            allowWipeData = (ISecurity_AllowWipeData) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_SECURITY_ALLOWWIPEDATA);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        try {
+//            ArrayList<String> list = new ArrayList<>();
+//            list.add(bean.getPackageName());
+//            allowWipeData.removePackageToClearCacheList(context, list);
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
         return false;
     }
 
@@ -545,9 +542,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurityManager_AllowUnInstall allowUnInstall;
+        ISecurity_AllowUnInstall allowUnInstall;
         try {
-            allowUnInstall = (ISecurityManager_AllowUnInstall) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_SECURITY_ALLOWUNINSTALL);
+            allowUnInstall = (ISecurity_AllowUnInstall) DeviceManagerSdk.getInstance().getApi(ISecurity_AllowUnInstall.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;

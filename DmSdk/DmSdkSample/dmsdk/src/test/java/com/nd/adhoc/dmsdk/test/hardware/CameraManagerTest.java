@@ -7,9 +7,8 @@ import android.os.Build;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.BuildConfig;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.hardware.ICameraManager;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
 import com.nd.adhoc.dmsdk.shadow.ShowEnterpriseDeviceManager;
 
 import org.junit.Assert;
@@ -28,7 +27,7 @@ import org.robolectric.annotation.Config;
 
 public class CameraManagerTest {
 
-    ICameraManager cameraManager;
+    ICamera cameraManager;
 
     Context context;
 
@@ -43,7 +42,7 @@ public class CameraManagerTest {
     public void testRegister(){
         DeviceManagerSdk.getInstance().registerSDK(context);
         try {
-            cameraManager= (ICameraManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_CAMERA);
+            cameraManager= (ICamera) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_CAMERA);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
         }

@@ -7,12 +7,10 @@ import android.os.Build;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.BuildConfig;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IUsbMamager;
-import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Install;
-import com.nd.adhoc.dmsdk.api.manager.pac.IPackageManager_Uninstall;
-import com.nd.adhoc.dmsdk.shadow.ShadowCustomerDevicePolicyManager;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.pac.IPackage_Install;
+import com.nd.adhoc.dmsdk.api.pac.IPackage_Uninstall;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -64,9 +62,9 @@ public class TestAppManager {
     @Test
     public void testUnInstallApp(){
         testResgisterLicense();
-        IPackageManager_Uninstall uninstall = null;
+        IPackage_Uninstall uninstall = null;
         try {
-            uninstall = (IPackageManager_Uninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_UNINSTALL);
+            uninstall = (IPackage_Uninstall) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_UNINSTALL);
            if(uninstall!=null) {
                uninstall.uninstall(context, TEST_PACKAGE_NAME);
            }
@@ -81,9 +79,9 @@ public class TestAppManager {
     public void testInstallApp(){
 
         testResgisterLicense();
-        IPackageManager_Install uninstall = null;
+        IPackage_Install uninstall = null;
         try {
-            uninstall = (IPackageManager_Install) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_INSTALL);
+            uninstall = (IPackage_Install) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_PACKAGE_INSTALL);
 
             Mockito.when(uninstall).then(new Answer<Object>() {
 

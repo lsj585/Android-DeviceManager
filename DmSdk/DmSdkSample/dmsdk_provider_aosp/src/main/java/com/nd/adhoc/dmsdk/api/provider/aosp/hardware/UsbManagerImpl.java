@@ -2,13 +2,14 @@ package com.nd.adhoc.dmsdk.api.provider.aosp.hardware;
 import android.content.Context;
 import android.os.UserManager;
 import android.support.annotation.NonNull;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IUsbMamager;
+
+import com.nd.adhoc.dmsdk.api.hardware.base.IHardware_Open;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 @Service(IUsbMamager.class)
-public class UsbManagerImpl  implements IUsbMamager {
+public class UsbManagerImpl  implements IHardware_Open {
 
     @Override
     public boolean open(@NonNull Context context){

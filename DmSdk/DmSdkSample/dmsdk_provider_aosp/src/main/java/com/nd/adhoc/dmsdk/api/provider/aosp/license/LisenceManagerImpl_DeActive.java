@@ -6,16 +6,16 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
-import com.nd.adhoc.dmsdk.api.manager.license.ILicenseManager_DeActive;
+import com.nd.adhoc.dmsdk.api.license.ILicense_DeActive;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 /**
  * License 激活
  */
-@Service(ILicenseManager_DeActive.class)
-public class LisenceManagerImpl_DeActive implements ILicenseManager_DeActive {
+@Service(ILicense_DeActive.class)
+public class LisenceManagerImpl_DeActive implements ILicense_DeActive {
 
     @Override
     public void release(@NonNull Context context) {

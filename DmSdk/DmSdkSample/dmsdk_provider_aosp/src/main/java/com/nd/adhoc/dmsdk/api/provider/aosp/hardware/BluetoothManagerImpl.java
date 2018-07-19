@@ -8,14 +8,14 @@ import android.os.UserManager;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.ErrorCode;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IBluetoothManager;
+import com.nd.adhoc.dmsdk.api.hardware.bluetooth.IBluetooth_Open;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
-@Service(IBluetoothManager.class)
-public class BluetoothManagerImpl implements IBluetoothManager {
+@Service(IBluetooth_Open.class)
+public class BluetoothManagerImpl implements IBluetooth_Open {
 
     @Override
     public boolean open(@NonNull Context context) {

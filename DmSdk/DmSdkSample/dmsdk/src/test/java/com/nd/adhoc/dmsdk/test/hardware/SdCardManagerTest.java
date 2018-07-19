@@ -7,9 +7,9 @@ import android.os.Build;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.BuildConfig;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.hardware.ISdCardManager;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.hardware.sdcard.ISdCard_Mount;
 import com.nd.adhoc.dmsdk.shadow.ShowEnterpriseDeviceManager;
 
 import org.junit.Assert;
@@ -28,7 +28,7 @@ import org.robolectric.annotation.Config;
 
 public class SdCardManagerTest {
 
-    ISdCardManager sdCardManager;
+    ISdCard_Mount sdCardManager;
 
     Context context;
 
@@ -43,7 +43,7 @@ public class SdCardManagerTest {
     public void testRegister(){
         DeviceManagerSdk.getInstance().registerSDK(context);
         try {
-            sdCardManager= (ISdCardManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_SDCARD);
+            sdCardManager= (ISdCard_Mount) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_SDCARD);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
         }

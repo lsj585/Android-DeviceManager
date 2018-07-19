@@ -45,6 +45,9 @@ public class ForbridStopApplicationApplicationStrategy implements ApplicationStr
             @Override
             public void onNext(Boolean success) {
                 if (success) {
+                    if(view == null){
+                        return;
+                    }
                     model.updateToUninstall(position, false);
                     view.updateMsg("该应用不允许被用户卸载");
                 }

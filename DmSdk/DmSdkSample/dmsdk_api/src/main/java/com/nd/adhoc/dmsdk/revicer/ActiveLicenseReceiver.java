@@ -10,15 +10,15 @@ import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 
 public class ActiveLicenseReceiver extends BroadcastReceiver {
 
-    final static String EDM_ACTION_LICENSE_STATUS = "edm.intent.action.knox_license.status";
+    private final static String EDM_ACTION_LICENSE_STATUS = "edm.intent.action.knox_license.status";
 
-    final static String EDM_EXTRA_LICENSE_ERROR_CODE = "edm.intent.extra.knox_license.errorcode";
+    private final static String EDM_EXTRA_LICENSE_ERROR_CODE = "edm.intent.extra.knox_license.errorcode";
 
-    final static String KLM_ACTION_LICENSE_STATUS = "edm.intent.action.license.status";
+    private final static String KLM_ACTION_LICENSE_STATUS = "edm.intent.action.license.status";
 
-    final static String KLM_EXTRA_LICENSE_ERROR_CODE = "edm.intent.extra.license.errorcode";
+    private final static String KLM_EXTRA_LICENSE_ERROR_CODE = "edm.intent.extra.license.errorcode";
 
-    final static  int ERROR_NONE = 0;
+    private final static  int ERROR_NONE = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {

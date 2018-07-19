@@ -7,9 +7,9 @@ import android.os.Build;
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.BuildConfig;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IMobileDataManager;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.hardware.mobiledata.IMobileData_Open;
 import com.nd.adhoc.dmsdk.shadow.ShowEnterpriseDeviceManager;
 
 import org.junit.Assert;
@@ -28,7 +28,7 @@ import org.robolectric.annotation.Config;
 
 public class MobileDataManagerTest {
 
-    IMobileDataManager mobileDataManager;
+    IMobileData_Open mobileDataManager;
 
     Context context;
 
@@ -43,7 +43,7 @@ public class MobileDataManagerTest {
     public void testRegister(){
         DeviceManagerSdk.getInstance().registerSDK(context);
         try {
-            mobileDataManager= (IMobileDataManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MOBILEDATA);
+            mobileDataManager= (IMobileData_Open) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MOBILEDATA);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
         }
