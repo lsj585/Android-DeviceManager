@@ -14,5 +14,5 @@ public interface ISecurity_AllowUnInstall extends IDmSdkApi {
      * 从黑名单中移除被限制卸载应用的应用列表
      * @param packageName 应用包名
      */
-    boolean removePackageToUninstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException;
+    boolean allowUninstall(@NonNull Context context, @NonNull String packageName);
 }

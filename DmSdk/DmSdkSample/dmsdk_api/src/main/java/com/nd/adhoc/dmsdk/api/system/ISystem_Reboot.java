@@ -7,5 +7,5 @@ public interface ISystem_Reboot extends IDmSdkApi {
     /**
      * 重启
      */
-    void execute() throws DeviceManagerSecurityException;
+    void execReboot() throws DeviceManagerSecurityException;
 }

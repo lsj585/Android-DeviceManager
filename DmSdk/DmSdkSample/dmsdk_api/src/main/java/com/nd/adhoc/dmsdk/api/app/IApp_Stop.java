@@ -15,5 +15,5 @@ public interface IApp_Stop extends IDmSdkApi {
      * 停止某个应用
      * @param packageName 包名
      */
-    boolean stopApp(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException;
+    boolean stopApp(@NonNull Context context, @NonNull String packageName);
 }

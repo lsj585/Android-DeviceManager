@@ -17,5 +17,5 @@ public interface IApp_IsRun extends IDmSdkApi {
      * @return
      * @throws DeviceManagerSecurityException
      */
-    boolean isRunning(@NonNull Context context,@NonNull String packageName) throws DeviceManagerSecurityException;
+    boolean isRunning(@NonNull Context context,@NonNull String packageName);
 }

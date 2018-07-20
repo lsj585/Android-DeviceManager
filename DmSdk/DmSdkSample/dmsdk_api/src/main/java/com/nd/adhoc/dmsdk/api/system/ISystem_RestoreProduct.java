@@ -4,9 +4,13 @@ import com.nd.adhoc.dmsdk.IDmSdkApi;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 
 /**
+ * @author richsjeson
  * 恢复出产
  */
 public interface ISystem_RestoreProduct extends IDmSdkApi {
-
-    void execute() throws DeviceManagerSecurityException;
+    /**
+     * 恢复出产设置
+     * @throws DeviceManagerSecurityException
+     */
+    void execRestoreProduct();
 }

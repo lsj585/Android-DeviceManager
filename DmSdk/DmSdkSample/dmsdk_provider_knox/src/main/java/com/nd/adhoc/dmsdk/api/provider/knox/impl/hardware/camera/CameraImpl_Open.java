@@ -3,13 +3,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.hardware.camera.ICamera_Open;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
-@ApiFunctionKey(DmSdkConstants.MANAGER_HARDWARE_CAMERA)
+
 @Service(IDmSdkApi.class)
 @ApiImpl(ICamera_Open.class)
 public class CameraImpl_Open extends CameraImpl_Base implements ICamera_Open {

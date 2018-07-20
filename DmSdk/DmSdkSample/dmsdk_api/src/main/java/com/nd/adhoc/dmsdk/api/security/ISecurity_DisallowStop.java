@@ -20,6 +20,6 @@ public interface ISecurity_DisallowStop extends IDmSdkApi {
      * @param packages 需要被禁用的APP列表
      * @throws DeviceManagerSecurityException
      */
-    boolean addPackageToStopList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
+    boolean disallowStop(@NonNull Context context, @NonNull List<String> packages) throws DeviceManagerSecurityException;
 
 }

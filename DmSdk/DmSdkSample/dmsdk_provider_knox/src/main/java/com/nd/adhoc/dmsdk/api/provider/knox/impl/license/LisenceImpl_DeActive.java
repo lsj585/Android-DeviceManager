@@ -6,20 +6,17 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.license.ILicense_DeActive;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.exception.ErrorCode;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 /**
  * License 激活
  */
 @Service(IDmSdkApi.class)
 @ApiImpl(ILicense_DeActive.class)
-@ApiFunctionKey(DmSdkConstants.MANAGER_LICENSE_DEACTIVE)
 public class LisenceImpl_DeActive implements ILicense_DeActive {
 
     @Override

@@ -14,5 +14,5 @@ public interface ISecurity_AllowInstall extends IDmSdkApi {
      * 从黑名单中移除被限制安装的应用列表
      * @param packageName
      */
-    boolean removePackageToInstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException;
+    boolean allowInstall(@NonNull Context context, @NonNull String packageName);
 }

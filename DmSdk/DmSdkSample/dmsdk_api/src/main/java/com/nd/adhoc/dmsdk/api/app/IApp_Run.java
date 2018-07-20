@@ -15,5 +15,5 @@ public interface IApp_Run extends IDmSdkApi {
      * @param packageName 包名
      * @param clsName apk所对应的launcher_activity的类名
      */
-    boolean startApp(@NonNull Context context, @NonNull String packageName,@NonNull String clsName) throws DeviceManagerSecurityException;
+    boolean startApp(@NonNull Context context, @NonNull String packageName,@NonNull String clsName);
 }

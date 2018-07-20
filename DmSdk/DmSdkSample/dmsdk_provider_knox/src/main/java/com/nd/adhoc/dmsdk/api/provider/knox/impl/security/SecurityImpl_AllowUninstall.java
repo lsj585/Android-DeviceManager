@@ -4,22 +4,23 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
-import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.security.ISecurity_AllowUnInstall;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 @Service(IDmSdkApi.class)
 @ApiImpl(ISecurity_AllowUnInstall.class)
-@ApiFunctionKey(DmSdkConstants.MANAGER_SECURITY_ALLOWUNINSTALL)
 
 public class SecurityImpl_AllowUninstall implements ISecurity_AllowUnInstall {
-    @Override
-    public boolean removePackageToUninstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException {
 
+    @Override
+    public void release(@NonNull Context context) {
+
+    }
+
+    @Override
+    public boolean allowUninstall(@NonNull Context context, @NonNull String packageName) {
         ApplicationPolicy applicationPolicy= KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
             return false;
@@ -32,10 +33,5 @@ public class SecurityImpl_AllowUninstall implements ISecurity_AllowUnInstall {
             e.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public void release(@NonNull Context context) {
-
     }
 }

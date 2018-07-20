@@ -4,20 +4,22 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.security.ISecurity_DisallowInstall;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 @Service(IDmSdkApi.class)
 @ApiImpl(ISecurity_DisallowInstall.class)
-@ApiFunctionKey(DmSdkConstants.MANAGER_SECURITY_DISALLOWINSTALL)
 public class SecurityImpl_DisallowInstall implements ISecurity_DisallowInstall {
-    @Override
-    public boolean addPackageToInstallList(@NonNull Context context, @NonNull String packageName) {
 
+    @Override
+    public void release(@NonNull Context context) {
+
+    }
+
+    @Override
+    public boolean disallowInstall(@NonNull Context context, @NonNull String packageName) {
         ApplicationPolicy applicationPolicy= KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
             return false;
@@ -30,10 +32,5 @@ public class SecurityImpl_DisallowInstall implements ISecurity_DisallowInstall {
             e.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public void release(@NonNull Context context) {
-
     }
 }

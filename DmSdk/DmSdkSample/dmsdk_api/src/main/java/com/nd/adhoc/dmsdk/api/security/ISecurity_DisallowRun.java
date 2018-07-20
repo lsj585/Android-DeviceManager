@@ -19,5 +19,5 @@ public interface ISecurity_DisallowRun extends IDmSdkApi {
      * @param packages 需要被禁用的APP列表
      * @throws DeviceManagerSecurityException
      */
-    boolean addPackageToRunList(@NonNull Context context,@NonNull List packages) throws DeviceManagerSecurityException, DeviceManagerUnsupportException;
+    boolean disallowRun(@NonNull Context context,@NonNull List<String> packages);
 }

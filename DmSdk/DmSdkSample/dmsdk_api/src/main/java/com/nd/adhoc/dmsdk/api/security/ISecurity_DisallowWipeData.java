@@ -16,11 +16,11 @@ public interface ISecurity_DisallowWipeData extends IDmSdkApi {
      * 添加某个应用被限制清理数据的进入黑名单
      * @param packages 应用清单
      */
-    boolean addPackageToClearDataList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
+    boolean disallowClearData(@NonNull Context context, @NonNull List<String> packages) ;
 
     /**
      * 添加某个应用被限制清理缓存的进入黑名单
      * @param packages 应用清单
      */
-    boolean addPackageToClearCacheList(@NonNull Context context, @NonNull List packages) throws DeviceManagerSecurityException;
+    boolean disallowClearCacheData(@NonNull Context context, @NonNull List<String> packages);
 }

@@ -4,17 +4,14 @@ import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.hardware.devicelock.IDeviceLock_Unlock;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@ApiFunctionKey(DmSdkConstants.MANAGER_HARDWARE_LOCK)
 @Service(IDmSdkApi.class)
 @ApiImpl(IDeviceLock_Unlock.class)
 public class DeviceLockImpl_UnLock extends DeviceLockImpl_Base implements IDeviceLock_Unlock {

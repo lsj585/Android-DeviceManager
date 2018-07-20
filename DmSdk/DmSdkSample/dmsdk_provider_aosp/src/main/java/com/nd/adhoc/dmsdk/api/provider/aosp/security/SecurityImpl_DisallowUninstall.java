@@ -7,18 +7,23 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
+import com.nd.adhoc.dmsdk.IDmSdkApi;
+import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.security.ISecurity_DisallowUninstall;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
-@Service(ISecurity_DisallowUninstall.class)
+@Service(IDmSdkApi.class)
+@ApiImpl(ISecurity_DisallowUninstall.class)
 public class SecurityImpl_DisallowUninstall implements ISecurity_DisallowUninstall {
+    @Override
+    public void release(@NonNull Context context) {
+
+    }
 
     @Override
-    public boolean addPackageToUninstallList(@NonNull Context context, @NonNull String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException {
+    public boolean disallowUninstall(@NonNull Context context, @NonNull String packageName) {
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
         if (container == null) {
@@ -29,7 +34,12 @@ public class SecurityImpl_DisallowUninstall implements ISecurity_DisallowUninsta
 
         ComponentName componentName = container.getComponentName();
 
-        DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
+        try {
+            DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
                 devicePolicyManager.setUninstallBlocked(componentName, packageName, true);
@@ -39,12 +49,6 @@ public class SecurityImpl_DisallowUninstall implements ISecurity_DisallowUninsta
             }
             return false;
         }
-        throw new DeviceManagerUnsupportException(ErrorCode.ERROR_CODE_UN_SUPPORT);
-
-    }
-
-    @Override
-    public void release(@NonNull Context context) {
-
+       return false;
     }
 }

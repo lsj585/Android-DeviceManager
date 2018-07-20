@@ -6,20 +6,14 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
-import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.pac.IPackage_Install;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
-
 import java.io.File;
-import java.io.FileNotFoundException;
+
 @Service(IDmSdkApi.class)
 @ApiImpl(IPackage_Install.class)
-@ApiFunctionKey(DmSdkConstants.MANAGER_PACKAGE_INSTALL)
 public class PackageImpl_Install implements IPackage_Install {
     @Override
     public void release(@NonNull Context context) {
@@ -27,16 +21,16 @@ public class PackageImpl_Install implements IPackage_Install {
     }
 
     @Override
-    public boolean install(@NonNull Context context, @NonNull String apKFile) throws DeviceManagerSecurityException, FileNotFoundException {
+    public boolean install(@NonNull Context context, @NonNull String apKFile){
 
         if (TextUtils.isEmpty(apKFile)) {
-            throw new NullPointerException("");
+            return false;
         }
 
         File file = new File(apKFile);
         //如果目标文件不存在
         if (!file.exists()) {
-            throw new FileNotFoundException();
+            return false;
         }
         try {
             ApplicationPolicy applicationPolicy = KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
@@ -46,10 +40,7 @@ public class PackageImpl_Install implements IPackage_Install {
             return applicationPolicy.installApplication(apKFile, false);
         } catch (SecurityException  e ) {
             e.printStackTrace();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
         }
-        throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
-
+        return false;
     }
 }

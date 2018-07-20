@@ -1,11 +1,9 @@
 package com.nd.adhoc.dmsdk.exception;
 
+/**
+ * 此类暂时不用
+ */
 public class ErrorCode {
-
-    /**
-     * NO 无异常
-     */
-    public static final int DEFAULT_ERROR_CODE=0;
 
     /**
      * 构造函数中的成员变量未被初始化，获取为NULL。

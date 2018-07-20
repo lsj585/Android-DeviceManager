@@ -5,23 +5,26 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.hardware.wifi.IWifi_IsOpen;
 import com.nd.adhoc.dmsdk.api.provider.knox.utils.Verification;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
-@ApiFunctionKey(DmSdkConstants.MANAGER_HARDWARE_WIFI)
 @Service(IDmSdkApi.class)
 @ApiImpl(IWifi_IsOpen.class)
 public class WifiImpl_IsOpen implements IWifi_IsOpen {
 
     @Override
-    public boolean isOpen(@NonNull Context context) throws DeviceManagerSecurityException {
-        RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
-        return restrictionPolicy.isWiFiEnabled(true);
+    public boolean isOpen(@NonNull Context context){
+        RestrictionPolicy restrictionPolicy= null;
+        try {
+            restrictionPolicy = Verification.isRestrictionPolicyNull(context);
+            return restrictionPolicy.isWiFiEnabled(true);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override

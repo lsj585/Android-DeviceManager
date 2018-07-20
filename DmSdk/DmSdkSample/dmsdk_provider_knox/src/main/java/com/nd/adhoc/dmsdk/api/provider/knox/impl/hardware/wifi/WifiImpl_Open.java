@@ -4,14 +4,11 @@ import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.hardware.wifi.IWifi_Open;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
-@ApiFunctionKey(DmSdkConstants.MANAGER_HARDWARE_WIFI)
 @Service(IDmSdkApi.class)
 @ApiImpl(IWifi_Open.class)
 public class WifiImpl_Open extends WifiImpl_Base implements IWifi_Open {

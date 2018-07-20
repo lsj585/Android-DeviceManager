@@ -7,23 +7,24 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
+import com.nd.adhoc.dmsdk.IDmSdkApi;
+import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.security.ISecurity_AllowRun;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.util.List;
-@Service(ISecurity_AllowRun.class)
+@Service(IDmSdkApi.class)
+@ApiImpl(ISecurity_AllowRun.class)
 public class SecurityImpl_AllowRun implements ISecurity_AllowRun {
 
     @Override
     public void release(@NonNull Context context) {
 
     }
-
     @Override
-    public boolean removePackageToRunList(@NonNull Context context, @NonNull List list) throws DeviceManagerSecurityException {
+    public boolean allowRun(@NonNull Context context, @NonNull List<String> list) {
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
         if (container == null) {
@@ -34,7 +35,12 @@ public class SecurityImpl_AllowRun implements ISecurity_AllowRun {
 
         ComponentName componentName = container.getComponentName();
 
-        DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
+        try {
+            DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
         //清除缓存  Android  P可使用
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -46,7 +52,6 @@ public class SecurityImpl_AllowRun implements ISecurity_AllowRun {
             }
             return false;
         }
-        throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
+        return false;
     }
-
 }

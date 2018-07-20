@@ -18,7 +18,7 @@ import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-@ApiFunctionKey(DmSdkConstants.MANAGER_HARDWARE_LOCK)
+
 @Service(IDmSdkApi.class)
 @ApiImpl(IDeviceLock_Lock.class)
 public class DeviceLockImpl_Lock extends DeviceLockImpl_Base implements  IDeviceLock_Lock {

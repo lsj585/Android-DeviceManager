@@ -6,17 +6,15 @@ import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.hardware.devicelock.IDeviceLock_IsLock;
 import com.nd.adhoc.dmsdk.api.provider.knox.utils.Verification;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-@ApiFunctionKey(DmSdkConstants.MANAGER_HARDWARE_LOCK)
+
 @Service(IDmSdkApi.class)
 @ApiImpl(IDeviceLock_IsLock.class)
 public class DeviceLockImpl_IsLock implements IDeviceLock_IsLock {

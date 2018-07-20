@@ -15,5 +15,5 @@ public interface IApp_WipeData extends IDmSdkApi {
      * 移除数据
      * @param packageName 包名
      */
-    boolean clearData(@NonNull Context context,  @NonNull String packageName) throws DeviceManagerSecurityException, DeviceManagerUnsupportException;
+    boolean clearData(@NonNull Context context,  @NonNull String packageName);
 }

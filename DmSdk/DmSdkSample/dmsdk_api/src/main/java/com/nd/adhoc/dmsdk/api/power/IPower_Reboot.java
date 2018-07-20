@@ -1,11 +1,9 @@
 package com.nd.adhoc.dmsdk.api.power;
-
-import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.api.IKey_Base;
 
 /**
  * 重启
  */
-public interface IPower_Reboot extends IDmSdkApi {
-    void exec() throws DeviceManagerSecurityException;
+public interface IPower_Reboot extends IKey_Base {
+    void exec();
 }

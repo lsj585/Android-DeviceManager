@@ -16,5 +16,5 @@ public interface ISecurity_AllowRun extends IDmSdkApi {
      * 从黑名单中移除被限制运行的应用列表
      * @param list
      */
-    boolean removePackageToRunList(@NonNull Context context, @NonNull List list) throws DeviceManagerSecurityException;
+    boolean allowRun(@NonNull Context context, @NonNull List<String> list);
 }

@@ -4,17 +4,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.security.ISecurity_AllowRun;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 import java.util.List;
 
 @Service(IDmSdkApi.class)
 @ApiImpl(ISecurity_AllowRun.class)
-@ApiFunctionKey(DmSdkConstants.MANAGER_SECURITY_ALLOWRUN)
 public class SecurityImpl_AllowRun implements ISecurity_AllowRun {
 
     @Override
@@ -22,10 +19,10 @@ public class SecurityImpl_AllowRun implements ISecurity_AllowRun {
 
     }
     @Override
-    public boolean removePackageToRunList(@NonNull Context context, @NonNull List list) {
+    public boolean allowRun(@NonNull Context context, @NonNull List<String> list) {
         ApplicationPolicy applicationPolicy=KnoxDeviceManagerFactory.getInstance().getApplicationPolicy(context);
         if(applicationPolicy==null){
-           return false;
+            return false;
         }
         //TODO zyb 此处最高异常待定，需要核对API
         try {
@@ -34,7 +31,5 @@ public class SecurityImpl_AllowRun implements ISecurity_AllowRun {
             e.printStackTrace();
         }
         return false;
-
     }
-
 }

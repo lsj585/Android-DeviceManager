@@ -17,7 +17,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.license.ILicense_Active;
@@ -31,7 +30,6 @@ import com.sec.enterprise.knox.license.KnoxEnterpriseLicenseManager;
 /**
  * License 激活 --Knox 入口激活程序 该入口程序不能被
  */
-@ApiFunctionKey(DmSdkConstants.MANAGER_LICENSE_ACTIVE)
 @Service(IDmSdkApi.class)
 @ApiImpl(ILicense_Active.class)
 public class LisenceImpl_Active implements ILicense_Active {

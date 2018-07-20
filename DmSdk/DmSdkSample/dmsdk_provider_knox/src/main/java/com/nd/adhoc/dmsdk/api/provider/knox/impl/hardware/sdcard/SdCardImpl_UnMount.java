@@ -3,14 +3,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.IDmSdkApi;
-import com.nd.adhoc.dmsdk.annotation.ApiFunctionKey;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.hardware.sdcard.ISdCard_UnMount;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
-@ApiFunctionKey(DmSdkConstants.MANAGER_HARDWARE_SDCARD)
 @Service(IDmSdkApi.class)
 @ApiImpl(ISdCard_UnMount.class)
 public class SdCardImpl_UnMount extends SdCardImpl_Base implements ISdCard_UnMount {

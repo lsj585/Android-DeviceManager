@@ -1,5 +1,4 @@
 package com.nd.adhoc.dmsdk.api.screen;
-
 import com.nd.adhoc.dmsdk.IDmSdkApi;
 
 /**

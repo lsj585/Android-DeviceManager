@@ -6,20 +6,21 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.exception.ErrorCode;
+import com.nd.adhoc.dmsdk.IDmSdkApi;
+import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.power.IPower_Reboot;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 /**
  * 重启
  */
-@Service(IPower_Reboot.class)
+@Service(IDmSdkApi.class)
+@ApiImpl(IPower_Reboot.class)
 public class PowerImpl_Reboot implements IPower_Reboot {
 
 
     @Override
-    public void exec() throws DeviceManagerSecurityException {
+    public void exec(){
 
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
@@ -28,11 +29,11 @@ public class PowerImpl_Reboot implements IPower_Reboot {
         ComponentName componentName = container.getComponentName();
 
         if (container.getComponentName() == null) {
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return ;
         }
 
         if (devicePolicyManager == null) {
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return ;
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -43,7 +44,7 @@ public class PowerImpl_Reboot implements IPower_Reboot {
             }
             return;
         }
-        throw new UnsupportedOperationException("不支持此API的操作");
+        return;
     }
 
     @Override
