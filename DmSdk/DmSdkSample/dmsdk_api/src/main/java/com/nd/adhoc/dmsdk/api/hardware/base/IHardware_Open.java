@@ -13,5 +13,5 @@ public interface IHardware_Open extends IDmSdkApi {
     /**
      * 开启
      */
-    boolean open(@NonNull Context context) throws DeviceManagerSecurityException;
+    boolean open(@NonNull Context context);
 }

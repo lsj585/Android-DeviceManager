@@ -14,7 +14,7 @@ public class MicrophoneImpl_Close extends MicrophoneImpl_Base implements IMicrop
     @Override
     public boolean close(@NonNull Context context) {
         try {
-            turnOff(context, false);
+            derall(context, false);
         } catch (DeviceManagerSecurityException e) {
             e.printStackTrace();
             return false;

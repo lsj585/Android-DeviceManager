@@ -17,5 +17,5 @@ public interface IPackage_Install extends IDmSdkApi {
      *
      * @param apKFile 路径
      */
-    boolean install(@NonNull Context context, @NonNull String apKFile) throws DeviceManagerSecurityException, FileNotFoundException;
+    boolean install(@NonNull Context context, @NonNull String apKFile);
 }

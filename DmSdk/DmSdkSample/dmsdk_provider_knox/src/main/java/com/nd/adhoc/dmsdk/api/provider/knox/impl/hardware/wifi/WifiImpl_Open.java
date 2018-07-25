@@ -15,7 +15,7 @@ public class WifiImpl_Open extends WifiImpl_Base implements IWifi_Open {
     @Override
     public boolean open(@NonNull Context context){
         try {
-            turnOff(context,true);
+            derall(context,true);
         }catch (DeviceManagerSecurityException e){
             e.printStackTrace();
             return false;

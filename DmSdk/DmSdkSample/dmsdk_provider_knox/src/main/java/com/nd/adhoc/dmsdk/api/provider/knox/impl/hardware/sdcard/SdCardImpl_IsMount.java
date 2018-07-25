@@ -16,7 +16,7 @@ import com.nd.sdp.android.serviceloader.annotation.Service;
 public class SdCardImpl_IsMount implements ISdCard_IsMount {
     @Override
     public boolean isOpen(@NonNull Context context) {
-        RestrictionPolicy restrictionPolicy= null;
+        RestrictionPolicy restrictionPolicy;
         try {
             restrictionPolicy = Verification.isRestrictionPolicyNull(context);
             return restrictionPolicy.isSdCardEnabled();

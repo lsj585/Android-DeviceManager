@@ -15,7 +15,7 @@ public class SdCardImpl_Mount extends SdCardImpl_Base implements ISdCard_Mount {
     @Override
     public boolean open(@NonNull Context context){
         try {
-            turnOff(context,true);
+            derall(context,true);
         }catch (DeviceManagerSecurityException e){
             e.printStackTrace();
             return false;

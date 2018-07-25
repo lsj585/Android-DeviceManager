@@ -17,7 +17,7 @@ public class WifiImpl_Close extends WifiImpl_Base implements IWifi_Close {
     @Override
     public boolean close(@NonNull Context context){
         try {
-            turnOff(context,false);
+            derall(context,false);
         }catch (DeviceManagerSecurityException e){
             e.printStackTrace();
             return false;

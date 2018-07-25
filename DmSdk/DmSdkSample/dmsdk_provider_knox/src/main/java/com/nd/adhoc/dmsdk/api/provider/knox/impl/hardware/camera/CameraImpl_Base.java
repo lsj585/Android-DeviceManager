@@ -4,6 +4,7 @@ import android.app.enterprise.RestrictionPolicy;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.nd.adhoc.dmsdk.api.provider.knox.impl.hardware.IHardwareOperation_Swith;
 import com.nd.adhoc.dmsdk.api.provider.knox.utils.Verification;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.exception.ErrorCode;
@@ -12,14 +13,9 @@ import com.nd.adhoc.dmsdk.exception.ErrorCode;
  * @author richsjeson
  */
 
-public class CameraImpl_Base {
-    /**
-     * 执行打开/关闭 硬件功能的操作
-     * @param context
-     * @param isOpen
-     * @throws DeviceManagerSecurityException
-     */
-    protected void turnOff(@NonNull Context context, boolean isOpen) throws DeviceManagerSecurityException {
+public class CameraImpl_Base implements IHardwareOperation_Swith {
+    @Override
+    public void derall(@NonNull Context context, boolean isOpen) throws DeviceManagerSecurityException {
         RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
         try {
             boolean isSuccess = restrictionPolicy.setCameraState(isOpen);

@@ -17,7 +17,7 @@ public class WifiImpl_IsOpen implements IWifi_IsOpen {
 
     @Override
     public boolean isOpen(@NonNull Context context){
-        RestrictionPolicy restrictionPolicy= null;
+        RestrictionPolicy restrictionPolicy;
         try {
             restrictionPolicy = Verification.isRestrictionPolicyNull(context);
             return restrictionPolicy.isWiFiEnabled(true);

@@ -12,7 +12,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
+//import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -50,12 +50,14 @@ public class LisenceImpl_Active implements ILicense_Active {
         IntentFilter filter=new IntentFilter();
         filter.addAction(DmSdkConstants.DEVICE_MANAGER_ACTIVE_ACTION);
         filter.addAction(DmSdkConstants.KNOX_LICENSE_ACTIVE_ACTION);
-        LocalBroadcastManager.getInstance(context).registerReceiver(receiver,filter);
+//        LocalBroadcastManager.getInstance(context).registerReceiver(receiver,filter);
+        context.registerReceiver(receiver,filter);
     }
 
     @Override
     public void release(@NonNull Context context) {
-        LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+//        LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+        context.unregisterReceiver(receiver);
     }
 
 
@@ -162,7 +164,7 @@ public class LisenceImpl_Active implements ILicense_Active {
             }
         }else{
             Intent intent=new Intent(DmSdkConstants.LICENSE_STATUS_SUCCESS);
-            LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent);
+            context.sendBroadcast(intent);
         }
     }
 }

@@ -15,7 +15,7 @@ public class UsbImpl_DisConnect extends UsbImpl_Base implements IUsb_DisConnect 
     @Override
     public boolean close(@NonNull Context context){
         try {
-            turnOff(context,false);
+            derall(context,false);
         }catch (DeviceManagerSecurityException e){
             e.printStackTrace();
             return false;

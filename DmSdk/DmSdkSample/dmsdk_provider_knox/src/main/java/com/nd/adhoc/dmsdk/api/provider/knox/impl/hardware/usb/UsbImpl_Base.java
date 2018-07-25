@@ -4,12 +4,17 @@ import android.app.enterprise.RestrictionPolicy;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.nd.adhoc.dmsdk.api.provider.knox.impl.hardware.IHardwareOperation_Swith;
 import com.nd.adhoc.dmsdk.api.provider.knox.utils.Verification;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.exception.ErrorCode;
 
-public class UsbImpl_Base {
-    public void turnOff(@NonNull Context context, boolean isOpen) throws DeviceManagerSecurityException {
+public class UsbImpl_Base implements IHardwareOperation_Swith{
+
+
+    @Override
+    public void derall(@NonNull Context context, boolean isOpen) throws DeviceManagerSecurityException {
+
         RestrictionPolicy restrictionPolicy = Verification.isRestrictionPolicyNull(context);
         try {
             boolean isSuccess = restrictionPolicy.isUsbMassStorageEnabled(isOpen);

@@ -15,7 +15,7 @@ public class SdCardImpl_UnMount extends SdCardImpl_Base implements ISdCard_UnMou
     @Override
     public boolean close(@NonNull Context context){
         try {
-            turnOff(context,false);
+            derall(context,false);
         }catch (DeviceManagerSecurityException e){
             e.printStackTrace();
             return false;

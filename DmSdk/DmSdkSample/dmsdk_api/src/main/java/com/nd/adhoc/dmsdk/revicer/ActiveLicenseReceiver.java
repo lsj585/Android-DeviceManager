@@ -3,8 +3,7 @@ package com.nd.adhoc.dmsdk.revicer;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
-import android.widget.Toast;
+//import android.support.v4.content.LocalBroadcastManager;
 
 import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 
@@ -61,12 +60,12 @@ public class ActiveLicenseReceiver extends BroadcastReceiver {
     private void onSuccess(Context context, String action) {
         Intent intent = new Intent();
         intent.setAction(action);
-        LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent);
+//        LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent);
     }
 
     private void onFailure(Context context) {
         Intent intent = new Intent();
         intent.setAction(DmSdkConstants.LICENSE_STATUS_FAILURE);
-        LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent);
+//        LocalBroadcastManager.getInstance(context).sendBroadcastSync(intent);
     }
 }

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.UserHandle;
-import android.support.v4.content.LocalBroadcastManager;
 
 import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 
@@ -36,7 +35,8 @@ public class AdminReciver extends DeviceAdminReceiver {
 
     @Override
     public void onEnabled(Context context, Intent intent) {
-        LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(DmSdkConstants.DEVICE_MANAGER_ACTIVE_ACTION));
+//        LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(DmSdkConstants.DEVICE_MANAGER_ACTIVE_ACTION));
+        context.sendBroadcast(new Intent(DmSdkConstants.DEVICE_MANAGER_ACTIVE_ACTION));
     }
 
     @Override

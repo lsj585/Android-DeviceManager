@@ -13,7 +13,7 @@ public class MobileDataImpl_Close extends MobileDataImpl_Base implements IMobile
     @Override
     public boolean close(@NonNull Context context) {
         try {
-            turnOff(context,false);
+            derall(context,false);
         }catch (DeviceManagerSecurityException e){
             e.printStackTrace();
             return false;
