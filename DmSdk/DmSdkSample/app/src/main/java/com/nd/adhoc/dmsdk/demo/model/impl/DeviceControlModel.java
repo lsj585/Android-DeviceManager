@@ -6,21 +6,19 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
-import com.nd.adhoc.dmsdk.DeviceManagerContainer;
-import com.nd.adhoc.dmsdk.api.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IBluetoothManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.ICameraManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IDeviceLockManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IMicrophoneManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IMobileDataManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.ISdCardManager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IUsbMamager;
-import com.nd.adhoc.dmsdk.api.manager.hardware.IWifiManager;
-import com.nd.adhoc.dmsdk.api.manager.key.IPhysicalKeyManager_Menu;
+import com.nd.adhoc.dmsdk.api.hardware.bluetooth.IBluetooth_Open;
+import com.nd.adhoc.dmsdk.api.hardware.microphone.IMicrophon_Open;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
+import com.nd.adhoc.dmsdk.api.hardware.mobiledata.IMobileData_Open;
+import com.nd.adhoc.dmsdk.api.hardware.sdcard.ISdCard_Mount;
+import com.nd.adhoc.dmsdk.api.hardware.wifi.IWifi_IsOpen;
+import com.nd.adhoc.dmsdk.api.key.IPhysicalKey_Menu;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.HardWareSwitchBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
 import com.nd.adhoc.dmsdk.demo.model.IDeviceControlModel;
+import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ import java.util.List;
 public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements IDeviceControlModel {
 
 
-    private List<HardWareSwitchBean> list;
+    private List<HardWareSwitchBean> mList;
 
     public DeviceControlModel(Context context) {
         super(context);
@@ -45,16 +43,16 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
     @Override
     public void update(HardWareSwitchBean hardWareSwitchBean, int position) {
 
-        if (list != null && list.size() > 0) {
-            HardWareSwitchBean bean = list.get(position);
+        if (mList != null && mList.size() > 0) {
+            HardWareSwitchBean bean = mList.get(position);
             bean.setStatus(hardWareSwitchBean.getStatus());
         }
     }
 
     @Override
     public void delete(HardWareSwitchBean hardWareSwitchBean) {
-        if (list != null && list.size() > 0) {
-            list.remove(hardWareSwitchBean);
+        if (mList != null && mList.size() > 0) {
+            mList.remove(hardWareSwitchBean);
         }
     }
 
@@ -123,136 +121,185 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
     }
 
     private boolean deviceMicrophone() {
-        IMicrophoneManager microphoneManager= (IMicrophoneManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MICROPHONE);
+        IMicrophon_Open microphoneManager= null;
         try {
-            if(!microphoneManager.isOpen(context)){
-                microphoneManager.open(context);
-            }else{
-                microphoneManager.close(context);
-            }
-            return true;
-        } catch (DeviceManagerSecurityException e) {
+            microphoneManager = (IMicrophon_Open) DeviceManagerSdk.getInstance().getApi(IMicrophon_Open.class);
+        } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
         }
+//        try {
+//            if(!microphoneManager.isOpen(context)){
+//                microphoneManager.open(context);
+//            }else{
+//                microphoneManager.close(context);
+//            }
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+        return false;
     }
 
     private boolean deviceUsb() {
 
-        IUsbMamager usbMamager= (IUsbMamager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_USB);
-        try {
-            if(!usbMamager.isOpen(context)){
-                usbMamager.open(context);
-            }else{
-                usbMamager.close(context);
-            }
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
+//        IUsbMamager usbMamager= null;
+//        try {
+//            usbMamager = (IUsbMamager) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_USB);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        try {
+//            if(!usbMamager.isOpen(context)){
+//                usbMamager.open(context);
+//            }else{
+//                usbMamager.close(context);
+//            }
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+        return false;
     }
 
     private boolean deviceSdCard() {
 
-        ISdCardManager sdCardManager= (ISdCardManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_SDCARD);
-        try {
-            if(!sdCardManager.isOpen(context)){
-                sdCardManager.open(context);
-            }else{
-                sdCardManager.close(context);
-            }
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
+//        ISdCard_Mount sdCardManager= null;
+//        try {
+//            sdCardManager = (ISdCard_Mount) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_SDCARD);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        try {
+//            if(!sdCardManager.isOpen(context)){
+//                sdCardManager.open(context);
+//            }else{
+//                sdCardManager.close(context);
+//            }
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+        return false;
     }
 
     private boolean deviceLock() {
 
-        IDeviceLockManager lockManager= (IDeviceLockManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_LOCK);
-        try {
-            if(!lockManager.isOpen(context)){
-                lockManager.open(context);
-            }else{
-                lockManager.close(context);
-            }
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
+//        IDeviceLock lockManager= null;
+//        try {
+//            lockManager = (IDeviceLock) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_LOCK);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        try {
+//            if(!lockManager.isOpen(context)){
+//                lockManager.open(context);
+//            }else{
+//                lockManager.close(context);
+//            }
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+        return false;
     }
 
     private boolean deviceBluetooth() {
 
-        IBluetoothManager bluetoothManager= (IBluetoothManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_BLUETOOTH);
-        try {
-            if(!bluetoothManager.isOpen(context)){
-                bluetoothManager.open(context);
-            }else{
-                bluetoothManager.close(context);
-            }
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
+//        IBluetooth_Open bluetoothManager= null;
+//        try {
+//            bluetoothManager = (IBluetooth_Open) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_BLUETOOTH);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        try {
+//            if(!bluetoothManager.isOpen(context)){
+//                bluetoothManager.open(context);
+//            }else{
+//                bluetoothManager.close(context);
+//            }
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+        return false;
     }
 
     private boolean deviceCamera() {
-        ICameraManager cameraManager= (ICameraManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_CAMERA);
-        try {
-            if(!cameraManager.isOpen(context)){
-                cameraManager.open(context);
-            }else{
-                cameraManager.close(context);
-            }
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
+//        ICamera cameraManager= null;
+//        try {
+//            cameraManager = (ICamera) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_CAMERA);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        try {
+//            if(!cameraManager.isOpen(context)){
+//                cameraManager.open(context);
+//            }else{
+//                cameraManager.close(context);
+//            }
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+        return false;
     }
 
     private boolean deviceMobileNetwork() {
 
-        IMobileDataManager mobileDataManager= (IMobileDataManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MOBILEDATA);
-        try {
-            if(!mobileDataManager.isOpen(context)){
-                mobileDataManager.open(context);
-            }else{
-                mobileDataManager.close(context);
-            }
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
+//        IMobileData_Open mobileDataManager= null;
+//        try {
+//            mobileDataManager = (IMobileData_Open) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_MOBILEDATA);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        try {
+//            if(!mobileDataManager.isOpen(context)){
+//                mobileDataManager.open(context);
+//            }else{
+//                mobileDataManager.close(context);
+//            }
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+        return false;
     }
 
     private boolean deviceWifi() {
 
-        IWifiManager wifiManager= (IWifiManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_WIFI);
-        try {
-            if(!wifiManager.isOpen(context)){
-                wifiManager.open(context);
-            }else{
-                wifiManager.close(context);
-            }
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
+//        IWifi_IsOpen wifiManager= null;
+//        try {
+//            wifiManager = (IWifi_IsOpen) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_WIFI);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        try {
+//            if(!wifiManager.isOpen(context)){
+//                wifiManager.open(context);
+//            }else{
+//                wifiManager.close(context);
+//            }
+//            return true;
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+        return false;
     }
 
     @Override
     public void update(int position, boolean isSuccess) {
 
-        if (list != null && list.size() > 0) {
-            HardWareSwitchBean bean = list.get(position);
+        if (mList != null && mList.size() > 0) {
+            HardWareSwitchBean bean = mList.get(position);
             //执行成功或失败
             if (isSuccess) {
                 bean.setStatus(bean.getStatus() == 0 ? 1 : 0);
@@ -286,7 +333,13 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
      */
     public boolean execMenuKey() throws UnsupportedOperationException {
 
-        IPhysicalKeyManager_Menu keyManagerMenu = (IPhysicalKeyManager_Menu) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_KEY_MENU);
+        IPhysicalKey_Menu keyManagerMenu = null;
+        try {
+            keyManagerMenu = (IPhysicalKey_Menu) DeviceManagerSdk.getInstance().getApi(IPhysicalKey_Menu.class);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+            return false;
+        }
         keyManagerMenu.exec();
         return execKey(KeyEvent.KEYCODE_MENU);
     }
@@ -328,237 +381,313 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
 
     private List createDeviceControlList() {
 
-        if (list == null) {
-            list = new ArrayList<HardWareSwitchBean>();
+        if (mList == null) {
+            mList = new ArrayList<>();
         }
-        list.clear();
-
-        IWifiManager wifiManager= (IWifiManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_WIFI);
-        IMobileDataManager mobileDataManager= (IMobileDataManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MOBILEDATA);
-        IBluetoothManager bluetoothManager= (IBluetoothManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_BLUETOOTH);
-        ICameraManager cameraManager= (ICameraManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_CAMERA);
-        IMicrophoneManager microphoneManager= (IMicrophoneManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_MICROPHONE);
-        IUsbMamager usbMamager= (IUsbMamager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_USB);
-        ISdCardManager sdCardManager= (ISdCardManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_SDCARD);
-        IDeviceLockManager lockManager= (IDeviceLockManager) DeviceManagerSdk.getInstance().getManager(DeviceManagerContainer.MANAGER_HARDWARE_LOCK);
+        mList.clear();
 
 
+        addWifi();
+        addMobileData();
+        addBluetooth();
+
+
+//        IBluetooth_Open bluetoothManager= null;
+//        try {
+//            bluetoothManager = (IBluetooth_Open) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_BLUETOOTH);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//        }
+//        ICamera cameraManager= null;
+//        try {
+//            cameraManager = (ICamera) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_CAMERA);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//        }
+//        IMicrophon_Open microphoneManager= null;
+//        try {
+//            microphoneManager = (IMicrophon_Open) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_MICROPHONE);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//        }
+//        IUsbMamager usbMamager= null;
+//        try {
+//            usbMamager = (IUsbMamager) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_USB);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//        }
+//        ISdCard_Mount sdCardManager= null;
+//        try {
+//            sdCardManager = (ISdCard_Mount) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_SDCARD);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//        }
+//        IDeviceLock lockManager= null;
+//        try {
+//            lockManager = (IDeviceLock) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_LOCK);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//
+//
+//
+//
+//        /**
+//         * 蓝牙
+//         */
+//        HardWareSwitchBean bluetoothBean = new HardWareSwitchBean();
+//        bluetoothBean.setName(context.getResources().getString(R.string.bluetooth));
+//        try {
+//            bluetoothBean.setStatus(bluetoothManager.isOpen(context) == true ? 1 : 0);
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+//        bluetoothBean.setDesiplaySave(true);
+//        mList.add(bluetoothBean);
+//
+//
+//        /**
+//         * Camera 摄像头
+//         */
+//        HardWareSwitchBean cameraBean = new HardWareSwitchBean();
+//        cameraBean.setName(context.getResources().getString(R.string.camera));
+//        try {
+//            cameraBean.setStatus(cameraManager.isOpen(context) == true ? 1 : 0);
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+//        cameraBean.setDesiplaySave(true);
+//        mList.add(cameraBean);
+//
+//
+//        /**
+//         * 麦克风
+//         */
+//        HardWareSwitchBean microphoneBean = new HardWareSwitchBean();
+//        microphoneBean.setName(context.getResources().getString(R.string.microphone));
+//        try {
+//            microphoneBean.setStatus(microphoneManager.isOpen(context)==true ? 1 : 0);
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }  ;
+//        microphoneBean.setDesiplaySave(true);
+//        mList.add(microphoneBean);
+//        /**
+//         * usb
+//         */
+//        HardWareSwitchBean usbBean = new HardWareSwitchBean();
+//        usbBean.setName(context.getResources().getString(R.string.usb));
+//        usbBean.setDesiplaySave(true);
+//        try {
+//            usbBean.setStatus(usbMamager.isOpen(context) == true ? 1 : 0);
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+//        mList.add(usbBean);
+//
+//
+//        /**
+//         * SD Card
+//         */
+//        HardWareSwitchBean sdCardBean = new HardWareSwitchBean();
+//        sdCardBean.setName(context.getResources().getString(R.string.sd_card));
+//        try {
+//            sdCardBean.setStatus(sdCardManager.isOpen(context) == true ? 1 : 0);
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+//        sdCardBean.setDesiplaySave(true);
+//        mList.add(sdCardBean);
+//        Log.i(this.getClass().getName(), String.format("getmList:%d", mList.size()));
+//
+//
+//        /**
+//         * Lock
+//         */
+//        HardWareSwitchBean locKBean = new HardWareSwitchBean();
+//        locKBean.setName(context.getResources().getString(R.string.lock));
+//        try {
+//            locKBean.setStatus(lockManager.isOpen(context) == true ? 1 : 0);
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+//        locKBean.setDesiplaySave(true);
+//        mList.add(locKBean);
+//        Log.i(this.getClass().getName(), String.format("getmList:%d", mList.size()));
+//
+//        /**
+//         * HOME键执行
+//         */
+//        HardWareSwitchBean homeKeyBean = new HardWareSwitchBean();
+//        homeKeyBean.setName(context.getResources().getString(R.string.home));
+//        homeKeyBean.setStatus(0);
+//        homeKeyBean.setDesiplaySave(false);
+//        mList.add(homeKeyBean);
+//
+//
+//        /**
+//         * back键执行
+//         */
+//        HardWareSwitchBean backKeyBean = new HardWareSwitchBean();
+//        backKeyBean.setName(context.getResources().getString(R.string.back));
+//        backKeyBean.setStatus(0);
+//        backKeyBean.setDesiplaySave(false);
+//        mList.add(backKeyBean);
+//
+//
+//        /**
+//         * 菜单键执行
+//         */
+//        HardWareSwitchBean menuKeyBean = new HardWareSwitchBean();
+//        menuKeyBean.setName(context.getResources().getString(R.string.menu_key));
+//        menuKeyBean.setStatus(0);
+//        menuKeyBean.setDesiplaySave(false);
+//        mList.add(menuKeyBean);
+//        Log.i(this.getClass().getName(), String.format("getmList:%d", mList.size()));
+//
+//
+//        /**
+//         * 电源键
+//         */
+//        HardWareSwitchBean powerKeyBean= new HardWareSwitchBean();
+//        powerKeyBean.setName(context.getResources().getString(R.string.power_key));
+//        powerKeyBean.setStatus(0);
+//        powerKeyBean.setDesiplaySave(false);
+//        mList.add(powerKeyBean);
+//        Log.i(this.getClass().getName(), String.format("getmList:%d", mList.size()));
+//
+//
+//        /**
+//         * 音量键+
+//         */
+//        HardWareSwitchBean upKeyBean = new HardWareSwitchBean();
+//        upKeyBean.setName(context.getResources().getString(R.string.volumn_up));
+//        upKeyBean.setStatus(0);
+//        upKeyBean.setDesiplaySave(false);
+//        mList.add(upKeyBean);
+//
+//
+//        /**
+//         * 音量键-
+//         */
+//        HardWareSwitchBean downKeyBean = new HardWareSwitchBean();
+//        downKeyBean.setName(context.getResources().getString(R.string.volumn_down));
+//        downKeyBean.setStatus(0);
+//        downKeyBean.setDesiplaySave(false);
+//        mList.add(downKeyBean);
+//
+//        Log.i(this.getClass().getName(), String.format("getmList:%d", mList.size()));
+//
+//        /**
+//         * wake 设备唤醒
+//         */
+//        HardWareSwitchBean wakeKeyBeans = new HardWareSwitchBean();
+//        wakeKeyBeans.setName(context.getResources().getString(R.string.weak));
+//        wakeKeyBeans.setStatus(0);
+//        wakeKeyBeans.setDesiplaySave(false);
+//        mList.add(wakeKeyBeans);
+//
+//        /**
+//         * wake 设备休眠
+//         */
+//        HardWareSwitchBean dormancyBean = new HardWareSwitchBean();
+//        dormancyBean.setName(context.getResources().getString(R.string.dormancy));
+//        dormancyBean.setStatus(0);
+//        dormancyBean.setDesiplaySave(false);
+//        mList.add(dormancyBean);
+//
+//        /**
+//         * wake 关机
+//         */
+//        HardWareSwitchBean powerOffbean = new HardWareSwitchBean();
+//        powerOffbean.setName(context.getResources().getString(R.string.power_off));
+//        powerOffbean.setStatus(0);
+//        powerOffbean.setDesiplaySave(false);
+//        mList.add(powerOffbean);
+//
+//
+//        /**
+//         * wake 重启
+//         */
+//        HardWareSwitchBean rebootBean = new HardWareSwitchBean();
+//        rebootBean.setName(context.getResources().getString(R.string.reboot));
+//        rebootBean.setStatus(0);
+//        rebootBean.setDesiplaySave(false);
+//        mList.add(rebootBean);
+
+        Log.i(this.getClass().getName(), String.format("getmList:%d", mList.size()));
+        return mList;
+    }
+
+    private void addBluetooth() {
+
+
+    }
+
+    @Override
+    public void release() {
+        mList = null;
+    }
+
+    /**
+     * 添加WIFI
+     */
+    private void addWifi() {
+
+        IWifi_IsOpen wifiManager = null;
+        try {
+            wifiManager = (IWifi_IsOpen) DeviceManagerSdk.getInstance().getApi(IWifi_IsOpen.class);
+        } catch (DeviceManagerUnsupportException e) {
+            e.printStackTrace();
+        }
+
+        if (wifiManager == null) {
+            return;
+        }
         /**
          * wifi模块
          */
         HardWareSwitchBean wifiBean = new HardWareSwitchBean();
         wifiBean.setName(context.getResources().getString(R.string.wifi));
+
         try {
-            wifiBean.setStatus(wifiManager.isOpen(context) == true ? 1 : 0);
+            boolean isOpenWifi = wifiManager.isOpen(context);
+            wifiBean.setStatus(isOpenWifi == true ? 1 : 0);
+            wifiBean.setDesiplaySave(true);
+            mList.add(wifiBean);
         } catch (DeviceManagerSecurityException e) {
             e.printStackTrace();
         }
-        wifiBean.setDesiplaySave(true);
-        list.add(wifiBean);
 
-        /**
-         *3G网络 -- 移动网络
-         */
-        HardWareSwitchBean t3gBean = new HardWareSwitchBean();
-        t3gBean.setName(context.getResources().getString(R.string.t3g));
-        try {
-            t3gBean.setStatus(mobileDataManager.isOpen(context) == true ? 1 : 0);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-        t3gBean.setDesiplaySave(true);
-        list.add(t3gBean);
-
-        /**
-         * 蓝牙
-         */
-        HardWareSwitchBean bluetoothBean = new HardWareSwitchBean();
-        bluetoothBean.setName(context.getResources().getString(R.string.bluetooth));
-        try {
-            bluetoothBean.setStatus(bluetoothManager.isOpen(context) == true ? 1 : 0);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-        bluetoothBean.setDesiplaySave(true);
-        list.add(bluetoothBean);
-
-
-        /**
-         * Camera 摄像头
-         */
-        HardWareSwitchBean cameraBean = new HardWareSwitchBean();
-        cameraBean.setName(context.getResources().getString(R.string.camera));
-        try {
-            cameraBean.setStatus(cameraManager.isOpen(context) == true ? 1 : 0);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-        cameraBean.setDesiplaySave(true);
-        list.add(cameraBean);
-
-
-        /**
-         * 麦克风
-         */
-        HardWareSwitchBean microphoneBean = new HardWareSwitchBean();
-        microphoneBean.setName(context.getResources().getString(R.string.microphone));
-        try {
-            microphoneBean.setStatus(microphoneManager.isOpen(context)==true ? 1 : 0);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }  ;
-        microphoneBean.setDesiplaySave(true);
-        list.add(microphoneBean);
-        /**
-         * usb
-         */
-        HardWareSwitchBean usbBean = new HardWareSwitchBean();
-        usbBean.setName(context.getResources().getString(R.string.usb));
-        usbBean.setDesiplaySave(true);
-        try {
-            usbBean.setStatus(usbMamager.isOpen(context) == true ? 1 : 0);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-        list.add(usbBean);
-
-
-        /**
-         * SD Card
-         */
-        HardWareSwitchBean sdCardBean = new HardWareSwitchBean();
-        sdCardBean.setName(context.getResources().getString(R.string.sd_card));
-        try {
-            sdCardBean.setStatus(sdCardManager.isOpen(context) == true ? 1 : 0);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-        sdCardBean.setDesiplaySave(true);
-        list.add(sdCardBean);
-        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
-
-
-        /**
-         * Lock
-         */
-        HardWareSwitchBean locKBean = new HardWareSwitchBean();
-        locKBean.setName(context.getResources().getString(R.string.lock));
-        try {
-            locKBean.setStatus(lockManager.isOpen(context) == true ? 1 : 0);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-        locKBean.setDesiplaySave(true);
-        list.add(locKBean);
-        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
-
-        /**
-         * HOME键执行
-         */
-        HardWareSwitchBean homeKeyBean = new HardWareSwitchBean();
-        homeKeyBean.setName(context.getResources().getString(R.string.home));
-        homeKeyBean.setStatus(0);
-        homeKeyBean.setDesiplaySave(false);
-        list.add(homeKeyBean);
-
-
-        /**
-         * back键执行
-         */
-        HardWareSwitchBean backKeyBean = new HardWareSwitchBean();
-        backKeyBean.setName(context.getResources().getString(R.string.back));
-        backKeyBean.setStatus(0);
-        backKeyBean.setDesiplaySave(false);
-        list.add(backKeyBean);
-
-
-        /**
-         * 菜单键执行
-         */
-        HardWareSwitchBean menuKeyBean = new HardWareSwitchBean();
-        menuKeyBean.setName(context.getResources().getString(R.string.menu_key));
-        menuKeyBean.setStatus(0);
-        menuKeyBean.setDesiplaySave(false);
-        list.add(menuKeyBean);
-        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
-
-
-        /**
-         * 电源键
-         */
-        HardWareSwitchBean powerKeyBean= new HardWareSwitchBean();
-        powerKeyBean.setName(context.getResources().getString(R.string.power_key));
-        powerKeyBean.setStatus(0);
-        powerKeyBean.setDesiplaySave(false);
-        list.add(powerKeyBean);
-        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
-
-
-        /**
-         * 音量键+
-         */
-        HardWareSwitchBean upKeyBean = new HardWareSwitchBean();
-        upKeyBean.setName(context.getResources().getString(R.string.volumn_up));
-        upKeyBean.setStatus(0);
-        upKeyBean.setDesiplaySave(false);
-        list.add(upKeyBean);
-
-
-        /**
-         * 音量键-
-         */
-        HardWareSwitchBean downKeyBean = new HardWareSwitchBean();
-        downKeyBean.setName(context.getResources().getString(R.string.volumn_down));
-        downKeyBean.setStatus(0);
-        downKeyBean.setDesiplaySave(false);
-        list.add(downKeyBean);
-
-        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
-
-        /**
-         * wake 设备唤醒
-         */
-        HardWareSwitchBean wakeKeyBeans = new HardWareSwitchBean();
-        wakeKeyBeans.setName(context.getResources().getString(R.string.weak));
-        wakeKeyBeans.setStatus(0);
-        wakeKeyBeans.setDesiplaySave(false);
-        list.add(wakeKeyBeans);
-
-        /**
-         * wake 设备休眠
-         */
-        HardWareSwitchBean dormancyBean = new HardWareSwitchBean();
-        dormancyBean.setName(context.getResources().getString(R.string.dormancy));
-        dormancyBean.setStatus(0);
-        dormancyBean.setDesiplaySave(false);
-        list.add(dormancyBean);
-
-        /**
-         * wake 关机
-         */
-        HardWareSwitchBean powerOffbean = new HardWareSwitchBean();
-        powerOffbean.setName(context.getResources().getString(R.string.power_off));
-        powerOffbean.setStatus(0);
-        powerOffbean.setDesiplaySave(false);
-        list.add(powerOffbean);
-
-
-        /**
-         * wake 重启
-         */
-        HardWareSwitchBean rebootBean = new HardWareSwitchBean();
-        rebootBean.setName(context.getResources().getString(R.string.reboot));
-        rebootBean.setStatus(0);
-        rebootBean.setDesiplaySave(false);
-        list.add(rebootBean);
-
-        Log.i(this.getClass().getName(), String.format("getList:%d", list.size()));
-        return list;
     }
 
-    @Override
-    public void release() {
-        list = null;
+    /**
+     * 添加移动网络模块
+     */
+    private void addMobileData(){
+//        IMobileData_Open mobileDataManager= null;
+//        try {
+//            mobileDataManager = (IMobileData_Open) DeviceManagerSdk.getInstance().getManager(DmSdkConstants.MANAGER_HARDWARE_MOBILEDATA);
+//        } catch (DeviceManagerUnsupportException e) {
+//            e.printStackTrace();
+//        }
+//        if(mobileDataManager==null){
+//            return;
+//        }
+//        /**
+//         *3G网络 -- 移动网络
+//         */
+//        HardWareSwitchBean t3gBean = new HardWareSwitchBean();
+//        t3gBean.setName(context.getResources().getString(R.string.t3g));
+//        try {
+//            t3gBean.setStatus(mobileDataManager.isOpen(context) == true ? 1 : 0);
+//        } catch (DeviceManagerSecurityException e) {
+//            e.printStackTrace();
+//        }
+//        t3gBean.setDesiplaySave(true);
+//        mList.add(t3gBean);
     }
 
 }

@@ -3,6 +3,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -15,7 +16,7 @@ import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.presenter.impl.ActiveLicensePresenter;
 import com.nd.adhoc.dmsdk.demo.view.BaseView;
-import com.nd.adhoc.dmsdk.revicer.Constants;
+import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
 
 
 /**
@@ -69,15 +70,24 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         btnActiveDevice.setOnClickListener(this);
         presenter=new ActiveLicensePresenter(this,this);
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.LICENSE_STATUS_SUCCESS);
-        filter.addAction(Constants.LICENSE_STATUS_FAILURE);
+        filter.addAction(DmSdkConstants.LICENSE_STATUS_SUCCESS);
+        filter.addAction(DmSdkConstants.LICENSE_STATUS_FAILURE);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
     }
     @Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.btn_activeDevice) {
-            presenter.activeLicense();
+//            presenter.activeLicense();
+            if(!DeviceManagerSdk.getInstance().isResgisterSDK()){
+                DeviceManagerSdk.getInstance().registerSDK(this.getApplicationContext());
+            }
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.active_device_success), Toast.LENGTH_SHORT).show();
+            Intent intentAction=new Intent();
+            intentAction.setAction(DEFAULT_DEVICE_LAUNCH);
+            intentAction.addCategory(DEFAULT_DEVICE_CATEGORY);
+            startActivity(intentAction);
+            finish();
         }
     }
 
@@ -86,14 +96,16 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onReceive(final Context context, Intent intent) {
 
-            if (intent.getAction().equals(Constants.LICENSE_STATUS_FAILURE)) {
+            if (intent.getAction().equals(DmSdkConstants.LICENSE_STATUS_FAILURE)) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), getResources().getString(R.string.active_device_error), Toast.LENGTH_SHORT).show();
                     }
                 });
-            } else if (intent.getAction().equals(Constants.LICENSE_STATUS_SUCCESS)) {
+                return;
+            }
+            if (intent.getAction().equals(DmSdkConstants.LICENSE_STATUS_SUCCESS)) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -104,8 +116,11 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
                         Intent intentAction=new Intent();
                         intentAction.setAction(DEFAULT_DEVICE_LAUNCH);
                         intentAction.addCategory(DEFAULT_DEVICE_CATEGORY);
-                        startActivity(intentAction);
-                        finish();
+                        if (getPackageManager().resolveActivity(intentAction, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+                            startActivity(intentAction);
+                            finish();
+                        }
+                        return;
                     }
                 });
             }

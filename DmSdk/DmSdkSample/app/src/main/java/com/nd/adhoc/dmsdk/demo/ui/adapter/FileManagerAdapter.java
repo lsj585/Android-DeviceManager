@@ -1,4 +1,5 @@
 package com.nd.adhoc.dmsdk.demo.ui.adapter;
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,30 +24,42 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
 
     private OnItemClickListener onItemClickListener;
 
-    public FileManagerAdapter(Context context){
-        this.mContext= context;
-        mList=new ArrayList<FileInfoBean>();
+    public FileManagerAdapter(Context context) {
+        this.mContext = context;
+        mList = new ArrayList<FileInfoBean>();
     }
+
     @NonNull
     @Override
     public FileManagerAdapter.FileInfoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FileInfoHolder(LayoutInflater.from(this.mContext).inflate(R.layout.list_item_file,parent,false));
+        return new FileInfoHolder(LayoutInflater.from(this.mContext).inflate(R.layout.list_item_file, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull FileManagerAdapter.FileInfoHolder holder, final int position) {
-        Log.i(this.getClass().getName(),String.format("Get list=%d",mList.size()));
-        if(mList.size()>0 && mList.get(position) != null) {
-            holder.tvAppInfoName.setText(mList.get(position).getName());
-            holder.tvAppInfoSize.setText(formatSize(mList.get(position).getSize()));
-            holder.itemView.setTag(position);
-            holder.itemView.setOnClickListener(itemClickListener);
-            if(mList.get(position).getStatus()==0){
-                holder.tvAppStatus.setText(mContext.getResources().getString(R.string.no_install));
-            }else{
-                holder.tvAppStatus.setText(mContext.getResources().getString(R.string.installing));
-            }
+        Log.i(this.getClass().getName(), String.format("Get list=%d", mList.size()));
+
+        if (mList == null) {
+            return;
         }
+
+        if (mList.size() == 0) {
+            return;
+        }
+
+        if (mList.get(position) == null) {
+            return;
+        }
+        holder.tvAppInfoName.setText(mList.get(position).getName());
+        holder.tvAppInfoSize.setText(formatSize(mList.get(position).getSize()));
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(itemClickListener);
+        if (mList.get(position).getStatus() == 0) {
+            holder.tvAppStatus.setText(mContext.getResources().getString(R.string.no_install));
+        } else {
+            holder.tvAppStatus.setText(mContext.getResources().getString(R.string.installing));
+        }
+
     }
 
     @Override
@@ -55,7 +68,7 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
     }
 
 
-    class FileInfoHolder extends RecyclerView.ViewHolder{
+    class FileInfoHolder extends RecyclerView.ViewHolder {
 
         private TextView tvAppInfoName;
         private TextView tvAppInfoSize;
@@ -63,23 +76,23 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
 
         public FileInfoHolder(View itemView) {
             super(itemView);
-            tvAppInfoName=(TextView) itemView.findViewById(R.id.tv_appname_file);
-            tvAppInfoSize=(TextView)itemView.findViewById(R.id.tv_appsize_file);
-            tvAppStatus=itemView.findViewById(R.id.tv_appstatus_file);
+            tvAppInfoName = (TextView) itemView.findViewById(R.id.tv_appname_file);
+            tvAppInfoSize = (TextView) itemView.findViewById(R.id.tv_appsize_file);
+            tvAppStatus = itemView.findViewById(R.id.tv_appstatus_file);
         }
     }
 
-    public void setData(List list){
+    public void setData(List list) {
 
-        if(mList != null && mList.size()>0){
+        if (mList != null && mList.size() > 0) {
             mList.clear();
         }
-        if(list != null) {
+        if (list != null) {
             mList.addAll(list);
         }
     }
 
-    public  interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
@@ -91,7 +104,7 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
         this.onItemClickListener = onItemClickListener;
     }
 
-    private  View.OnClickListener itemClickListener=new View.OnClickListener() {
+    private View.OnClickListener itemClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -104,7 +117,7 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
         return Formatter.formatFileSize(mContext, targetSize);
     }
 
-    public List<FileInfoBean> getList(){
+    public List<FileInfoBean> getList() {
         return mList;
     }
 

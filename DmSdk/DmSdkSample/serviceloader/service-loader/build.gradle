@@ -1,0 +1,15 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    implementation project(":serviceloader:service-loader-annotation")
+    compile 'com.android.support:support-annotations:24.2.1'
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+task assembleDebug {
+    println "Place Holder"
+}

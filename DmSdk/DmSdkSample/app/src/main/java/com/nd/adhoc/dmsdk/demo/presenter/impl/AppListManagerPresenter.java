@@ -1,484 +1,58 @@
 package com.nd.adhoc.dmsdk.demo.presenter.impl;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.nd.adhoc.dmsdk.demo.model.impl.AppListManagerModel;
 import com.nd.adhoc.dmsdk.demo.presenter.BasePresenter;
 import com.nd.adhoc.dmsdk.demo.presenter.IAppManagerPresenter;
-import com.nd.adhoc.dmsdk.demo.utils.RxJavaUtils;
+import com.nd.adhoc.dmsdk.demo.strategy.ApplicationManagerFactory;
+import com.nd.adhoc.dmsdk.demo.strategy.ApplicationStrategy;
 import com.nd.adhoc.dmsdk.demo.view.AppManagerView;
-
-import java.util.List;
-
-import rx.Observable;
-import rx.Subscriber;
 
 public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppListManagerModel> implements IAppManagerPresenter {
 
 
+    private ApplicationManagerFactory mFactory;
+
     public AppListManagerPresenter(Context context, AppManagerView view) {
         super(context, view);
+        mFactory=new ApplicationManagerFactory();
     }
     @Override
     public void getApplist() {
-        Observable.create(new Observable.OnSubscribe<List>() {
-            @Override
-            public void call(Subscriber<? super List> subscriber) {
-                List list=modle.getList();
-                subscriber.onNext(list);
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<List>applyDefaultSchedulers()).subscribe(new Subscriber<List>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
-            }
-
-            @Override
-            public void onNext(List list) {
-                Log.i(this.getClass().getName(),String.format("showList:%d", list.size()));
-                view.showList(list);
-            }
-        });
+        verifyNull();
+        ApplicationStrategy applicationStrategy =mFactory.getStrategy(ApplicationManagerFactory.STRATEGY_GET_APPLIST);
+        if(applicationStrategy == null) {
+            return;
+        }
+        applicationStrategy.execute(0, view, modle);
     }
 
     @Override
     public void onClick(int dialogPos,int viewPosition) {
-        switch (dialogPos){
-            case 0:
-                //卸载
-                uninstall(viewPosition);
-                break;
-            case 1:
-                //阻止卸载
-                forceUnIntall(viewPosition);
-                break;
-            case 2:
-                //清除应用数据
-                wipeData(viewPosition);
-                break;
-            case 3:
-                //阻止应用清除数据
-                forceClearData(viewPosition);
-                break;
-            case 4:
-                //加入黑名单
-                break;
-            case 5:
-                //启动应用
-                startApp(viewPosition);
-                break;
-            case 6:
-                //关闭应用
-                stopApp(viewPosition);
-                break;
-            case 7:
-                //低功耗运行--进程保活
-                daemno(viewPosition);
-                break;
-            case 8:
-                //不允许运行
-                unruningApp(viewPosition);
-                break;
-            case 9:
-                allowRunningApp(viewPosition);
-                break;
-            case 10:
-                allowClearData(viewPosition);
-                break;
-            case 11:
-                allowUninstallApp(viewPosition);
-                break;
-
+        verifyNull();
+        ApplicationStrategy applicationStrategy =mFactory.getStrategy(dialogPos);
+        if(applicationStrategy== null) {
+            return;
         }
-
+        applicationStrategy.execute(viewPosition, view, modle);
     }
 
-    private void allowUninstallApp(final int viewPosition) {
 
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.allowUninstall(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.updateToUninstall(viewPosition,true);
-                    view.updateMsg("该应用允许被用户卸载");
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-        });
+    private void verifyNull(){
+        if(modle==null){
+            return;
+        }
+        //此处的strategy需要通过注解注入初始化
+        if(mFactory==null){
+            mFactory=new ApplicationManagerFactory();
+        }
     }
-
-    private void allowClearData(final int viewPosition) {
-
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.allowClearData(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.updateToClearData(viewPosition,true);
-                    view.updateMsg("该应用允许被用户清除数据");
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-    }
-
-    private void allowRunningApp(final int viewPosition) {
-
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.allowRunApp(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.updateToRunning(viewPosition,true);
-                    view.updateMsg("该应用允许被用户运行");
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-
-    }
-
-    private void forceUnIntall(final int viewPosition) {
-
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.forceUnInstall(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.updateToUninstall(viewPosition,false);
-                    view.updateMsg("该应用不允许被用户卸载");
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-    }
-
-    private void forceClearData(final int viewPosition) {
-
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.forceClearData(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.updateToClearData(viewPosition,false);
-                    view.updateMsg("该应用不允许被用户清理数据");
-                }else{
-
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-    }
-
-    /**
-     * 不允许该应用被启动
-     * @param viewPosition
-     */
-    private void unruningApp(final int viewPosition) {
-
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.unallowRunning(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-
-                if(success) {
-                    modle.updateToRunning(viewPosition,false);
-                    view.updateMsg("该应用不允许被用户运行");
-                }else{
-
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-
-    }
-    //进程保活
-    private void daemno(final int viewPosition) {
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.allowDaemon(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.updateToStopApp(viewPosition,false);
-                    view.updateMsg("该应用不允许被用户停止");
-                }else{
-
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-
-    }
-
-    /**
-     * 卸载应用
-     * @param viewPosition
-     */
-    private void uninstall(final int viewPosition) {
-
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.uninstallApp(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.delete(viewPosition);
-                    view.removeUpdate(viewPosition);
-                }else{
-                    view.updateMsg("该应用不允许被用户卸载");
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-    }
-
-    private void stopApp(final int viewPosition) {
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.stopApp(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.update(viewPosition,true);
-                    view.updateView(viewPosition);
-                }else{
-                    view.updateMsg("该应用不允许被用户停止");
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-        });
-    }
-
-    /**
-     * 清除数据
-     * @param viewPosition
-     */
-    private void wipeData(final int viewPosition) {
-
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.wipeData(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.updateWipeStatus(viewPosition);
-                    view.updateView(viewPosition);
-                }else{
-                    view.updateMsg("该应用不允许被用户清理数据");
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-    }
-
-    /**
-     * 启动app
-     * @param viewPosition
-     */
-    private void startApp(final int viewPosition){
-        Observable.create(new Observable.OnSubscribe<Boolean>() {
-            @Override
-            public void call(Subscriber<? super Boolean> subscriber) {
-                subscriber.onNext(modle.startApp(viewPosition));
-                subscriber.onCompleted();
-            }
-        }).compose(RxJavaUtils.<Boolean>applyDefaultSchedulers()).subscribe(new Subscriber<Boolean>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-                RxJavaUtils.doUnsubscribe(this);
-            }
-
-            @Override
-            public void onNext(Boolean success) {
-                if(success) {
-                    modle.update(viewPosition,success);
-                    view.updateView(viewPosition);
-                }else{
-                    view.updateMsg("该应用不允许被用户运行");
-                }
-                RxJavaUtils.doUnsubscribe(this);
-            }
-        });
-    }
-
 
     @Override
     public void onDestroy() {
         modle=null;
+        mFactory=null;
         super.onDestroy();
     }
 }
