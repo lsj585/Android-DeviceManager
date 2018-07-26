@@ -3,25 +3,25 @@ package com.nd.adhoc.dmsdk.demo.presenter.impl;
 import android.content.Context;
 
 import com.nd.adhoc.dmsdk.demo.model.impl.AppListManagerModel;
-import com.nd.adhoc.dmsdk.demo.presenter.BasePresenter;
+import com.nd.adhoc.dmsdk.demo.presenter.base.BasePresenter;
 import com.nd.adhoc.dmsdk.demo.presenter.IAppManagerPresenter;
-import com.nd.adhoc.dmsdk.demo.strategy.ApplicationManagerFactory;
-import com.nd.adhoc.dmsdk.demo.strategy.ApplicationStrategy;
+import com.nd.adhoc.dmsdk.demo.presenter.factory.AppManagerFactory;
+import com.nd.adhoc.dmsdk.demo.presenter.strategy.AppStrategy;
 import com.nd.adhoc.dmsdk.demo.view.AppManagerView;
 
 public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppListManagerModel> implements IAppManagerPresenter {
 
 
-    private ApplicationManagerFactory mFactory;
+    private AppManagerFactory mFactory;
 
     public AppListManagerPresenter(Context context, AppManagerView view) {
         super(context, view);
-        mFactory=new ApplicationManagerFactory();
+        mFactory=new AppManagerFactory();
     }
     @Override
     public void getApplist() {
         verifyNull();
-        ApplicationStrategy applicationStrategy =mFactory.getStrategy(ApplicationManagerFactory.STRATEGY_GET_APPLIST);
+        AppStrategy applicationStrategy =mFactory.getStrategy(AppManagerFactory.STRATEGY_GET_APPLIST);
         if(applicationStrategy == null) {
             return;
         }
@@ -31,7 +31,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
     @Override
     public void onClick(int dialogPos,int viewPosition) {
         verifyNull();
-        ApplicationStrategy applicationStrategy =mFactory.getStrategy(dialogPos);
+        AppStrategy applicationStrategy =mFactory.getStrategy(dialogPos);
         if(applicationStrategy== null) {
             return;
         }
@@ -45,7 +45,7 @@ public class AppListManagerPresenter extends BasePresenter<AppManagerView,AppLis
         }
         //此处的strategy需要通过注解注入初始化
         if(mFactory==null){
-            mFactory=new ApplicationManagerFactory();
+            mFactory=new AppManagerFactory();
         }
     }
 

@@ -6,20 +6,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
-import com.nd.adhoc.dmsdk.api.hardware.bluetooth.IBluetooth_Open;
-import com.nd.adhoc.dmsdk.api.hardware.microphone.IMicrophon_Open;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerUnsupportException;
-import com.nd.adhoc.dmsdk.api.hardware.mobiledata.IMobileData_Open;
-import com.nd.adhoc.dmsdk.api.hardware.sdcard.ISdCard_Mount;
 import com.nd.adhoc.dmsdk.api.hardware.wifi.IWifi_IsOpen;
 import com.nd.adhoc.dmsdk.api.key.IPhysicalKey_Menu;
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.HardWareSwitchBean;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
 import com.nd.adhoc.dmsdk.demo.model.IDeviceControlModel;
-import com.nd.adhoc.dmsdk.filed.DmSdkConstants;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,23 +115,23 @@ public class DeviceControlModel extends BaseModel<HardWareSwitchBean> implements
     }
 
     private boolean deviceMicrophone() {
-        IMicrophon_Open microphoneManager= null;
-        try {
-            microphoneManager = (IMicrophon_Open) DeviceManagerSdk.getInstance().getApi(IMicrophon_Open.class);
-        } catch (DeviceManagerUnsupportException e) {
-            e.printStackTrace();
-            return false;
-        }
+//        IMicrophon_Open microphoneManager= null;
 //        try {
-//            if(!microphoneManager.isOpen(context)){
-//                microphoneManager.open(context);
-//            }else{
-//                microphoneManager.close(context);
-//            }
-//            return true;
-//        } catch (DeviceManagerSecurityException e) {
+//            microphoneManager = (IMicrophon_Open) DeviceManagerSdk.getInstance().getApi(IMicrophon_Open.class);
+//        } catch (DeviceManagerUnsupportException e) {
 //            e.printStackTrace();
+//            return false;
 //        }
+////        try {
+////            if(!microphoneManager.isOpen(context)){
+////                microphoneManager.open(context);
+////            }else{
+////                microphoneManager.close(context);
+////            }
+////            return true;
+////        } catch (DeviceManagerSecurityException e) {
+////            e.printStackTrace();
+////        }
         return false;
     }
 

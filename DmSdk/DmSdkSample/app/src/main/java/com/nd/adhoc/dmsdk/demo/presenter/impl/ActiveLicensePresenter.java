@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.adhoc.dmsdk.sdk.DeviceManagerSdk;
 import com.nd.adhoc.dmsdk.demo.model.BaseModel;
-import com.nd.adhoc.dmsdk.demo.presenter.BasePresenter;
+import com.nd.adhoc.dmsdk.demo.presenter.base.BasePresenter;
 import com.nd.adhoc.dmsdk.demo.presenter.IActivePresenter;
 import com.nd.adhoc.dmsdk.demo.view.BaseView;
 

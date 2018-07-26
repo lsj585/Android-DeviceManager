@@ -2,14 +2,14 @@ package com.nd.adhoc.dmsdk.demo.presenter.impl;
 
 import android.content.Context;
 import com.nd.adhoc.dmsdk.demo.model.impl.DeviceControlModel;
-import com.nd.adhoc.dmsdk.demo.presenter.BasePresenter;
+import com.nd.adhoc.dmsdk.demo.presenter.base.BasePresenter;
 import com.nd.adhoc.dmsdk.demo.presenter.IDeviceControlPresenter;
-import com.nd.adhoc.dmsdk.demo.strategy.DeviceManagerFactory;
-import com.nd.adhoc.dmsdk.demo.strategy.DeviceStrategy;
+import com.nd.adhoc.dmsdk.demo.presenter.factory.DeviceManagerFactory;
+import com.nd.adhoc.dmsdk.demo.presenter.strategy.DeviceStrategy;
 import com.nd.adhoc.dmsdk.demo.view.DeviceControlView;
 
-import static com.nd.adhoc.dmsdk.demo.strategy.DeviceManagerFactory.STRATEGY_DEVICE_GETLIST;
-import static com.nd.adhoc.dmsdk.demo.strategy.DeviceManagerFactory.STRATEGY_DEVICE_OPERATION;
+import static com.nd.adhoc.dmsdk.demo.presenter.factory.DeviceManagerFactory.STRATEGY_DEVICE_GETLIST;
+import static com.nd.adhoc.dmsdk.demo.presenter.factory.DeviceManagerFactory.STRATEGY_DEVICE_OPERATION;
 
 public class DeviceControlPresenter extends BasePresenter<DeviceControlView,DeviceControlModel> implements IDeviceControlPresenter {
 

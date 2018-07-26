@@ -1,25 +1,13 @@
 package com.nd.adhoc.dmsdk.demo.presenter.impl;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.nd.adhoc.dmsdk.demo.model.impl.DeviceControlModel;
 import com.nd.adhoc.dmsdk.demo.model.impl.FileManagerModel;
-import com.nd.adhoc.dmsdk.demo.presenter.BasePresenter;
-import com.nd.adhoc.dmsdk.demo.presenter.IDeviceControlPresenter;
+import com.nd.adhoc.dmsdk.demo.presenter.base.BasePresenter;
 import com.nd.adhoc.dmsdk.demo.presenter.IFileManagerPresenter;
-import com.nd.adhoc.dmsdk.demo.strategy.ApkFireFactory;
-import com.nd.adhoc.dmsdk.demo.strategy.ApplicationManagerFactory;
-import com.nd.adhoc.dmsdk.demo.strategy.FileControlStrategy;
-import com.nd.adhoc.dmsdk.demo.utils.RxJavaUtils;
-import com.nd.adhoc.dmsdk.demo.view.DeviceControlView;
+import com.nd.adhoc.dmsdk.demo.presenter.factory.ApkFireFactory;
+import com.nd.adhoc.dmsdk.demo.presenter.strategy.FileControlStrategy;
 import com.nd.adhoc.dmsdk.demo.view.FileManagerView;
-
-import java.util.List;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
 
 public class FileManagerPresenter extends BasePresenter<FileManagerView,FileManagerModel> implements IFileManagerPresenter {
 

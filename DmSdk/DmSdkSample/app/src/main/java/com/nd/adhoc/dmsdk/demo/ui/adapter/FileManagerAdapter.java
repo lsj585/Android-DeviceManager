@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.nd.adhoc.dmsdk.demo.R;
 import com.nd.adhoc.dmsdk.demo.bean.FileInfoBean;
+import com.nd.adhoc.dmsdk.demo.ui.viewholder.AppItemView;
+import com.nd.adhoc.dmsdk.demo.ui.viewholder.FileItemView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,27 +40,9 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
     @Override
     public void onBindViewHolder(@NonNull FileManagerAdapter.FileInfoHolder holder, final int position) {
         Log.i(this.getClass().getName(), String.format("Get list=%d", mList.size()));
-
-        if (mList == null) {
-            return;
-        }
-
-        if (mList.size() == 0) {
-            return;
-        }
-
-        if (mList.get(position) == null) {
-            return;
-        }
-        holder.tvAppInfoName.setText(mList.get(position).getName());
-        holder.tvAppInfoSize.setText(formatSize(mList.get(position).getSize()));
+        holder.getFileItemView().setView(mContext,mList,position);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(itemClickListener);
-        if (mList.get(position).getStatus() == 0) {
-            holder.tvAppStatus.setText(mContext.getResources().getString(R.string.no_install));
-        } else {
-            holder.tvAppStatus.setText(mContext.getResources().getString(R.string.installing));
-        }
 
     }
 
@@ -68,17 +52,18 @@ public class FileManagerAdapter extends RecyclerView.Adapter<FileManagerAdapter.
     }
 
 
-    class FileInfoHolder extends RecyclerView.ViewHolder {
+    static class FileInfoHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvAppInfoName;
-        private TextView tvAppInfoSize;
-        private TextView tvAppStatus;
+        private FileItemView mFileItemView;
 
         public FileInfoHolder(View itemView) {
             super(itemView);
-            tvAppInfoName = (TextView) itemView.findViewById(R.id.tv_appname_file);
-            tvAppInfoSize = (TextView) itemView.findViewById(R.id.tv_appsize_file);
-            tvAppStatus = itemView.findViewById(R.id.tv_appstatus_file);
+            this.mFileItemView=new FileItemView(itemView);
+        }
+
+        public FileItemView getFileItemView(){
+
+            return mFileItemView;
         }
     }
 

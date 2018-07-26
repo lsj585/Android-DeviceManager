@@ -28,24 +28,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar" >
-        <!-- 设备管理 -->
-        <receiver android:name="com.nd.adhoc.dmsdk.revicer.AdminReciver"
-            android:label="@string/device"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data android:name="android.app.device_admin"
-                android:resource="@xml/device_admin_receiver" />
-            <intent-filter>
-                <action
-                    android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-            </intent-filter>
-        </receiver>
+        <!--&lt;!&ndash; 设备管理 &ndash;&gt;-->
+        <!--<receiver android:name="com.nd.adhoc.dmsdk.revicer.AdminReciver"-->
+            <!--android:label="@string/device"-->
+            <!--android:permission="android.permission.BIND_DEVICE_ADMIN">-->
+            <!--<meta-data android:name="android.app.device_admin"-->
+                <!--android:resource="@xml/device_admin_receiver" />-->
+            <!--<intent-filter>-->
+                <!--<action-->
+                    <!--android:name="android.app.action.DEVICE_ADMIN_ENABLED" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
-        <receiver android:name="com.nd.adhoc.dmsdk.revicer.ActiveLicenseReceiver">
-            <intent-filter>
-                <action android:name="edm.intent.action.license.status" />
-                <action android:name="edm.intent.action.knox_license.status"/>
-            </intent-filter>
-        </receiver>
+        <!--<receiver android:name="com.nd.adhoc.dmsdk.revicer.ActiveLicenseReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="edm.intent.action.license.status" />-->
+                <!--<action android:name="edm.intent.action.knox_license.status"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <activity android:name=".ui.LauncherActivity">
             <intent-filter>

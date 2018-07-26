@@ -1,8 +1,6 @@
 package com.nd.adhoc.dmsdk.demo.view;
 
-import android.content.Context;
-
-import com.nd.adhoc.dmsdk.demo.presenter.BasePresenter;
+import com.nd.adhoc.dmsdk.demo.presenter.base.BasePresenter;
 
 public interface  BaseView<T extends BasePresenter> {
 

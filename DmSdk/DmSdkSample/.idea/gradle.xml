@@ -9,10 +9,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/dmsdk" />
-            <option value="$PROJECT_DIR$/dmsdk_api" />
-            <option value="$PROJECT_DIR$/dmsdk_provider_aosp" />
-            <option value="$PROJECT_DIR$/dmsdk_provider_knox" />
+            <option value="$PROJECT_DIR$/dmsdklib" />
+            <option value="$PROJECT_DIR$/dmsdklib/dmsdk" />
+            <option value="$PROJECT_DIR$/dmsdklib/dmsdk_api" />
+            <option value="$PROJECT_DIR$/dmsdklib/dmsdk_provider_aosp" />
+            <option value="$PROJECT_DIR$/dmsdklib/dmsdk_provider_knox" />
             <option value="$PROJECT_DIR$/serviceloader" />
             <option value="$PROJECT_DIR$/serviceloader/service-loader" />
             <option value="$PROJECT_DIR$/serviceloader/service-loader-annotation" />

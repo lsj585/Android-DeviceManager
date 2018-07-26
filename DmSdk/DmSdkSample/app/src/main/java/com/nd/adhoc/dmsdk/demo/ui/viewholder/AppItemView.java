@@ -74,13 +74,7 @@ public class AppItemView{
             e.printStackTrace();
             return false;
         }
-        try {
-            return applicationManagerIsRun.isRunning(context, packageName);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-
-        }
-        return false;
+        return applicationManagerIsRun.isRunning(context, packageName);
     }
 
 

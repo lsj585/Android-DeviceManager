@@ -179,12 +179,6 @@ public class FileManagerModel extends BaseModel<FileInfoBean> {
             e.printStackTrace();
             return false;
         }
-        try {
-            mInstall.install(context, bean.getPath());
-            return true;
-        } catch (DeviceManagerSecurityException | FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return mInstall.install(context, bean.getPath());
     }
 }

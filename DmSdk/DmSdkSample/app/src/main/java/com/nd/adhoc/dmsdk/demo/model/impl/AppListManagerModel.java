@@ -229,14 +229,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             return false;
         }
 
-        try {
-            applicationManagerRun.startApp(context, bean.getPackageName(), bean.getLauncherName());
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-
-        return false;
+       return applicationManagerRun.startApp(context, bean.getPackageName(), bean.getLauncherName());
     }
 
 
@@ -260,14 +253,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             return false;
         }
 
-        try {
-            applicationManagerStop.stopApp(context, bean.getPackageName());
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-
-        }
-        return false;
+        return applicationManagerStop.stopApp(context, bean.getPackageName());
     }
 
     @Override
@@ -283,14 +269,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             e.printStackTrace();
             return false;
         }
-        try {
-            applicationManagerWipeData.clearData(context, bean.getPackageName());
-            return true;
-        } catch (DeviceManagerSecurityException | DeviceManagerUnsupportException e) {
-            e.printStackTrace();
-        }
-        return false;
-
+        return applicationManagerWipeData.clearData(context, bean.getPackageName());
     }
 
     @Override
@@ -358,15 +337,9 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             e.printStackTrace();
             return false;
         }
-        try {
-            ArrayList<String> packages = new ArrayList<>();
-            packages.add(bean.getPackageName());
-            return securityManagerDisallowRun.addPackageToRunList(context, packages);
-        } catch (DeviceManagerSecurityException | DeviceManagerUnsupportException e) {
-            e.printStackTrace();
-        }
-
-        return false;
+        ArrayList<String> packages = new ArrayList<>();
+        packages.add(bean.getPackageName());
+        return securityManagerDisallowRun.disallowRun(context, packages);
     }
 
     @Override
@@ -386,7 +359,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         try {
             ArrayList<String> packages = new ArrayList<>();
             packages.add(bean.getPackageName());
-            securityManagerDisalloStop.addPackageToStopList(context, packages);
+            securityManagerDisalloStop.disallowStop(context, packages);
             return true;
         } catch (DeviceManagerSecurityException e) {
             e.printStackTrace();
@@ -400,22 +373,16 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurity_DisallowWipeData wipeData;
+        ISecurity_DisallowWipeData securityDisallowWipeData;
         try {
-            wipeData = (ISecurity_DisallowWipeData) DeviceManagerSdk.getInstance().getApi(ISecurity_DisallowWipeData.class);
+            securityDisallowWipeData = (ISecurity_DisallowWipeData) DeviceManagerSdk.getInstance().getApi(ISecurity_DisallowWipeData.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
         }
-        try {
-            List<String> list = new ArrayList<>();
-            list.add(bean.getPackageName());
-            wipeData.addPackageToClearCacheList(context, list);
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-        return false;
+        List<String> list = new ArrayList<>();
+        list.add(bean.getPackageName());
+        return securityDisallowWipeData.disallowClearData(context, list);
     }
 
 
@@ -465,20 +432,14 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurity_DisallowUninstall disallowUninstall;
+        ISecurity_DisallowUninstall securityDisallowUninstall;
         try {
-            disallowUninstall = (ISecurity_DisallowUninstall) DeviceManagerSdk.getInstance().getApi(ISecurity_DisallowUninstall.class);
+            securityDisallowUninstall = (ISecurity_DisallowUninstall) DeviceManagerSdk.getInstance().getApi(ISecurity_DisallowUninstall.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
         }
-        try {
-            disallowUninstall.addPackageToUninstallList(context, bean.getPackageName());
-            return true;
-        } catch (DeviceManagerSecurityException | DeviceManagerUnsupportException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return securityDisallowUninstall.disallowUninstall(context, bean.getPackageName());
     }
 
 
@@ -489,24 +450,17 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (bean == null) {
             return false;
         }
-        ISecurity_AllowRun allowInstall;
+        ISecurity_AllowRun securityAllowRun;
         try {
-            allowInstall = (ISecurity_AllowRun) DeviceManagerSdk.getInstance().getApi(ISecurity_AllowRun.class);
+            securityAllowRun = (ISecurity_AllowRun) DeviceManagerSdk.getInstance().getApi(ISecurity_AllowRun.class);
         } catch (DeviceManagerUnsupportException e) {
             e.printStackTrace();
             return false;
         }
-        try {
-            ArrayList<String> list = new ArrayList<>();
-            list.add(bean.getPackageName());
-            bean.setAllowRunning(true);
-            allowInstall.removePackageToRunList(context, list);
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-
-        }
-        return false;
+        ArrayList<String> list = new ArrayList<>();
+        list.add(bean.getPackageName());
+        bean.setAllowRunning(true);
+        return securityAllowRun.allowRun(context, list);
     }
 
 
@@ -549,13 +503,7 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
             e.printStackTrace();
             return false;
         }
-        try {
-            allowUnInstall.removePackageToUninstallList(context, bean.getPackageName());
-            return true;
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return allowUnInstall.allowUninstall(context, bean.getPackageName());
     }
 
     /**
@@ -573,6 +521,11 @@ public class AppListManagerModel extends BaseModel<ApplicationInfoBean> implemen
         if (mApplicationInfoBeans.size() == 0) {
             return null;
         }
+
+        if(viewPosition>mApplicationInfoBeans.size()){
+            return null;
+        }
+
         ApplicationInfoBean bean = mApplicationInfoBeans.get(viewPosition);
         if (bean == null) {
             return null;
