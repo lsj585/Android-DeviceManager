@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.IDmSdkApi;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.hardware.usb.IUsb_DisConnect;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 @Service(IDmSdkApi.class)
@@ -13,7 +14,13 @@ import com.nd.sdp.android.serviceloader.annotation.Service;
 public class UsbImpl_DisConnect extends UsbImpl_Base implements IUsb_DisConnect {
     @Override
     public boolean close(@NonNull Context context){
-        return derall(context,false);
+        try {
+            turnOff(context,false);
+        }catch (DeviceManagerSecurityException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 

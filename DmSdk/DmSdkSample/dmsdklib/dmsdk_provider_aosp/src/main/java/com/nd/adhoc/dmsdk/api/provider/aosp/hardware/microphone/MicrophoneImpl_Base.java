@@ -1,30 +1,30 @@
 package com.nd.adhoc.dmsdk.api.provider.aosp.hardware.microphone;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.os.UserManager;
-import android.support.annotation.NonNull;
-import com.nd.adhoc.dmsdk.api.hardware.IHardwareOperation_Swith;
-import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
-import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 
-public class MicrophoneImpl_Base implements IHardwareOperation_Swith {
+import android.app.enterprise.RestrictionPolicy;
+import android.content.Context;
+import android.support.annotation.NonNull;
+
+import com.nd.adhoc.dmsdk.api.provider.knox.utils.Verification;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.ErrorCode;
+
+public class MicrophoneImpl_Base {
 
 
     public void turnOff(@NonNull Context context, boolean isOpen) throws DeviceManagerSecurityException {
 
+        RestrictionPolicy restrictionPolicy = Verification.isRestrictionPolicyNull(context);
 
-
-    }
-
-    @Override
-    public boolean derall(@NonNull Context context, boolean isOpen) {
         try {
-            DeviceControlUtils.operation(context,isOpen, UserManager.DISALLOW_UNMUTE_MICROPHONE);
-        } catch (DeviceManagerSecurityException e) {
-            e.printStackTrace();
-            return false;
+            boolean isSuccess = restrictionPolicy.setMicrophoneState(isOpen);
+            if (!isSuccess) {
+                //TODO zyb 此处需要定义ErrorCode中的枚举值为开启失败
+                throw new DeviceManagerSecurityException(ErrorCode.DEFAULT_OPERATION_ERROR);
+            }
+        } catch (SecurityException e) {
+            //TODO zyb 此处需要定义ErrorCode中的枚举值为开启失败
+            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
-        return true;
+
     }
 }

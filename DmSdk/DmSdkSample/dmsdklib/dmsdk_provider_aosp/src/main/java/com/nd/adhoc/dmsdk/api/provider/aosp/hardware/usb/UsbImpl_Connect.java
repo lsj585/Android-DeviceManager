@@ -14,7 +14,13 @@ public class UsbImpl_Connect extends UsbImpl_Base implements IUsb_Connect {
 
     @Override
     public boolean open(@NonNull Context context){
-        return derall(context,true);
+        try {
+            turnOff(context,true);
+        }catch (DeviceManagerSecurityException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override

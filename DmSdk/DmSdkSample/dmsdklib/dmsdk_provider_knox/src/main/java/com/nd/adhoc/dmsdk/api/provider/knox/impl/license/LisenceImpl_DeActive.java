@@ -10,7 +10,6 @@ import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.license.ILicense_DeActive;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 /**
  * License 激活
@@ -33,13 +32,11 @@ public class LisenceImpl_DeActive implements ILicense_DeActive {
 
 
         if(manager==null ){
-            //抛出异常
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+            return;
         }
 
         if(componentName==null){
-            //抛出异常
-            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
+           return;
         }
 
         //取消设备激活

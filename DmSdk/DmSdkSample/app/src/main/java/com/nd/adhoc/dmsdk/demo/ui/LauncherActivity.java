@@ -78,7 +78,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
 
         if (v.getId() == R.id.btn_activeDevice) {
-//            presenter.activeLicense();
+            presenter.activeLicense();
             if(!DeviceManagerSdk.getInstance().isResgisterSDK()){
                 DeviceManagerSdk.getInstance().registerSDK(this.getApplicationContext());
             }

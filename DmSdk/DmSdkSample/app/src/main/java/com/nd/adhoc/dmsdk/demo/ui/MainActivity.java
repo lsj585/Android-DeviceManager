@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
         mViewPager=findViewById(R.id.vp_main);
         mTableLayout=findViewById(R.id.tbl_tool_main);
-        mTableLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        mTableLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        mTableLayout.setTabMode(TabLayout.MODE_FIXED);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initData();
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             fragments.clear();
         }
         fragments.add(FileManagerFragment.newInstance());
-        fragments.add(AppManagerFragment.newInstance());
+//        fragments.add(AppManagerFragment.newInstance());
         fragments.add(DeviceControlManagerFragment.newInstance());
         fragments.add(SystemManagerFragment.newInstance());
     }
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
             mFragmentPager=new ContentFragmentPager(getSupportFragmentManager(),this,fragments);
         }
         mViewPager.setAdapter(mFragmentPager);
-        mViewPager.setOffscreenPageLimit(6);
         mTableLayout.setupWithViewPager(mViewPager);
     }
 

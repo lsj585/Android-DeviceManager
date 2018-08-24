@@ -14,7 +14,13 @@ public class BluetoothImpl_Close extends  BlutoothImpl_Base  implements IBluetoo
     @Override
     public boolean close(@NonNull Context context){
 
-        return derall(context,false);
+        try {
+            turnOff(context,false);
+        }catch (DeviceManagerSecurityException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override

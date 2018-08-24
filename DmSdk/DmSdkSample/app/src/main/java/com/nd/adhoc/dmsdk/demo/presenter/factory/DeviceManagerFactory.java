@@ -2,6 +2,8 @@ package com.nd.adhoc.dmsdk.demo.presenter.factory;
 
 import com.nd.adhoc.dmsdk.demo.presenter.strategy.DeviceStrategy;
 import com.nd.adhoc.dmsdk.demo.presenter.annotation.DeviceStategyKey;
+import com.nd.adhoc.dmsdk.demo.presenter.strategy.device.DeviceStrategy_GetList;
+import com.nd.adhoc.dmsdk.demo.presenter.strategy.device.DeviceStrategy_Operation;
 import com.nd.sdp.android.serviceloader.AnnotationServiceLoader;
 import com.nd.sdp.android.serviceloader.ServiceLoader;
 
@@ -26,15 +28,18 @@ public class DeviceManagerFactory {
 
         mStrategys=new ConcurrentHashMap<>();
 
-        ServiceLoader serviceLoader = AnnotationServiceLoader.load(DeviceStrategy.class);
-        Iterator<DeviceStrategy> iterator = serviceLoader.iterator();
-        while(iterator.hasNext()){
-            DeviceStrategy deviceStrategy=iterator.next();
-            DeviceStategyKey apiImpl=deviceStrategy.getClass().getAnnotation(DeviceStategyKey.class);
-            if(apiImpl!=null){
-                mStrategys.put(apiImpl.value(),deviceStrategy);
-            }
-        }
+//        ServiceLoader serviceLoader = AnnotationServiceLoader.load(DeviceStrategy.class);
+//        Iterator<DeviceStrategy> iterator = serviceLoader.iterator();
+//        while(iterator.hasNext()){
+//            DeviceStrategy deviceStrategy=iterator.next();
+//            DeviceStategyKey apiImpl=deviceStrategy.getClass().getAnnotation(DeviceStategyKey.class);
+//            if(apiImpl!=null){
+//
+//            }
+//        }
+
+        mStrategys.put(STRATEGY_DEVICE_OPERATION,new DeviceStrategy_Operation());
+        mStrategys.put(STRATEGY_DEVICE_GETLIST,new DeviceStrategy_GetList());
     }
 
     /**

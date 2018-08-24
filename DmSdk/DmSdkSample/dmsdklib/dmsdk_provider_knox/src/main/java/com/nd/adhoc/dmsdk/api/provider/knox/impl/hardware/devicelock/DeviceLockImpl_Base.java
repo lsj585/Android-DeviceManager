@@ -34,6 +34,7 @@ public class DeviceLockImpl_Base implements IHardwareOperation_Swith {
     public boolean derall(@NonNull Context context, boolean isOpen) {
         RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
         KioskMode kioskMode=KioskMode.getInstance(context);
+        kioskMode.enableKioskMode(context.getPackageName());
         try {
             kioskMode.allowHardwareKeys(mAvailableHwKeys,isOpen);
             return restrictionPolicy.allowActivationLock(isOpen);

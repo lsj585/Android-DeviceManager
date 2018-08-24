@@ -15,7 +15,12 @@ public class BluetoothImpl_Open extends BlutoothImpl_Base implements IBluetooth_
 
     @Override
     public boolean open(@NonNull Context context) {
-        derall(context, true);
+        try {
+            turnOff(context, true);
+        }catch (DeviceManagerSecurityException e){
+            e.printStackTrace();
+            return false;
+        }
         enableBluetooth();
         return true;
     }

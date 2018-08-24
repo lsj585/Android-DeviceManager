@@ -15,7 +15,7 @@ public class DeviceLockImpl_Lock extends DeviceLockImpl_Base implements IDeviceL
     @Override
     public boolean open(@NonNull Context context) {
 
-        return derall(context, false);
+        return derall(context, true);
     }
 
     @Override

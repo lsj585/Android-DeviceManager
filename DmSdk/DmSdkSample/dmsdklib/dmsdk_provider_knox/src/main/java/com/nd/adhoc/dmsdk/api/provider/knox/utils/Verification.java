@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
-import com.nd.adhoc.dmsdk.exception.ErrorCode;
 import com.nd.adhoc.dmsdk.api.provider.knox.KnoxDeviceManagerFactory;
 
 /**

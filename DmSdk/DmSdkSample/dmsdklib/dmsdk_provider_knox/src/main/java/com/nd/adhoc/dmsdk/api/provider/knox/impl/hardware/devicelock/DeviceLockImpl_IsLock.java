@@ -8,7 +8,6 @@ import com.nd.adhoc.dmsdk.IDmSdkApi;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.hardware.devicelock.IDeviceLock_IsLock;
 import com.nd.adhoc.dmsdk.api.provider.knox.utils.Verification;
-import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 @Service(IDmSdkApi.class)
@@ -16,7 +15,7 @@ import com.nd.sdp.android.serviceloader.annotation.Service;
 public class DeviceLockImpl_IsLock implements IDeviceLock_IsLock {
 
     @Override
-    public boolean isOpen(@NonNull Context context) throws DeviceManagerSecurityException {
+    public boolean isOpen(@NonNull Context context) {
         RestrictionPolicy restrictionPolicy= Verification.isRestrictionPolicyNull(context);
         return restrictionPolicy.isActivationLockAllowed(true);
     }

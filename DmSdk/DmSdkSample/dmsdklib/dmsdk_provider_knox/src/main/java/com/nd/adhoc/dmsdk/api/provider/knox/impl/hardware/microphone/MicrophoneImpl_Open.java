@@ -9,7 +9,7 @@ import com.nd.adhoc.dmsdk.api.hardware.microphone.IMicrophone_Open;
 import com.nd.sdp.android.serviceloader.annotation.Service;
 
 @Service(IDmSdkApi.class)
-@ApiImpl(MicrophoneImpl_Open.class)
+@ApiImpl(IMicrophone_Open.class)
 public class MicrophoneImpl_Open extends MicrophoneImpl_Base implements IMicrophone_Open {
 
     @Override

@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="knox.demo.richsjeson.com.dmsdk_api_knox" >
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!--华为 -->
+    <uses-permission android:name="com.huawei.permission.sec.MDM_WIFI"/>
+    <uses-permission android:name="com.huawei.permission.sec.MDM_BLUETOOTH"/>
+    <uses-permission android:name="com.huawei.permission.sec.MDM_SDCARD"/>
+    <uses-permission android:name="com.huawei.permission.sec.MDM_USB"/>
+    <uses-permission android:name="com.huawei.permission.sec.MDM_DEVICE_MANAGER"/>
+</manifest>

@@ -34,7 +34,12 @@ public class SecurityImpl_DisallowUninstall implements ISecurity_DisallowUninsta
 
         ComponentName componentName = container.getComponentName();
 
-        DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
+        try {
+            DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
                 devicePolicyManager.setUninstallBlocked(componentName, packageName, true);

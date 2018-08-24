@@ -14,5 +14,5 @@ public interface IHardware_IsOpen extends IDmSdkApi {
      * 判断是否打开
      * @return
      */
-     boolean isOpen(@NonNull Context context) throws DeviceManagerSecurityException;
+     boolean isOpen(@NonNull Context context);
 }

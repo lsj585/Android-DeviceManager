@@ -14,7 +14,13 @@ public class CameraImpl_Open extends CameraImpl_Base implements ICamera_Open {
 
     @Override
     public boolean open(@NonNull Context context){
-        return derall(context, true);
+        try {
+            turnOff(context, true);
+        }catch (DeviceManagerSecurityException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -40,14 +40,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation project(':dmsdklib:dmsdk_api')
-    implementation files('libs/cdm.jar')
-    implementation files('libs/edm.jar')
-    implementation files('libs/rc.jar')
     implementation project(':serviceloader:service-loader')
     implementation project(':serviceloader:service-loader-annotation')
     annotationProcessor project(':serviceloader:service-loader-compiler')
     //加入单元测试
     testImplementation 'org.robolectric:robolectric:3.8'
     testImplementation 'com.android.support.test:monitor:1.0.2'
-   
+    implementation files('libs/cdm.jar')
+    implementation files('libs/edm.jar')
+    implementation files('libs/rc.jar')
 }

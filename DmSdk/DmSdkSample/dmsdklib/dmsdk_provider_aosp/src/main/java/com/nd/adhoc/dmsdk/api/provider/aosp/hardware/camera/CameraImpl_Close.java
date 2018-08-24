@@ -17,7 +17,13 @@ public class CameraImpl_Close extends CameraImpl_Base implements ICamera_Close {
 
     @Override
     public boolean close(@NonNull Context context){
-        return  derall(context,false);
+        try {
+            turnOff(context,false);
+        }catch (DeviceManagerSecurityException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 

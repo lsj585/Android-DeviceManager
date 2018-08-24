@@ -2,7 +2,6 @@ package com.nd.adhoc.dmsdk.api.provider.knox.impl.app;
 import android.app.enterprise.ApplicationPolicy;
 import android.content.Context;
 import android.support.annotation.NonNull;
-
 import com.nd.adhoc.dmsdk.IDmSdkApi;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
 import com.nd.adhoc.dmsdk.api.app.IApp_GetPackageList;

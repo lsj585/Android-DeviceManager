@@ -18,7 +18,7 @@ public class DeviceLockImpl_UnLock extends DeviceLockImpl_Base implements IDevic
 
     @Override
     public boolean close(@NonNull Context context){
-        return derall(context,true);
+        return derall(context,false);
     }
     @Override
     public void release(@NonNull Context context) {

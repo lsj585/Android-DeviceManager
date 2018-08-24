@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.IDmSdkApi;
 import com.nd.adhoc.dmsdk.annotation.ApiImpl;
+import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
 import com.nd.adhoc.dmsdk.api.security.ISecurity_DisallowRun;
 import com.nd.adhoc.dmsdk.api.provider.aosp.utils.DeviceControlUtils;
 import com.nd.sdp.android.serviceloader.annotation.Service;
@@ -33,7 +34,12 @@ public class SecurityImpl_DisallowRun implements ISecurity_DisallowRun {
 
         ComponentName componentName = container.getComponentName();
 
-        DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
+        try {
+            DeviceControlUtils.isVerificationNull(context, devicePolicyManager, componentName);
+        } catch (DeviceManagerSecurityException e) {
+            e.printStackTrace();
+            return false;
+        }
         //清除缓存  Android  P可使用
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

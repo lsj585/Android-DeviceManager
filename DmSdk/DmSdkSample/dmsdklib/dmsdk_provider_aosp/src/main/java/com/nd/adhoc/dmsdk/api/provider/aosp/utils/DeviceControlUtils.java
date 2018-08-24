@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
 import com.nd.adhoc.dmsdk.DeviceManagerContainer;
 import com.nd.adhoc.dmsdk.exception.DeviceManagerSecurityException;
+import com.nd.adhoc.dmsdk.exception.ErrorCode;
 
 /**
  * 校验类
@@ -26,12 +28,12 @@ public class DeviceControlUtils {
     public static void operation(@NonNull Context context, boolean isOpen, @NonNull String key) throws DeviceManagerSecurityException {
 
         if (TextUtils.isEmpty(key)) {
-            return;
+            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
         if (container == null) {
-            return;
+            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
 
         DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
@@ -75,13 +77,13 @@ public class DeviceControlUtils {
     public static boolean isOpen(@NonNull Context context, @NonNull String key) throws DeviceManagerSecurityException {
 
         if (TextUtils.isEmpty(key)) {
-            return false;
+            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
 
         DeviceManagerContainer container = DeviceManagerContainer.getInstance();
 
         if (container == null) {
-            return false;
+            throw new DeviceManagerSecurityException(ErrorCode.ERROR_CODE_CONSTRUCT_NO_INSTANCE);
         }
 
         DevicePolicyManager devicePolicyManager = container.getDevicePolicyManager();
